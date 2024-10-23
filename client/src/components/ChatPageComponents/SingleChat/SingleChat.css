@@ -1,0 +1,29 @@
+.single-chat {
+  background-color: #222e35;
+  height: 100%;
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* .single-chat .scrollbar-triangle,
+.single-chat .scrollbar-triangle-upside-down {
+  margin-right: 0.05rem;
+  font-size: 0.4rem;
+  color: #222e35;
+}
+.single-chat .scrollbar-triangle-upside-down {
+  margin-bottom: 0.05rem;
+}
+
+.single-chat .scrollbar-triangle-upside-down {
+  transform: rotate(180deg);
+}
+
+.single-chat .filler-container {
+  display: flex;
+}
+
+.single-chat .horizontal-filler {
+  width: 100%;
+} */
