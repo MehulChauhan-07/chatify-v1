@@ -430,6 +430,8 @@ const SingleChatMessageContainer = () => {
         message.sender._id === userInfo.id ? "own-message" : "contact-message"
       }`}
     >
+      {console.log("selectedChatData")}
+      {console.log(selectedChatData)}
       {/* {console.log("userInfo: " + userInfo.id)}
       {console.log("sender: " + message.sender)}
       {console.log("sender _id: " + message.sender._id)} */}

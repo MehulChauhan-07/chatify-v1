@@ -71,6 +71,26 @@ export const getUserGroups = async (request, response, next) => {
   }
 };
 
+export const getGroupsInCommon = async (request, response, next) => {
+  try {
+    // console.log("in");
+    const userId = request.userId;
+    // const { contactId } = request.body;
+    const { contactId } = request.params;
+
+    const groups = await Group.find({
+      members: { $all: [userId, contactId] },
+    }).sort({ updatedAt: -1 });
+
+    return response.status(201).json({ groups });
+  } catch (error) {
+    // console.log(error);
+    // return response.status(500).json({ error: error.message });
+    console.log("ey");
+    return response.status(500).json({ error: "ey" });
+  }
+};
+
 export const getGroupMembers = async (request, response, next) => {
   try {
     const { groupId } = request.params; // Get the group ID from request parameters

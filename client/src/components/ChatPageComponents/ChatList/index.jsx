@@ -180,6 +180,10 @@ const ChatList = () => {
     setSelectedChatData(contact);
     setSearchedModalContacts([]);
     setRefreshChatList(false);
+
+    // if (selectedChatData && selectedChatData._id !== contact._id) {
+    //   setSelectedChatMessages([]);
+    // }
     console.log(selectedChatData);
   };
 
