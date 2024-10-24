@@ -125,6 +125,16 @@ const SingleChatMessageContainer = () => {
 
       const showDate = messageDate !== lastDate;
 
+      const isMessageDateToday =
+        moment(Date.now()).format("YYYY-MM-DD") ===
+        moment(message.timestamp).format("YYYY-MM-DD");
+      const isMessageDateYesterday =
+        moment(Date.now()).subtract(1, "days").format("YYYY-MM-DD") ===
+        moment(message.timestamp).format("YYYY-MM-DD");
+      const isMessageDateThisWeekExceptTodayAndYesterday =
+        moment(Date.now()).subtract(2, "days").format("YYYY-MM-DD") ===
+        moment(message.timestamp).format("YYYY-MM-DD");
+
       // const showDate = messageDay !== lastDay;
 
       lastDate = messageDate;
@@ -137,7 +147,14 @@ const SingleChatMessageContainer = () => {
             <div className="general-date-container">
               <div className="general-date-line left"></div>
               <div className="general-date">
-                {moment(message.timestamp).format("LL")}
+                {isMessageDateToday
+                  ? "Today"
+                  : isMessageDateYesterday
+                  ? "Yesterday"
+                  : isMessageDateThisWeekExceptTodayAndYesterday
+                  ? moment(message.timestamp).format("dddd")
+                  : // : moment(message.timestamp).format("LL")
+                    moment(message.timestamp).format("L")}
               </div>
               <div className="general-date-line right"></div>
             </div>
