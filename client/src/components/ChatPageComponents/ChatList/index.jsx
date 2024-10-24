@@ -436,7 +436,11 @@ const ChatList = () => {
                   }}
                   ref={addContactIconRef}
                 >
-                  <div className="tooltip sub-header-icon">
+                  <div
+                    className={`tooltip sub-header-icon ${
+                      openAddContactModal ? "active-modal" : ""
+                    }`}
+                  >
                     {/*<FaAddressCard />*/}
                     <IoPersonAdd />
                     <span className="tooltiptext">Add New Friend</span>
@@ -453,7 +457,11 @@ const ChatList = () => {
                   }}
                   ref={createGroupIconRef}
                 >
-                  <div className="tooltip sub-header-icon">
+                  <div
+                    className={`tooltip sub-header-icon ${
+                      openCreateGroupModal ? "active-modal" : ""
+                    }`}
+                  >
                     {/*<FaAddressCard />*/}
                     <MdGroupAdd />
                     <span className="tooltiptext">New Group</span>
@@ -471,7 +479,11 @@ const ChatList = () => {
                   }}
                   ref={newContactIconRef}
                 >
-                  <div className="tooltip sub-header-icon">
+                  <div
+                    className={`tooltip sub-header-icon ${
+                      openNewContactModal ? "active-modal" : ""
+                    }`}
+                  >
                     <RiChatNewFill />
                     {/* <span className="tooltiptext">Add New Chat</span> */}
                     <span className="tooltiptext">New Chat</span>

@@ -46,14 +46,15 @@
   cursor: pointer;
   /* border-radius: 50%; */
   /* background-color: #222e35; */
-  background-color: #415763;
+  background-color: #41576380;
 }
 
 .left-sidebar .between-icon-vertical-space-filler {
   height: 60%;
 }
 
-.left-sidebar .active-icon {
+.left-sidebar .active-icon,
+.left-sidebar .active-icon:hover {
   background-color: #415763;
 }
 
