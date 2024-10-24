@@ -9,7 +9,7 @@ import { apiClient } from "../../../lib/api-client";
 import { GET_FRIEND_REQUESTS_ROUTE } from "../../../utils/constants";
 
 const LeftSidebar = () => {
-  const { activeIcon, setActiveIcon } = useAppStore();
+  const { activeIcon, setActiveIcon, userInfo } = useAppStore();
 
   const navigate = useNavigate();
 
@@ -98,7 +98,20 @@ const LeftSidebar = () => {
           }`}
           onClick={() => handleIconClick("avatar")}
         >
-          <img className="avatar" src="/avatar.png" alt="Avatar" />
+          {/* <img className="avatar" src="/avatar.png" alt="Avatar" /> */}
+          <div className="avatar">
+            <div className="img">
+              {userInfo.firstName && userInfo.lastName
+                ? `${userInfo.firstName.charAt(0)} ${userInfo.lastName.charAt(
+                    0
+                  )}`
+                : userInfo.firstName
+                ? userInfo.firstName.charAt(0)
+                : userInfo.lastName
+                ? userInfo.lastName.charAt(0)
+                : userInfo.email.charAt(0)}
+            </div>
+          </div>
           <span className="tooltiptext">Profile</span>
         </div>
       </div>

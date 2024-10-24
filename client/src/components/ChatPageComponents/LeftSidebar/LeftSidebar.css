@@ -26,9 +26,20 @@
 }
 
 .left-sidebar .avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.left-sidebar .avatar .img {
   width: 2.5rem;
   height: 2.5rem;
+  font-size: 1rem;
   border-radius: 50%;
+  border: 2px solid #415763;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: -1rem; */
 }
 
 .left-sidebar .icon:hover {

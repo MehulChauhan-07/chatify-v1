@@ -1,7 +1,12 @@
 .chats {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  /* overflow-y: auto; */
+  /* margin-bottom: 1.5rem; */
+}
+
+.chats:nth-child(2) {
+  margin-bottom: 1.5rem;
 }
 
 .chats::-webkit-scrollbar {

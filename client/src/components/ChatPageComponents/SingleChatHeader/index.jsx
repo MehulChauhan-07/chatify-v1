@@ -2,10 +2,44 @@ import { IoMdMore } from "react-icons/io";
 import { IoIosSearch } from "react-icons/io";
 import "./SingleChatHeader.css";
 import { useAppStore } from "../../../store";
+import { GET_GROUP_MEMBERS_ROUTE } from "../../../utils/constants";
+import { useEffect } from "react";
+import { apiClient } from "../../../lib/api-client";
 
 const SingleChatHeader = () => {
-  const { closeChat, selectedChatData, selectedChatType, setActiveIcon } =
-    useAppStore();
+  const {
+    closeChat,
+    selectedChatData,
+    selectedChatType,
+    setActiveIcon,
+    selectedChatMembers,
+    setSelectedChatMembers,
+    userInfo,
+  } = useAppStore();
+
+  useEffect(() => {
+    const getGroupMembers = async () => {
+      try {
+        const response = await apiClient.get(
+          `${GET_GROUP_MEMBERS_ROUTE}/${selectedChatData._id}`,
+          // { members: selectedChatData.members },
+          { withCredentials: true }
+        );
+
+        if (response.data.members) {
+          setSelectedChatMembers(response.data.members);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (selectedChatData._id) {
+      if (selectedChatType === "group") {
+        getGroupMembers();
+      }
+    }
+  }, [selectedChatData, selectedChatType, setSelectedChatMembers]);
 
   return (
     <div className="single-chat-header">
@@ -24,6 +58,7 @@ const SingleChatHeader = () => {
         </div>
         <div className="info" onClick={() => setActiveIcon("avatar")}>
           <div>
+            {selectedChatType === "group" && selectedChatData.name}
             {selectedChatType === "contact" &&
               (selectedChatData.firstName && selectedChatData.lastName
                 ? `${selectedChatData.firstName} ${selectedChatData.lastName}`
@@ -33,8 +68,34 @@ const SingleChatHeader = () => {
                 ? selectedChatData.lastName
                 : selectedChatData.email)}
           </div>
-          <div>Last Seen</div>
+          {selectedChatType === "group" ? (
+            <div className="group-members">
+              {/* {console.log("userInfo:")}
+              {console.log(userInfo)} */}
+              {selectedChatMembers.map((member, index) => (
+                <span key={member.id} className="member">
+                  {/* {member.firstName} {member.lastName} */}
+                  {member.id === userInfo.id
+                    ? "You"
+                    : `${member.firstName} ${member.lastName}`}
+                  {index < selectedChatMembers.length - 1 && `,\u00A0`}
+                  {/* Add a comma if it's not the last member */}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div>Last Seen</div>
+          )}
         </div>
+        {/* {selectedChatType === "group" && (
+          <div className="group-members">
+            {selectedChatMembers.map((member, index) => (
+              <div key={index} className="member">
+                {member.firstName} {member.lastName}
+              </div>
+            ))}
+          </div>
+        )} */}
         <div></div>
       </div>
       <div className="icons">

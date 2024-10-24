@@ -135,6 +135,9 @@ export const getContactsForDMList = async (request, response, next) => {
             },
           },
           lastMessageTime: { $first: "$timestamp" },
+          lastMessageType: { $first: "$messageType" }, // Capture messageType
+          lastMessageContent: { $first: "$content" }, // Capture text content
+          lastFileUrl: { $first: "$fileUrl" }, // Capture file URL if applicable
         },
       },
       {
@@ -150,6 +153,14 @@ export const getContactsForDMList = async (request, response, next) => {
         $project: {
           _id: 1,
           lastMessageTime: 1,
+          lastMessageType: 1,
+          lastMessage: {
+            $cond: {
+              if: { $eq: ["$lastMessageType", "text"] }, // Check if it's a text message
+              then: "$lastMessageContent", // Return text content
+              else: "$lastFileUrl", // Otherwise, return file URL
+            },
+          },
           email: "$contactInfo.email",
           firstName: "$contactInfo.firstName",
           lastName: "$contactInfo.lastName",
@@ -159,6 +170,32 @@ export const getContactsForDMList = async (request, response, next) => {
       },
       { $sort: { lastMessageTime: -1 } },
     ]);
+
+    return response.status(200).json({ contacts });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
+
+export const getAllContacts = async (request, response, next) => {
+  try {
+    const userId = request.userId;
+
+    const currentUser = await User.findById(userId).select("friends");
+    if (!currentUser) {
+      return response.status(404).json({ error: "User not found" });
+    }
+
+    const friendsEmails = currentUser.friends; // Get the list of friends' emails
+
+    const contacts = await User.find(
+      {
+        _id: { $ne: request.userId }, // Exclude the current user
+        email: { $in: friendsEmails }, // Include only friends by email
+      },
+      "firstName lastName _id email"
+    );
 
     return response.status(200).json({ contacts });
   } catch (error) {

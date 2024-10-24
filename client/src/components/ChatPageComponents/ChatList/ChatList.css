@@ -136,7 +136,8 @@
 }
 
 .chat-list .add-new-contact-modal,
-.chat-list .add-new-friend-contact-modal {
+.chat-list .add-new-friend-contact-modal,
+.chat-list .create-group-modal {
   /* background-color: #0c1317; */
   background-color: #111b21;
   z-index: 10;
@@ -149,6 +150,32 @@
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   /* box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px; */
+}
+
+.chat-list .create-group-modal .create-group-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chat-list .create-group-modal .modal-content .submit-button {
+  border-radius: 10px;
+  padding: 0.5rem;
+  width: max-content;
+  background-color: #2c2e3b;
+  border: none;
+  color: white;
+  opacity: 0.8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.chat-list .create-group-modal .modal-content .submit-button:hover {
+  background-color: #415763;
 }
 
 .chat-list .add-friend-contact-input-container {
@@ -177,6 +204,12 @@
 .chat-list .add-new-friend-contact-modal {
   top: 20%;
   left: 26.5%;
+  transform: translate(-20%, -17%);
+}
+
+.chat-list .create-group-modal {
+  top: 20%;
+  left: 23%;
   transform: translate(-20%, -17%);
 }
 
@@ -340,6 +373,8 @@
   z-index: 1;
   top: 125%;
   left: 2.125rem;
+  /* left: 107.5%; */
+  /* left: 2.7rem; */
   margin-left: -60px;
 }
 
@@ -356,4 +391,37 @@
 
 .chat-list .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+.chat-list .chat-type-indicator {
+  padding-left: 1.5rem;
+  /* background-color: lightgray; */
+  color: #8696a0;
+}
+.chat-list .chat-type-indicator.dms,
+.chat-list .chat-type-indicator.groups {
+  /* margin-top: -0.5rem; */
+  padding-bottom: 0.5rem;
+}
+/* .chat-list .chat-type-indicator.dms {
+  margin-top: 1rem;
+  padding-bottom: 0.5rem;
+} */
+.chat-list .dms-and-group-chats-container {
+  /* display: flex; */
+  /* flex-direction: column; */
+  overflow-y: auto;
+  /* margin-bottom: 1.5rem; */
+  /* margin-bottom: 0; */
+}
+/* .chat-list .dms-and-group-chats-container: {
+  margin-bottom: 1.5rem;
+} */
+.chat-list .dms-and-group-chats-container::-webkit-scrollbar {
+  width: 0.5rem;
+  background-color: transparent;
+}
+.chat-list .dms-and-group-chats-container::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #222e35;
 }

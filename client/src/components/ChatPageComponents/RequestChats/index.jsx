@@ -4,7 +4,7 @@ import Chat from "../Chat";
 import { useAppStore } from "../../../store";
 import RequestChat from "../RequestChat";
 
-const RequestChats = ({ contacts, isChannel = false }) => {
+const RequestChats = ({ contacts, isGroup = false }) => {
   //   const chatIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const {
@@ -19,7 +19,7 @@ const RequestChats = ({ contacts, isChannel = false }) => {
   } = useAppStore();
 
   const handleClick = (contact) => {
-    setSelectedChatType(isChannel ? "channel" : "contact");
+    setSelectedChatType(isGroup ? "group" : "contact");
     setSelectedChatData(contact);
     setActiveChatId(contact._id);
     // setSearchedContacts([]);
@@ -39,7 +39,9 @@ const RequestChats = ({ contacts, isChannel = false }) => {
     <div className="request-chats">
       {contacts.map((contact) => (
         <div
-          key={contact.email}
+          className="chat-outer-container"
+          // key={contact.email}
+          key={contact._id}
           // onClick={() => handleChatClick(id)}
           // onClick={() => handleClick(contact)}
           // className={`pl-10 py-2 transition-all duration-300 cursor-pointer ${
@@ -48,10 +50,13 @@ const RequestChats = ({ contacts, isChannel = false }) => {
           //       : "hover:bg-[#f1f1f111]"
           //   }`}
         >
+          {/* {console.log(roles)} */}
+          {/* {console.log("pendingExists: ", pendingExists)} */}
+          {/* {console.log(pendingExists)} */}
           <RequestChat
             //   isActive={activeChat === id}
             contact={contact}
-            isChannel={isChannel}
+            isGroup={isGroup}
             // isActive={activeChat === contact._id}
             isActive={activeChatId === contact._id}
           />

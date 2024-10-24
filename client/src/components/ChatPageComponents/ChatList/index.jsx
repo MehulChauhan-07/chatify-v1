@@ -2,14 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import { RiChatNewFill } from "react-icons/ri";
 import { IoMdMore } from "react-icons/io";
 import { BsFillTriangleFill } from "react-icons/bs";
+import { IoPersonAdd } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
+import { MdGroupAdd } from "react-icons/md";
 import "./ChatList.css";
 import Chats from "../Chats";
 import { useAppStore } from "../../../store";
 import { apiClient } from "../../../lib/api-client";
 import {
   CREATE_FRIEND_REQUEST_ROUTE,
+  CREATE_GROUP_ROUTE,
+  GET_ALL_CONTACTS_ROUTE,
   GET_DM_CONTACTS_ROUTE,
+  GET_USER_GROUPS_ROUTE,
   SEARCH_CONTACTS_ROUTE,
   SEARCH_DM_CONTACTS_ROUTE,
 } from "../../../utils/constants";
@@ -20,6 +25,8 @@ import { IoMdAddCircle } from "react-icons/io";
 import { toast } from "react-toastify";
 import FriendRequests from "../FriendRequests";
 import { useSocket } from "../../../context/SocketContext";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 const ChatList = () => {
   const { activeIcon, setActiveIcon } = useAppStore();
@@ -31,7 +38,15 @@ const ChatList = () => {
     setActiveFilter(filterName);
   };
 
-  const { directMessagesContacts, setDirectMessagesContacts } = useAppStore();
+  const {
+    directMessagesContacts,
+    setDirectMessagesContacts,
+    groups,
+    setGroups,
+    addGroupInGroupList,
+    addContactsInDmContacts,
+    selectedChatMessages,
+  } = useAppStore();
   const socket = useSocket();
 
   // console.log("useeffect out above");
@@ -48,20 +63,48 @@ const ChatList = () => {
       }
     };
 
+    const getGroups = async () => {
+      // console.log("above all");
+      const response = await apiClient.get(GET_USER_GROUPS_ROUTE, {
+        withCredentials: true,
+      });
+      // console.log("above if");
+      if (response.data.groups) {
+        // console.log("inside if");
+        setGroups(response.data.groups);
+        // addGroupInGroupList(response.data.groups);
+      }
+      // console.log("below if");
+      // console.log("below all");
+    };
+
     getContacts();
+    getGroups();
+
     // }, [directMessagesContacts, setDirectMessagesContacts]);
-  }, [refreshChatList, setDirectMessagesContacts]);
+  }, [
+    refreshChatList,
+    setGroups,
+    setDirectMessagesContacts,
+    addGroupInGroupList,
+    // addContactsInDmContacts,
+    selectedChatMessages,
+  ]);
 
   // console.log("useeffect out below");
 
   const {
     setSelectedChatType,
     setSelectedChatData,
+    selectedChatData,
     addFriendRequest,
     // setRefreshFriendRequests,
+    isCreatingOneToOneChat,
+    setIsCreatingOneToOneChat,
   } = useAppStore();
   const [openNewContactModal, setOpenNewContactModal] = useState(false);
   const [openAddContactModal, setOpenAddContactModal] = useState(false);
+  const [openCreateGroupModal, setOpenCreateGroupModal] = useState(false);
   const [searchedContacts, setSearchedContacts] = useState([]);
   const [searchedModalContacts, setSearchedModalContacts] = useState([]);
   // add searched contacts for non-modal contact search
@@ -132,9 +175,11 @@ const ChatList = () => {
   const selectNewContact = (contact) => {
     setOpenNewContactModal(false);
     setSelectedChatType("contact");
+    console.log(contact);
     setSelectedChatData(contact);
     setSearchedModalContacts([]);
     setRefreshChatList(false);
+    console.log(selectedChatData);
   };
 
   const handleKeyDown = (e) => {
@@ -196,6 +241,8 @@ const ChatList = () => {
   const newContactIconRef = useRef(null);
   const addContactModalRef = useRef(null);
   const addContactIconRef = useRef(null);
+  const createGroupModalRef = useRef(null);
+  const createGroupIconRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -219,11 +266,24 @@ const ChatList = () => {
       }
     };
 
+    const handleClickOutsideCreateGroup = (event) => {
+      if (
+        createGroupModalRef.current &&
+        !createGroupModalRef.current.contains(event.target) &&
+        createGroupIconRef.current &&
+        !createGroupIconRef.current.contains(event.target)
+      ) {
+        setOpenCreateGroupModal(false); // Close modal if clicked outside
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("mousedown", handleClickOutsideAddContact);
+    document.addEventListener("mousedown", handleClickOutsideCreateGroup);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("mousedown", handleClickOutsideAddContact);
+      document.removeEventListener("mousedown", handleClickOutsideCreateGroup);
     };
     // }, [isCartOpen]);
   }, []);
@@ -236,7 +296,11 @@ const ChatList = () => {
     if (openAddContactModal && searchAddContactInputRef.current) {
       searchAddContactInputRef.current.focus(); // Focus the input when the modal opens
     }
-  }, [openNewContactModal, openAddContactModal]); // Trigger this effect when openNewContactModal changes
+
+    if (openCreateGroupModal && searchCreateGroupInputRef.current) {
+      searchCreateGroupInputRef.current.focus(); // Focus the input when the modal opens
+    }
+  }, [openNewContactModal, openAddContactModal, openCreateGroupModal]); // Trigger this effect when openNewContactModal changes
 
   const [searching, setSearching] = useState(false);
 
@@ -260,8 +324,90 @@ const ChatList = () => {
   const searchInputRef = useRef(null);
   const searchNewContactInputRef = useRef(null);
   const searchAddContactInputRef = useRef(null);
+  const searchCreateGroupInputRef = useRef(null);
 
   const [contactTag, setContactTag] = useState("");
+  const [groupName, setGroupName] = useState("");
+
+  const animatedComponents = makeAnimated();
+
+  const [allContacts, setAllContacts] = useState([]);
+  // const [contacts, setContacts] = useState([]);
+  const [selectedContacts, setSelectedContacts] = useState([]);
+
+  useEffect(() => {
+    const getAllContacts = async () => {
+      const response = await apiClient.get(GET_ALL_CONTACTS_ROUTE, {
+        withCredentials: true,
+      });
+
+      // setContacts(response.data.contacts);
+
+      const contacts = response.data.contacts.map((user) => ({
+        label: user.firstName
+          ? `${user.firstName} ${user.lastName}`
+          : user.email,
+        value: user._id,
+      }));
+
+      // setAllContacts(response.data.contacts);
+      setAllContacts(contacts);
+    };
+
+    getAllContacts();
+  }, [openCreateGroupModal]);
+
+  const createGroup = async () => {
+    try {
+      if (groupName.length > 0) {
+        const response = await apiClient.post(
+          CREATE_GROUP_ROUTE,
+          {
+            name: groupName,
+            members: selectedContacts.map((contact) => contact.value),
+            isGroup: true,
+          },
+          { withCredentials: true }
+        );
+        if (response.status === 201) {
+          setGroupName("");
+          setSelectedContacts([]);
+          setOpenCreateGroupModal(false);
+          // addGroup(response.data.group);
+          // addGroupInGroupList(response.data.group);
+          socket.emit("createGroup", response.data.group);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createOneToOneChat = async () => {
+    try {
+      // if (groupName.length > 0) {
+      const response = await apiClient.post(
+        CREATE_GROUP_ROUTE,
+        {
+          name: "OneToOneChat",
+          members: selectedContacts.map((contact) => contact.value),
+          isGroup: true,
+        },
+        { withCredentials: true }
+      );
+      if (response.status === 201) {
+        setGroupName("");
+        setSelectedContacts([]);
+        setOpenCreateGroupModal(false);
+        // addGroup(response.data.group);
+        // addGroupInGroupList(response.data.group);
+        socket.emit("createGroup", response.data.group);
+      }
+      // }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="chat-list">
@@ -291,8 +437,26 @@ const ChatList = () => {
                   ref={addContactIconRef}
                 >
                   <div className="tooltip sub-header-icon">
-                    <FaAddressCard />
+                    {/*<FaAddressCard />*/}
+                    <IoPersonAdd />
                     <span className="tooltiptext">Add New Friend</span>
+                  </div>
+                </div>
+                <div
+                  // className="sub-header-icon"
+                  // onClick={() => setOpenAddContactModal((prev) => !prev)}
+                  onClick={() => {
+                    // console.log("add");
+                    // console.log(openAddContactModal);
+                    setOpenCreateGroupModal((prev) => !prev);
+                    // console.log(openAddContactModal);
+                  }}
+                  ref={createGroupIconRef}
+                >
+                  <div className="tooltip sub-header-icon">
+                    {/*<FaAddressCard />*/}
+                    <MdGroupAdd />
+                    <span className="tooltiptext">New Group</span>
                   </div>
                 </div>
                 <div
@@ -313,6 +477,90 @@ const ChatList = () => {
                     <span className="tooltiptext">New Chat</span>
                   </div>
                 </div>
+
+                {openCreateGroupModal && (
+                  <div className="create-group-modal" ref={createGroupModalRef}>
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <div className="modal-title">Create New Group</div>
+                      </div>
+                      <div className="create-group-input-container">
+                        <input
+                          placeholder="Group Name"
+                          value={groupName}
+                          onChange={(event) => setGroupName(event.target.value)}
+                          // onKeyDown={handleKeyDown}
+                          // ref={searchAddContactInputRef}
+                          className="modal-input"
+                          ref={searchCreateGroupInputRef}
+                        />
+                        <div className="multi-select-container">
+                          {/* MULTI SELECT FOR ADDING CONTACTS TO GROUP */}
+
+                          <Select
+                            className="multi-select"
+                            closeMenuOnSelect={false}
+                            components={animatedComponents}
+                            isMulti
+                            options={allContacts}
+                            value={selectedContacts}
+                            onChange={setSelectedContacts}
+                            placeholder={"Select user(s)"}
+                            // styles={}
+
+                            styles={{
+                              container: (styles) => ({
+                                ...styles,
+                                // width: pendingExists ? "8rem" : "20rem",
+                                width: "13rem",
+                              }),
+
+                              // a
+                              option: (styles) => ({
+                                ...styles,
+                                // backgroundColor: "white",
+                                color: "#111b21",
+                              }),
+                              multiValue: (styles) => ({
+                                ...styles,
+                                backgroundColor: "lightgray",
+                              }),
+                              multiValueLabel: (styles) => ({
+                                ...styles,
+                                color: "#111b21",
+                              }),
+                              multiValueRemove: (styles) => ({
+                                ...styles,
+                                color: "#111b21",
+                              }),
+                            }}
+                          />
+
+                          {/* defaultOptions={allContacts}
+              placeholder="Search Contacts"
+              value={selectedContacts}
+              onChange={setSelectedContacts}
+              emptyIndicator={
+                <p className="text-center text-lg leading-10 text-gray-600">
+                  No Results Found
+                </p> */}
+                        </div>
+
+                        <div
+                          // className="sub-header-icon submit-button"
+                          className="submit-button"
+                          // onClick={() => setOpenAddContactModal(true)}
+                          // onClick={() => sendFriendRequestToContact(contactTag)}
+                          onClick={createGroup}
+                          // ref={addContactIconRef}
+                        >
+                          {/* <IoMdAddCircle /> */}
+                          Create
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {openAddContactModal && (
                   <div
@@ -502,11 +750,11 @@ const ChatList = () => {
               </div>
               <div
                 className={`filter ${
-                  activeFilter === "unread" ? "active-filter" : ""
+                  activeFilter === "dms" ? "active-filter" : ""
                 }`}
-                onClick={() => handleFilterClick("unread")}
+                onClick={() => handleFilterClick("dms")}
               >
-                Unread
+                DMs
               </div>
               <div
                 className={`filter ${
@@ -518,27 +766,127 @@ const ChatList = () => {
               </div>
             </div>
           </div>
-          {directMessagesContacts.length > 0 ? (
-            <>
-              <div className="filler-container">
-                <div className="horizontal-filler"></div>
-                <div className="scrollbar-triangle">
-                  <BsFillTriangleFill />
-                </div>
+
+          {(directMessagesContacts.length > 0 || groups.length > 0) && (
+            <div className="filler-container">
+              <div className="horizontal-filler"></div>
+              <div className="scrollbar-triangle">
+                <BsFillTriangleFill />
               </div>
-              {searchedContacts.length <= 0 ? (
-                <Chats contacts={directMessagesContacts} />
-              ) : (
-                <Chats contacts={searchedContacts} />
-              )}
-              <div className="filler-container">
-                <div className="horizontal-filler"></div>
-                <div className="scrollbar-triangle-upside-down">
-                  <BsFillTriangleFill />
+            </div>
+          )}
+          <div className="dms-and-group-chats-container">
+            {/* <div> */}
+            {/* {directMessagesContacts.length > 0 ||
+              (groups.length > 0 && (
+                <div className="filler-container">
+                  <div className="horizontal-filler"></div>
+                  <div className="scrollbar-triangle">
+                    <BsFillTriangleFill />
+                  </div>
                 </div>
+              ))} */}
+            {directMessagesContacts.length > 0 || groups.length > 0 ? (
+              <>
+                {/* <div className="filler-container">
+                  <div className="horizontal-filler"></div>
+                  <div className="scrollbar-triangle">
+                    <BsFillTriangleFill />
+                  </div>
+                </div> */}
+                {/* <div className="dms-and-group-chats-container"> */}
+                {searchedContacts.length <= 0 ? (
+                  <>
+                    {/* <div>groups</div> */}
+                    {/* groups */}
+                    {/* {groups} */}
+                    {/* {console.log(groups)} */}
+                    {groups.length > 0 &&
+                      (activeFilter === "all" || activeFilter === "groups") &&
+                      activeFilter !== "dms" && (
+                        <>
+                          {/* <div className="filler-container">
+                            <div className="horizontal-filler"></div>
+                            <div className="scrollbar-triangle">
+                              <BsFillTriangleFill />
+                            </div>
+                          </div> */}
+                          <div className="chat-type-indicator groups">
+                            Groups
+                          </div>
+                          {/* {console.log("groups")}
+                          {console.log(groups)} */}
+                          <Chats contacts={groups} isGroup={true} />
+                        </>
+                      )}
+                    {directMessagesContacts.length > 0 &&
+                      (activeFilter === "all" || activeFilter === "dms") &&
+                      activeFilter !== "groups" && (
+                        <>
+                          <div className="chat-type-indicator dms">
+                            Direct Messages
+                          </div>
+                          {/* {console.log("directMessagesContacts")}
+                          {console.log(directMessagesContacts)} */}
+                          <Chats contacts={directMessagesContacts} />
+                          {/* <div className="filler-container">
+                            <div className="horizontal-filler"></div>
+                            <div className="scrollbar-triangle-upside-down">
+                              <BsFillTriangleFill />
+                            </div>
+                          </div> */}
+                        </>
+                      )}
+                  </>
+                ) : (
+                  <>
+                    {/* <div className="filler-container">
+                      <div className="horizontal-filler"></div>
+                      <div className="scrollbar-triangle">
+                        <BsFillTriangleFill />
+                      </div>
+                    </div> */}
+                    <Chats contacts={searchedContacts} />
+                    {/* <Chats contacts={searchedGroups} isGroup={true} /> */}
+                    {/* <div className="filler-container">
+                      <div className="horizontal-filler"></div>
+                      <div className="scrollbar-triangle-upside-down">
+                        <BsFillTriangleFill />
+                      </div>
+                    </div> */}
+                  </>
+                )}
+                {/* </div> */}
+                {/* <div className="filler-container">
+                  <div className="horizontal-filler"></div>
+                  <div className="scrollbar-triangle-upside-down">
+                    <BsFillTriangleFill />
+                  </div>
+                </div> */}
+              </>
+            ) : null}
+            {/* {directMessagesContacts.length > 0 ||
+              (groups.length > 0 && (
+                <div className="filler-container">
+                  <div className="horizontal-filler"></div>
+                  <div className="scrollbar-triangle-upside-down">
+                    <BsFillTriangleFill />
+                  </div>
+                </div>
+              ))} */}
+          </div>
+          {/* {console.log("groups.length: " + groups.length)}
+          {console.log(
+            "directMessagesContacts.length: " + directMessagesContacts.length
+          )} */}
+          {(directMessagesContacts.length > 0 || groups.length > 0) && (
+            <div className="filler-container">
+              <div className="horizontal-filler"></div>
+              <div className="scrollbar-triangle-upside-down">
+                <BsFillTriangleFill />
               </div>
-            </>
-          ) : null}
+            </div>
+          )}
         </>
       ) : activeIcon === "avatar" ? (
         <LeftSidebarProfile />

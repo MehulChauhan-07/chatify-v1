@@ -48,6 +48,31 @@ export const SocketProvider = ({ children }) => {
         addContactsInDMContacts(message);
       };
 
+      const handleReceiveGroupMessage = (message) => {
+        // console.log("in hand rcv chan msg");
+        const {
+          selectedChatData,
+          selectedChatType,
+          addMessage,
+          addGroupInGroupList,
+          sortGroupList,
+          refreshGroupList,
+        } = useAppStore.getState();
+        if (
+          selectedChatType !== undefined &&
+          selectedChatData._id === message.groupId
+        ) {
+          addMessage(message);
+          // refreshGroupList(true);
+        }
+        sortGroupList(message.group);
+      };
+      const handleReceiveGroupCreation = (group) => {
+        // console.log("in hand rcv chan msg");
+        const { addGroup } = useAppStore.getState();
+        addGroup(group);
+      };
+
       const handleReceiveFriendRequest = (friendRequest) => {
         // console.log("Received friend request: ", friendRequest);
         const {
@@ -81,7 +106,8 @@ export const SocketProvider = ({ children }) => {
       };
 
       socket.current.on("receiveMessage", handleReceiveMessage);
-
+      socket.current.on("receiveGroupCreation", handleReceiveGroupCreation);
+      socket.current.on("receiveGroupMessage", handleReceiveGroupMessage);
       socket.current.on("receiveFriendRequest", handleReceiveFriendRequest);
 
       return () => {

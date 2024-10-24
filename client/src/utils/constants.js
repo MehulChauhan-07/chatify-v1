@@ -13,6 +13,7 @@ export const CONTACTS_ROUTES = "api/contacts";
 export const SEARCH_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/search`;
 export const SEARCH_DM_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/search-dm`;
 export const GET_DM_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/get-contacts-for-dm`;
+export const GET_ALL_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/get-all-contacts`;
 
 export const MESSAGES_ROUTES = "api/messages";
 export const GET_ALL_MESSAGES_ROUTE = `${MESSAGES_ROUTES}/get-messages`;
@@ -23,3 +24,9 @@ export const CREATE_FRIEND_REQUEST_ROUTE = `${FRIEND_REQUEST_ROUTES}/create-frie
 export const ACCEPT_FRIEND_REQUEST_ROUTE = `${FRIEND_REQUEST_ROUTES}/accept-friend-request`;
 export const REJECT_FRIEND_REQUEST_ROUTE = `${FRIEND_REQUEST_ROUTES}/reject-friend-request`;
 export const SEARCH_FRIEND_REQUESTS_ROUTE = `${FRIEND_REQUEST_ROUTES}/search-friend-requests`;
+
+export const GROUP_ROUTES = "api/groups";
+export const CREATE_GROUP_ROUTE = `${GROUP_ROUTES}/create-group`;
+export const GET_USER_GROUPS_ROUTE = `${GROUP_ROUTES}/get-user-groups`;
+export const GET_GROUP_MESSAGES_ROUTE = `${GROUP_ROUTES}/get-group-messages`;
+export const GET_GROUP_MEMBERS_ROUTE = `${GROUP_ROUTES}/get-group-members`;

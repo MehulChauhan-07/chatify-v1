@@ -11,7 +11,7 @@ import {
 import { useAppStore } from "../../../store";
 
 // const Chat = ({ isActive }) => {
-const RequestChat = ({ contact, isChannel = false, isActive = false }) => {
+const RequestChat = ({ contact, isGroup = false, isActive = false }) => {
   // const [activeChat, setActiveChat] = useState(null);
   // const handleChatClick = (chatId) => {
   //   setActiveChat(chatId);
@@ -26,8 +26,13 @@ const RequestChat = ({ contact, isChannel = false, isActive = false }) => {
 
   // const contactLastChatMessage = contact.messages[contact.messages.length - 1];
 
-  const { friendRequests, setFriendRequests, setFriendRequestsCount } =
-    useAppStore();
+  const {
+    userInfo,
+    friendRequests,
+    setFriendRequests,
+    friendRequestsCount,
+    setFriendRequestsCount,
+  } = useAppStore();
 
   const handleAcceptRequest = async () => {
     try {
@@ -98,7 +103,7 @@ const RequestChat = ({ contact, isChannel = false, isActive = false }) => {
     >
       {/* <div className="outer-container"> */}
       <div className="container">
-        {!isChannel && (
+        {!isGroup && (
           //   <Avatar className="w-10 h-10 rounded-full overflow-hidden">
           //     {contact.image ? (
           //       <AvatarImage
@@ -124,11 +129,20 @@ const RequestChat = ({ contact, isChannel = false, isActive = false }) => {
           //     )}
           //   </Avatar>
           <div className="chat-header-info-avatar">
-            <img src="./avatar.png" />
+            {/* <img src="./avatar.png" /> */}
+            <div className="img">
+              {contact.firstName && contact.lastName
+                ? `${contact.firstName.charAt(0)} ${contact.lastName.charAt(0)}`
+                : contact.firstName
+                ? contact.firstName.charAt(0)
+                : contact.lastName
+                ? contact.lastName.charAt(0)
+                : contact.email.charAt(0)}
+            </div>
           </div>
         )}
-        {isChannel && <div className="">#</div>}
-        {isChannel ? (
+        {isGroup && <div className="">#</div>}
+        {isGroup ? (
           <span>{contact.name}</span>
         ) : (
           <>

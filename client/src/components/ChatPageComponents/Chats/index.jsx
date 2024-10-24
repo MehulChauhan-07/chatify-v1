@@ -3,7 +3,7 @@ import "./Chats.css";
 import Chat from "../Chat";
 import { useAppStore } from "../../../store";
 
-const Chats = ({ contacts, isChannel = false }) => {
+const Chats = ({ contacts, isGroup = false }) => {
   //   const chatIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const {
@@ -18,7 +18,7 @@ const Chats = ({ contacts, isChannel = false }) => {
   } = useAppStore();
 
   const handleClick = (contact) => {
-    setSelectedChatType(isChannel ? "channel" : "contact");
+    setSelectedChatType(isGroup ? "group" : "contact");
     setSelectedChatData(contact);
     setActiveChatId(contact._id);
     // setSearchedContacts([]);
@@ -50,7 +50,7 @@ const Chats = ({ contacts, isChannel = false }) => {
           <Chat
             //   isActive={activeChat === id}
             contact={contact}
-            isChannel={isChannel}
+            isGroup={isGroup}
             // isActive={activeChat === contact._id}
             isActive={activeChatId === contact._id}
           />

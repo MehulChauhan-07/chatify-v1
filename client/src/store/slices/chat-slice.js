@@ -1,12 +1,13 @@
 export const createChatSlice = (set, get) => ({
   activeChatId: undefined,
   refreshChatList: undefined,
-  // refreshFriendRequests: undefined,
   selectedChatType: undefined,
   selectedChatData: undefined,
   selectedChatMessages: [],
+  selectedChatMembers: [],
+  setSelectedChatMembers: (selectedChatMembers) => set({ selectedChatMembers }),
   directMessagesContacts: [],
-  isSeen: false,
+  // isSeen: false,
   uploadProgress: 0,
   uploadFileName: undefined,
   uploadTargetId: undefined,
@@ -41,6 +42,7 @@ export const createChatSlice = (set, get) => ({
       selectedChatType: undefined,
       selectedChatData: undefined,
       selectedChatMessages: [],
+      selectedChatMembers: [],
     }),
   addMessage: (message) => {
     const { selectedChatMessages } = get();
@@ -51,13 +53,11 @@ export const createChatSlice = (set, get) => ({
         {
           ...message,
           recipient:
-            selectedChatType === "channel"
+            selectedChatType === "group"
               ? message.recipient
               : message.recipient._id,
           sender:
-            selectedChatType === "channel"
-              ? message.sender
-              : message.sender._id,
+            selectedChatType === "group" ? message.sender : message.sender._id,
         },
       ],
     });
@@ -80,5 +80,48 @@ export const createChatSlice = (set, get) => ({
       dmContacts.unshift(fromData);
     }
     set({ directMessagesContacts: dmContacts });
+  },
+
+  groups: [],
+
+  setGroups: (groups) => set({ groups }),
+  // addGroup: (group) => {
+  //   const { groups } = get();
+  //   set({ groups: [group, ...groups] });
+  // },
+  addGroup: (group) => {
+    const { groups } = get();
+    // Check if the group already exists in the groups array
+    const groupExists = groups.some((g) => g._id === group._id);
+    // If the group does not exist, add it to the beginning
+    if (!groupExists) {
+      set({ groups: [group, ...groups] });
+    }
+  },
+  // deleteGroup: (group) => {
+  //   const { groups } = get();
+  //   const groupExists = groups.some((g) => g._id === group._id);
+  //   if (groupExists) {
+  //     set({ groups: groups.filter((g) => g._id !== group._id) });
+  //   }
+  // },
+  addGroupInGroupList: (message) => {
+    const { groups } = get();
+    const data = groups.find((group) => group._id === message.groupId);
+    const index = groups.findIndex((group) => group._id === message.groupId);
+    if (index !== -1 && index !== undefined) {
+      groups.splice(index, 1);
+      groups.unshift(data);
+    }
+    set({ groups });
+  },
+  sortGroupList: (group) => {
+    const { groups } = get();
+    const index = groups.findIndex((g) => g._id === group._id);
+    if (index !== -1 && index !== undefined) {
+      groups.splice(index, 1);
+      groups.unshift(group);
+    }
+    set({ groups });
   },
 });

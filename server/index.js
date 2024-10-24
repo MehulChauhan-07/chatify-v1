@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/AuthRoutes.js";
 import contactsRoutes from "./routes/ContactRoutes.js";
 import messagesRoutes from "./routes/MessagesRoutes.js";
+import groupRoutes from "./routes/GroupRoutes.js";
 import setupSocket from "./socket.js";
 import friendRequestsRoutes from "./routes/FriendRequestsRoute.js";
 
@@ -23,14 +24,13 @@ app.use(
   })
 );
 
-app.use("/uploads/profiles", express.static("uploads/profiles"));
-
 app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/contacts", contactsRoutes);
 app.use("/api/messages", messagesRoutes);
+app.use("/api/groups", groupRoutes);
 app.use("/api/friend-requests", friendRequestsRoutes);
 
 const server = app.listen(port, () => {
