@@ -124,4 +124,7 @@ export const createChatSlice = (set, get) => ({
     }
     set({ groups });
   },
+  contactOrGroupProfile: undefined,
+  setContactOrGroupProfile: (profile) =>
+    set({ contactOrGroupProfile: profile }),
 });

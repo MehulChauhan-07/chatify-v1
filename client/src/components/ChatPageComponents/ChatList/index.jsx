@@ -27,6 +27,7 @@ import FriendRequests from "../FriendRequests";
 import { useSocket } from "../../../context/SocketContext";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import LeftSidebarContactOrGroupProfile from "../LeftSidebarContactOrGroupProfile";
 
 const ChatList = () => {
   const { activeIcon, setActiveIcon } = useAppStore();
@@ -442,7 +443,7 @@ const ChatList = () => {
                     }`}
                   >
                     {/*<FaAddressCard />*/}
-                    <IoPersonAdd />
+                    <IoPersonAdd className="add-new-friend" />
                     <span className="tooltiptext">Add New Friend</span>
                   </div>
                 </div>
@@ -904,6 +905,8 @@ const ChatList = () => {
         <LeftSidebarProfile />
       ) : activeIcon === "friend-requests" ? (
         <FriendRequests />
+      ) : activeIcon === "contactOrGroupProfile" ? (
+        <LeftSidebarContactOrGroupProfile />
       ) : (
         <div>Settings</div>
       )}

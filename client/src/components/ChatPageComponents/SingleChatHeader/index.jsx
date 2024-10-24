@@ -15,6 +15,7 @@ const SingleChatHeader = () => {
     selectedChatMembers,
     setSelectedChatMembers,
     userInfo,
+    setContactOrGroupProfile,
   } = useAppStore();
 
   useEffect(() => {
@@ -44,7 +45,13 @@ const SingleChatHeader = () => {
   return (
     <div className="single-chat-header">
       <div className="user">
-        <div className="avatar" onClick={() => setActiveIcon("avatar")}>
+        <div
+          className="avatar"
+          onClick={() => {
+            setContactOrGroupProfile(selectedChatData);
+            setActiveIcon("contactOrGroupProfile");
+          }}
+        >
           <img src="./avatar.png" />
           {/* <div
                   className={`uppercase h-12 w-12 text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(
@@ -56,7 +63,13 @@ const SingleChatHeader = () => {
                     : selectedChatData.email.split("").shift()}
                 </div> */}
         </div>
-        <div className="info" onClick={() => setActiveIcon("avatar")}>
+        <div
+          className="info"
+          onClick={() => {
+            setContactOrGroupProfile(selectedChatData);
+            setActiveIcon("contactOrGroupProfile");
+          }}
+        >
           <div>
             {selectedChatType === "group" && selectedChatData.name}
             {selectedChatType === "contact" &&

@@ -53,6 +53,16 @@
   background-color: #415763a0;
 }
 
+.chat-list .sub-header-icon .add-new-friend {
+  transform: scaleX(-1);
+  /* font-size: 1.25rem; */
+  font-size: 1.1875rem;
+  /* z-index: 1; */
+}
+/* .chat-list .sub-header-icon.add-new-friend .tooltiptext {
+  transform: scaleX(-1);
+} */
+
 .chat-list .filters {
   display: flex;
   gap: 1rem;
