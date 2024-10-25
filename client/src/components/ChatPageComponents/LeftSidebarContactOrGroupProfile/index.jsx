@@ -99,7 +99,9 @@ const LeftSidebarContactOrGroupProfile = () => {
                   <div>
                     {groupMembers.map((member) => (
                       <div className="group-member" key={member._id}>
-                        {member.firstName} {member.lastName}
+                        {member.id === userInfo.id
+                          ? "You"
+                          : `${member.firstName} ${member.lastName}`}
                       </div>
                     ))}
                   </div>
