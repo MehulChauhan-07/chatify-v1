@@ -86,6 +86,14 @@ const SingleChatMessageBar = () => {
     try {
       const file = event.target.files[0];
 
+      // alert if file size exceeds 10MB
+      if (file.size > 10 * 1024 * 1024) {
+        alert("File size exceeds 10MB");
+        return;
+      }
+      // console.log("file:");
+      // console.log(file);
+
       if (file) {
         fileUrl = await upload(file, selectedChatData._id);
 
