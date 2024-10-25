@@ -5,7 +5,8 @@
 }
 
 .chat:hover {
-  background-color: #202c33;
+  /* background-color: #202c33; */
+  background-color: #202c3390;
   cursor: pointer;
 }
 
