@@ -27,27 +27,8 @@ const colors = [
   "#fc9775" /*light-orange*/,
 ];
 
-// let assignedColors = new Set();
-
-// export const getColor = (userId) => {
 export const getColor = () => {
-  // If all colors are assigned, clear the assigned colors to allow reuse
-  //   if (assignedColors.size === colors.length) {
-  //     assignedColors.clear();
-  //   }
-
-  //   const availableColors = colors.filter((color) => !assignedColors.has(color));
-
-  // Assign a random color from the available pool
-  //   const randomColor =
-  //     availableColors[Math.floor(Math.random() * availableColors.length)];
-
-  // Mark the color as assigned
-  //   assignedColors.add(randomColor);
-
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-  //   console.log("randomColor: " + randomColor);
 
   return randomColor;
 };

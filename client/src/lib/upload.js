@@ -14,7 +14,6 @@ const upload = async (file, uploadTargetId) => {
 
   const date = new Date();
 
-  // Upload file and metadata to the object 'images/mountains.jpg'
   // const storageRef = ref(storage, `images/${date + file.name}`);
   const storageRef = ref(storage, `${date + file.name}`);
 

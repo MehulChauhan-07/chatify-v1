@@ -4,12 +4,9 @@ import { useAppStore } from "../../../store";
 import { apiClient } from "../../../lib/api-client";
 import {
   GET_ALL_MESSAGES_ROUTE,
-  GET_GROUP_MEMBERS_ROUTE,
   GET_GROUP_MESSAGES_ROUTE,
-  HOST,
 } from "../../../utils/constants";
 import moment from "moment";
-import { BsFillTriangleFill } from "react-icons/bs";
 import { MdChatBubble } from "react-icons/md";
 import { MdFolderZip } from "react-icons/md";
 import { IoMdArrowRoundDown } from "react-icons/io";
@@ -54,18 +51,14 @@ const SingleChatMessageContainer = () => {
 
     const getGroupMessages = async () => {
       try {
-        // console.log("in get chan msg client");
         const response = await apiClient.get(
           `${GET_GROUP_MESSAGES_ROUTE}/${selectedChatData._id}`,
           { withCredentials: true }
         );
-        // console.log("res above");
-        // console.log(response);
         if (response.data.messages) {
           setSelectedChatMessages(response.data.messages);
         }
       } catch (error) {
-        // console.log("in get chan msg errr");
         console.log(error);
       }
     };
@@ -115,14 +108,6 @@ const SingleChatMessageContainer = () => {
     return selectedChatMessages.map((message, index) => {
       const messageDate = moment(message.timestamp).format("YYYY-MM-DD");
 
-      // console.log(index + "msg date: " + messageDate);
-      // console.log("last date: " + lastDate);
-
-      // console.log("message timestamp: " + message.timestamp);
-
-      // const messageDay = Math.floor(messageDate / 86400000);
-      // const lastDay = Math.floor(lastDate / 86400000);
-
       const showDate = messageDate !== lastDate;
 
       const isMessageDateToday =
@@ -134,8 +119,6 @@ const SingleChatMessageContainer = () => {
       const isMessageDateThisWeekExceptTodayAndYesterday =
         moment(Date.now()).subtract(2, "days").format("YYYY-MM-DD") ===
         moment(message.timestamp).format("YYYY-MM-DD");
-
-      // const showDate = messageDay !== lastDay;
 
       lastDate = messageDate;
 
@@ -153,8 +136,7 @@ const SingleChatMessageContainer = () => {
                   ? "Yesterday"
                   : isMessageDateThisWeekExceptTodayAndYesterday
                   ? moment(message.timestamp).format("dddd")
-                  : // : moment(message.timestamp).format("LL")
-                    moment(message.timestamp).format("L")}
+                  : moment(message.timestamp).format("L")}
               </div>
               <div className="general-date-line right"></div>
             </div>
@@ -177,15 +159,6 @@ const SingleChatMessageContainer = () => {
     document.body.removeChild(link);
   };
 
-  // const shortenFileName = (fileName, maxLength = 81) => {
-  //   if (fileName.length <= maxLength) {
-  //     return fileName; // No need to shorten
-  //   }
-
-  //   const start = fileName.slice(0, 24); // First 10 characters
-  //   const end = fileName.slice(-24); // Last 10 characters
-  //   return `${start}...${end}`; // Combine with dots in the middle
-  // };
   const shortenFileName = (fileName, maxLength = 81) => {
     if (fileName.length <= maxLength) {
       return fileName; // No need to shorten
@@ -203,7 +176,7 @@ const SingleChatMessageContainer = () => {
     // Create dots string based on calculated number
     const dots = dotsCount > 0 ? ".".repeat(dotsCount) : "";
 
-    return `${start}${dots}${end}`; // Combine start, dots, and end
+    return `${start}${dots}${end}`;
   };
 
   const getFileNameFromUrl = (fileName, maxLength = 81) => {
@@ -218,20 +191,10 @@ const SingleChatMessageContainer = () => {
         ? fileName.substring(lastClosingParenIndex + 1).trim()
         : fileName; // If no closing parenthesis, return the original file name
 
-    // Ensure the file name is not longer than the maxLength
     return cleanFileName.length > maxLength
       ? cleanFileName.substring(0, maxLength) + "..."
       : cleanFileName;
   };
-
-  // const getFileExtension = (fileName) => {
-  //   if (!fileName) return ""; // Handle cases where the URL is undefined or null
-
-  //   // Extract the extension (part after the last ".")
-  //   const extension = fileName.includes(".") ? fileName.split(".").pop() : "";
-
-  //   return extension;
-  // };
 
   const renderDMMessages = (message) => (
     <div
@@ -253,13 +216,7 @@ const SingleChatMessageContainer = () => {
         </div>
         {message.messageType === "text" && message.content}
         {message.messageType === "file" && message.fileUrl && (
-          <div
-          // className={`${
-          //   message.messageType === "file" && checkIfImage(message.fileUrl)
-          //     ? "image-outer-container"
-          //     : ""
-          // }`}
-          >
+          <div>
             {checkIfImage(message.fileUrl) ? (
               <div
                 className="image-container"
@@ -268,7 +225,6 @@ const SingleChatMessageContainer = () => {
                   setImageURL(message.fileUrl);
                 }}
               >
-                {/* <p>{message.fileUrl}</p> */}
                 <img
                   src={message.fileUrl}
                   alt=""
@@ -280,20 +236,13 @@ const SingleChatMessageContainer = () => {
                     borderRadius: "10px",
                   }}
                 />
-                {/* <img src={message.fileUrl} alt="" /> */}
               </div>
             ) : (
               <div className="file-container">
-                {/* <div className="file-icon-outer-container"> */}{" "}
                 <div className="file-icon-container">
                   <MdFolderZip className="file-icon" />
                 </div>
-                {/* </div> */}
                 <div className="file-name">
-                  {/* {message.fileUrl.split("?")[0].split("/").pop()} */}
-                  {/* {shortenFileName(
-                    message.fileUrl.split("?")[0].split("/").pop()
-                  )} */}
                   {getFileNameFromUrl(
                     message.fileUrl.split("?")[0].split("/").pop()
                   )}
@@ -307,99 +256,6 @@ const SingleChatMessageContainer = () => {
                   </a>
                 </div>
               </div>
-              // {
-              //   getFileExtension(
-              //     message.fileUrl.split("?")[0].split("/").pop()
-              //   ) === "zip" ? (
-              //     <MdFolderZip className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "pdf" ? (
-              //     <BiSolidFilePdf className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "mp4" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "webm" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "avi" ? (
-              //     <RiFolderVideoFill className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "xlsx" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "xls" ? (
-              //     <RiFileExcel2Fill className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "csv" ? (
-              //     <FaFileCsv className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "docx" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "doc" ? (
-              //     <FaFileWord className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "pptx" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "ppt" ? (
-              //     <SiMicrosoftpowerpoint className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "txt" ? (
-              //     <BiSolidFileTxt className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "json" ? (
-              //     <BiSolidFileJson className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "mp3" ? (
-              //     <FaFileAudio className="file-icon" />
-              //   ) : getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "html" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "css" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "js" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "php" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "py" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "c" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "cpp" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "java" ||
-              //     getFileExtension(
-              //       message.fileUrl.split("?")[0].split("/").pop()
-              //     ) === "sql" ? (
-              //     <FaFileCode className="file-icon" />
-              //   ) : (
-              //     <FaFile className="file-icon" />
-              //   )
-              //   // checkIfImage(message.fileUrl)
-              //   // ? (
-              //   //   <MdImage className="file-icon" />
-              //   // )
-              //   // :
-              // }
             )}
           </div>
         )}
@@ -413,15 +269,10 @@ const SingleChatMessageContainer = () => {
           } timestamp-container`}
         >
           <div className="message-timestamp">
-            {/* {moment(message.timestamp).format("LT")} */}
             {moment(message.timestamp).format("LT")}
           </div>
         </div>
       </div>
-      {/* <div className="message-timestamp">
-        {moment(message.timestamp).format("LT")}
-      </div> */}
-      {/* </div> */}
     </div>
   );
   const renderGroupMessages = (message) => (
@@ -432,14 +283,8 @@ const SingleChatMessageContainer = () => {
     >
       {console.log("selectedChatData")}
       {console.log(selectedChatData)}
-      {/* {console.log("userInfo: " + userInfo.id)}
-      {console.log("sender: " + message.sender)}
-      {console.log("sender _id: " + message.sender._id)} */}
-      {/* {console.log("sender: " + selectedChatData._id)}
-      {console.log(message.sender)} */}
-      {message.sender._id === userInfo.id ? null : ( // </div> // </span> //   {moment(message.timestamp).format("LT")} // <span className="text-xs text-white/60"> // </span> //   {`${message.sender.firstName} ${message.sender.lastName}`} //  <span className="text-sm text-white/60"> // </div> //     : message.sender.email.split("").shift()} //     ? message.sender.firstName.split("").shift() //  {message.sender.firstName //     OA //   <div className="avatar"> // <div className="own-avatar">
+      {message.sender._id === userInfo.id ? null : (
         <div className="contact-avatar">
-          {/* <div className="avatar">CA</div> */}
           <div className="avatar" style={{ color: "#53a6fd" }}>
             {message.sender.firstName && message.sender.lastName
               ? `${message.sender.firstName.charAt(
@@ -465,29 +310,15 @@ const SingleChatMessageContainer = () => {
         </div>
         {message.sender._id !== userInfo.id && (
           <div className="group-message-contact-info-above-content">
-            {/* <div className="contact-info" style={{color: getColor(message.sender._id)}}>{`${message.sender.firstName} ${message.sender.lastName}`}</div> */}
-            {/* {console.log("group chat: " + message.name)}
-            {console.log(message)} */}
-            {/* {uploadProgress <= 0 ? ( */}
             <div
               className="contact-info"
-              // style={{ color: getColor() }}
               style={{ color: "#53a6fd" }}
             >{`${message.sender.firstName} ${message.sender.lastName}`}</div>
-            {/* ) : (
-              <div className="contact-info">{`${message.sender.firstName} ${message.sender.lastName}`}</div>
-            )} */}
           </div>
         )}
         {message.messageType === "text" && message.content}
         {message.messageType === "file" && message.fileUrl && (
-          <div
-          // className={`${
-          //   message.messageType === "file" && checkIfImage(message.fileUrl)
-          //     ? "image-outer-container"
-          //     : ""
-          // }`}
-          >
+          <div>
             {checkIfImage(message.fileUrl) ? (
               <div
                 className="image-container"
@@ -496,7 +327,6 @@ const SingleChatMessageContainer = () => {
                   setImageURL(message.fileUrl);
                 }}
               >
-                {/* <p>{message.fileUrl}</p> */}
                 <img
                   src={message.fileUrl}
                   alt=""
@@ -508,20 +338,13 @@ const SingleChatMessageContainer = () => {
                     borderRadius: "10px",
                   }}
                 />
-                {/* <img src={message.fileUrl} alt="" /> */}
               </div>
             ) : (
               <div className="file-container">
-                {/* <div className="file-icon-outer-container"> */}{" "}
                 <div className="file-icon-container">
                   <MdFolderZip className="file-icon" />
                 </div>
-                {/* </div> */}
                 <div className="file-name">
-                  {/* {message.fileUrl.split("?")[0].split("/").pop()} */}
-                  {/* {shortenFileName(
-                    message.fileUrl.split("?")[0].split("/").pop()
-                  )} */}
                   {getFileNameFromUrl(
                     message.fileUrl.split("?")[0].split("/").pop()
                   )}
@@ -548,16 +371,10 @@ const SingleChatMessageContainer = () => {
           } timestamp-container`}
         >
           <div className="message-timestamp">
-            {/* {moment(message.timestamp).format("LT")} */}
             {moment(message.timestamp).format("LT")}
           </div>
         </div>
       </div>
-
-      {/* <div className="message-timestamp">
-        {moment(message.timestamp).format("LT")}
-      </div> */}
-      {/* </div> */}
     </div>
   );
 
@@ -577,7 +394,6 @@ const SingleChatMessageContainer = () => {
                     <MdFolderZip className="file-icon" />
                   </div>
                   <div className="file-name">
-                    {/* uploadProgress message */}
                     {`Uploading "${shortenFileName(
                       uploadFileName
                     )}": ${uploadProgress.toFixed(2)}%`}

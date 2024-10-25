@@ -2,7 +2,6 @@ import User from "../models/UserModel.js";
 import mongoose from "mongoose";
 
 export const createFriendRequest = async (request, response, next) => {
-  //   console.log("inside");
   try {
     const { friendRequest } = request.body; // Friend's user ID
     const userId = request.userId; // Current user's ID from token

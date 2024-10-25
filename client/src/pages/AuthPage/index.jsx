@@ -8,7 +8,7 @@ import { LOGIN_ROUTE, SIGNUP_ROUTE } from "../../utils/constants";
 
 const AuthPage = () => {
   const navigate = useNavigate();
-  const { setUserInfo, activeIcon, setActiveIcon } = useAppStore();
+  const { setUserInfo, setActiveIcon } = useAppStore();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -61,10 +61,7 @@ const AuthPage = () => {
           navigate("/profile");
         }
         setActiveIcon("chat");
-        // window.location.reload();
       }
-
-      // console.log(response);
 
       toast.success("Login successful");
     }
@@ -85,10 +82,7 @@ const AuthPage = () => {
       if (response.status === 201) {
         setUserInfo(response.data.user);
         navigate("/profile");
-        // window.location.reload();
       }
-
-      // console.log(response);
 
       toast.success("Signup successful");
     }
@@ -125,9 +119,7 @@ const AuthPage = () => {
     <div className="auth-page">
       <div className="container" ref={containerRef} id="container">
         <div className="form-container sign-up-container">
-          {/* <form action="#"> */}
           <form onSubmit={handleSignup}>
-            {/* <h1>Create Account</h1> */}
             <h1 className="sign-up-heading">Sign up</h1>
             {/* <div className="social-container">
               <a href="#" className="social">
@@ -160,13 +152,11 @@ const AuthPage = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            {/* <button onClick={handleSignup}>Sign Up</button> */}
             <button type="submit">Sign Up</button>
           </form>
         </div>
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogin}>
-            {/* <h1>Sign in</h1> */}
             <h1 className="sign-in-heading">Sign in</h1>
             {/* <div className="social-container">
               <a href="#" className="social">

@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import { useEffect } from "react";
 import ChatList from "../../components/ChatPageComponents/ChatList";
 import LeftSidebar from "../../components/ChatPageComponents/LeftSidebar";
@@ -9,7 +8,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const ChatPage = () => {
-  const { userInfo, selectedChatType, selectedChatData } = useAppStore();
+  const { userInfo } = useAppStore();
   const navigate = useNavigate();
   useEffect(() => {
     if (!userInfo.profileSetup) {
@@ -17,17 +16,10 @@ const ChatPage = () => {
       navigate("/profile");
     }
   }, [userInfo, navigate]);
-  //   const [leftSidebarActiveIcon, setLeftSidebarActiveIcon] = useState(null);
-
-  //   const notifyParentOfActiveIcon = (data) => {
-  //     setLeftSidebarActiveIcon(data);
-  //   };
 
   return (
     <div className="chat-page">
-      {/* <LeftSidebar notifyParentOfActiveIcon={notifyParentOfActiveIcon} /> */}
       <LeftSidebar />
-      {/* <ChatList leftSidebarActiveIcon={leftSidebarActiveIcon} /> */}
       <ChatList />
       <SingleChat />
     </div>

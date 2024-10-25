@@ -50,10 +50,7 @@ const ChatList = () => {
   } = useAppStore();
   const socket = useSocket();
 
-  // console.log("useeffect out above");
-
   useEffect(() => {
-    // console.log("useeffect entered");
     const getContacts = async () => {
       const response = await apiClient.get(GET_DM_CONTACTS_ROUTE, {
         withCredentials: true,
@@ -65,24 +62,17 @@ const ChatList = () => {
     };
 
     const getGroups = async () => {
-      // console.log("above all");
       const response = await apiClient.get(GET_USER_GROUPS_ROUTE, {
         withCredentials: true,
       });
-      // console.log("above if");
       if (response.data.groups) {
-        // console.log("inside if");
         setGroups(response.data.groups);
         // addGroupInGroupList(response.data.groups);
       }
-      // console.log("below if");
-      // console.log("below all");
     };
 
     getContacts();
     getGroups();
-
-    // }, [directMessagesContacts, setDirectMessagesContacts]);
   }, [
     refreshChatList,
     setGroups,
@@ -92,23 +82,13 @@ const ChatList = () => {
     selectedChatMessages,
   ]);
 
-  // console.log("useeffect out below");
-
-  const {
-    setSelectedChatType,
-    setSelectedChatData,
-    selectedChatData,
-    addFriendRequest,
-    // setRefreshFriendRequests,
-    isCreatingOneToOneChat,
-    setIsCreatingOneToOneChat,
-  } = useAppStore();
+  const { setSelectedChatType, setSelectedChatData, selectedChatData } =
+    useAppStore();
   const [openNewContactModal, setOpenNewContactModal] = useState(false);
   const [openAddContactModal, setOpenAddContactModal] = useState(false);
   const [openCreateGroupModal, setOpenCreateGroupModal] = useState(false);
   const [searchedContacts, setSearchedContacts] = useState([]);
   const [searchedModalContacts, setSearchedModalContacts] = useState([]);
-  // add searched contacts for non-modal contact search
 
   const searchContacts = async (searchTerm) => {
     try {
@@ -116,7 +96,6 @@ const ChatList = () => {
         const response = await apiClient.post(
           SEARCH_DM_CONTACTS_ROUTE,
           { searchTerm, directMessagesContacts },
-          // { searchTerm, directMessagesContacts },
           { withCredentials: true }
         );
 
@@ -137,7 +116,6 @@ const ChatList = () => {
         const response = await apiClient.post(
           SEARCH_CONTACTS_ROUTE,
           { searchTerm },
-          // { searchTerm, directMessagesContacts },
           { withCredentials: true }
         );
 
@@ -151,27 +129,6 @@ const ChatList = () => {
       console.log(error);
     }
   };
-
-  // const searchAddModalContacts = async (searchTerm) => {
-  //   try {
-  //     if (searchTerm.length > 0) {
-  //       const response = await apiClient.post(
-  //         SEARCH_CONTACTS_ROUTE,
-  //         { searchTerm },
-  //         // { searchTerm, directMessagesContacts },
-  //         { withCredentials: true }
-  //       );
-
-  //       if (response.status === 200 && response.data.contacts) {
-  //         setSearchedAddModalContacts(response.data.contacts);
-  //       }
-  //     } else {
-  //       setSearchedAddModalContacts([]);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const selectNewContact = (contact) => {
     setOpenNewContactModal(false);
@@ -205,13 +162,11 @@ const ChatList = () => {
 
     try {
       if (contactTag) {
-        // console.log("above");
         const response = await apiClient.post(
           CREATE_FRIEND_REQUEST_ROUTE,
           { friendRequest: contactTag },
           { withCredentials: true }
         );
-        // console.log("below");
 
         if (response.status === 201) {
           setContactTag("");
@@ -223,11 +178,6 @@ const ChatList = () => {
             target: response.data.target,
             friendRequest: response.data.requester,
           });
-          // setRefreshFriendRequests(true);
-          // addFriendRequest(
-          //   response.data.friendRequest,
-          //   response.data.requester
-          // );
           toast.success(
             `Friend request sent to the user with email: ${contactTag}`
           );
@@ -236,10 +186,6 @@ const ChatList = () => {
     } catch (error) {
       console.log(error);
     }
-    // setSelectedChatType("contact");
-    // setSelectedChatData(contact);
-    // setSearchedAddModalContacts([]);
-    // setRefreshChatList(false);
   };
 
   const newContactModalRef = useRef(null);
@@ -257,7 +203,7 @@ const ChatList = () => {
         newContactIconRef.current &&
         !newContactIconRef.current.contains(event.target)
       ) {
-        setOpenNewContactModal(false); // Close modal if clicked outside
+        setOpenNewContactModal(false);
       }
     };
     const handleClickOutsideAddContact = (event) => {
@@ -267,7 +213,7 @@ const ChatList = () => {
         addContactIconRef.current &&
         !addContactIconRef.current.contains(event.target)
       ) {
-        setOpenAddContactModal(false); // Close modal if clicked outside
+        setOpenAddContactModal(false);
       }
     };
 
@@ -278,7 +224,7 @@ const ChatList = () => {
         createGroupIconRef.current &&
         !createGroupIconRef.current.contains(event.target)
       ) {
-        setOpenCreateGroupModal(false); // Close modal if clicked outside
+        setOpenCreateGroupModal(false);
       }
     };
 
@@ -290,22 +236,21 @@ const ChatList = () => {
       document.removeEventListener("mousedown", handleClickOutsideAddContact);
       document.removeEventListener("mousedown", handleClickOutsideCreateGroup);
     };
-    // }, [isCartOpen]);
   }, []);
 
   useEffect(() => {
     if (openNewContactModal && searchNewContactInputRef.current) {
-      searchNewContactInputRef.current.focus(); // Focus the input when the modal opens
+      searchNewContactInputRef.current.focus();
     }
 
     if (openAddContactModal && searchAddContactInputRef.current) {
-      searchAddContactInputRef.current.focus(); // Focus the input when the modal opens
+      searchAddContactInputRef.current.focus();
     }
 
     if (openCreateGroupModal && searchCreateGroupInputRef.current) {
-      searchCreateGroupInputRef.current.focus(); // Focus the input when the modal opens
+      searchCreateGroupInputRef.current.focus();
     }
-  }, [openNewContactModal, openAddContactModal, openCreateGroupModal]); // Trigger this effect when openNewContactModal changes
+  }, [openNewContactModal, openAddContactModal, openCreateGroupModal]);
 
   const [searching, setSearching] = useState(false);
 
@@ -322,7 +267,7 @@ const ChatList = () => {
     setSearching(false);
     searchContacts("");
     if (searchInputRef.current) {
-      searchInputRef.current.value = ""; // Clear the search input when goBack is clicked
+      searchInputRef.current.value = "";
     }
   };
 
@@ -337,7 +282,6 @@ const ChatList = () => {
   const animatedComponents = makeAnimated();
 
   const [allContacts, setAllContacts] = useState([]);
-  // const [contacts, setContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState([]);
 
   useEffect(() => {
@@ -346,8 +290,6 @@ const ChatList = () => {
         withCredentials: true,
       });
 
-      // setContacts(response.data.contacts);
-
       const contacts = response.data.contacts.map((user) => ({
         label: user.firstName
           ? `${user.firstName} ${user.lastName}`
@@ -355,7 +297,6 @@ const ChatList = () => {
         value: user._id,
       }));
 
-      // setAllContacts(response.data.contacts);
       setAllContacts(contacts);
     };
 
@@ -378,37 +319,9 @@ const ChatList = () => {
           setGroupName("");
           setSelectedContacts([]);
           setOpenCreateGroupModal(false);
-          // addGroup(response.data.group);
-          // addGroupInGroupList(response.data.group);
           socket.emit("createGroup", response.data.group);
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const createOneToOneChat = async () => {
-    try {
-      // if (groupName.length > 0) {
-      const response = await apiClient.post(
-        CREATE_GROUP_ROUTE,
-        {
-          name: "OneToOneChat",
-          members: selectedContacts.map((contact) => contact.value),
-          isGroup: true,
-        },
-        { withCredentials: true }
-      );
-      if (response.status === 201) {
-        setGroupName("");
-        setSelectedContacts([]);
-        setOpenCreateGroupModal(false);
-        // addGroup(response.data.group);
-        // addGroupInGroupList(response.data.group);
-        socket.emit("createGroup", response.data.group);
-      }
-      // }
     } catch (error) {
       console.log(error);
     }
@@ -422,22 +335,9 @@ const ChatList = () => {
             <div className="sub-header">
               <h1>Chats</h1>
               <div className="sub-header-icons">
-                {/* <div
-                  className="sub-header-icon"
-                  // onClick={() => setOpenAddContactModal(true)}
-                  onClick={() => setOpenAddContactModal((prev) => !prev)}
-                  ref={addContactIconRef}
-                  >
-                  <FaAddressCard />
-                  </div> */}
                 <div
-                  // className="sub-header-icon"
-                  // onClick={() => setOpenAddContactModal((prev) => !prev)}
                   onClick={() => {
-                    // console.log("add");
-                    // console.log(openAddContactModal);
                     setOpenAddContactModal((prev) => !prev);
-                    // console.log(openAddContactModal);
                   }}
                   ref={addContactIconRef}
                 >
@@ -452,13 +352,8 @@ const ChatList = () => {
                   </div>
                 </div>
                 <div
-                  // className="sub-header-icon"
-                  // onClick={() => setOpenAddContactModal((prev) => !prev)}
                   onClick={() => {
-                    // console.log("add");
-                    // console.log(openAddContactModal);
                     setOpenCreateGroupModal((prev) => !prev);
-                    // console.log(openAddContactModal);
                   }}
                   ref={createGroupIconRef}
                 >
@@ -473,14 +368,8 @@ const ChatList = () => {
                   </div>
                 </div>
                 <div
-                  // className="sub-header-icon"
-                  // onClick={() => setOpenNewContactModal(true)}
-                  // onClick={() => setOpenNewContactModal((prev) => !prev)}
                   onClick={() => {
-                    // console.log("new");
-                    // console.log(openNewContactModal);
                     setOpenNewContactModal((prev) => !prev);
-                    // console.log(openNewContactModal);
                   }}
                   ref={newContactIconRef}
                 >
@@ -490,7 +379,6 @@ const ChatList = () => {
                     }`}
                   >
                     <RiChatNewFill />
-                    {/* <span className="tooltiptext">Add New Chat</span> */}
                     <span className="tooltiptext">New Chat</span>
                   </div>
                 </div>
@@ -506,14 +394,11 @@ const ChatList = () => {
                           placeholder="Group Name"
                           value={groupName}
                           onChange={(event) => setGroupName(event.target.value)}
-                          // onKeyDown={handleKeyDown}
-                          // ref={searchAddContactInputRef}
                           className="modal-input"
                           ref={searchCreateGroupInputRef}
                         />
                         <div className="multi-select-container">
                           {/* MULTI SELECT FOR ADDING CONTACTS TO GROUP */}
-
                           <Select
                             className="multi-select"
                             closeMenuOnSelect={false}
@@ -523,19 +408,15 @@ const ChatList = () => {
                             value={selectedContacts}
                             onChange={setSelectedContacts}
                             placeholder={"Select user(s)"}
-                            // styles={}
-
                             styles={{
                               container: (styles) => ({
                                 ...styles,
-                                // width: pendingExists ? "8rem" : "20rem",
                                 width: "13rem",
                               }),
 
                               // a
                               option: (styles) => ({
                                 ...styles,
-                                // backgroundColor: "white",
                                 color: "#111b21",
                               }),
                               multiValue: (styles) => ({
@@ -552,26 +433,9 @@ const ChatList = () => {
                               }),
                             }}
                           />
-
-                          {/* defaultOptions={allContacts}
-              placeholder="Search Contacts"
-              value={selectedContacts}
-              onChange={setSelectedContacts}
-              emptyIndicator={
-                <p className="text-center text-lg leading-10 text-gray-600">
-                  No Results Found
-                </p> */}
                         </div>
 
-                        <div
-                          // className="sub-header-icon submit-button"
-                          className="submit-button"
-                          // onClick={() => setOpenAddContactModal(true)}
-                          // onClick={() => sendFriendRequestToContact(contactTag)}
-                          onClick={createGroup}
-                          // ref={addContactIconRef}
-                        >
-                          {/* <IoMdAddCircle /> */}
+                        <div className="submit-button" onClick={createGroup}>
                           Create
                         </div>
                       </div>
@@ -581,11 +445,7 @@ const ChatList = () => {
 
                 {openAddContactModal && (
                   <div
-                    // className={`add-new-contact-modal ${
-                    //   openNewContactModal ? "open" : ""
-                    // }`}
                     className="add-new-friend-contact-modal"
-                    // onClick={() => setOpenNewContactModal((prev) => !prev)}
                     ref={addContactModalRef}
                   >
                     <div className="modal-content">
@@ -605,9 +465,7 @@ const ChatList = () => {
                         />
                         <div
                           className="sub-header-icon"
-                          // onClick={() => setOpenAddContactModal(true)}
                           onClick={() => sendFriendRequestToContact(contactTag)}
-                          // ref={addContactIconRef}
                         >
                           <IoMdAddCircle />
                         </div>
@@ -618,11 +476,7 @@ const ChatList = () => {
 
                 {openNewContactModal && (
                   <div
-                    // className={`add-new-contact-modal ${
-                    //   openNewContactModal ? "open" : ""
-                    // }`}
                     className="add-new-contact-modal"
-                    // onClick={() => setOpenNewContactModal((prev) => !prev)}
                     ref={newContactModalRef}
                   >
                     <div className="modal-content">
@@ -632,7 +486,6 @@ const ChatList = () => {
                       <div>
                         <input
                           placeholder="Search Contacts"
-                          // className="rounded-lg p-6 bg-[#2c2e3b] border-none"
                           onChange={(event) =>
                             searchModalContacts(event.target.value)
                           }
@@ -640,9 +493,8 @@ const ChatList = () => {
                           className="modal-input"
                         />
                       </div>
-                      {searchedModalContacts.length <= 0 ? null : ( // </div> //   </div> //     </div> //       begin chatting! //       Search a <span className="">Contact</span> to //     <div> //     {/* <h3 className="poppins-medium"> */} //   <div className="modal-idle-text"> //   {/* <div className="text-opacity-80 text-white flex flex-col gap-5 items-center mt-5 lg:text-2xl text-xl transition-all duration-300 text-center"> */} //   </div> */} //     Contacts Animation //   {/* <div className="modal-idle-animation"> //   /> */} //   options={animationDefaultOptions} //   width={100} //   height={100} //   isClickToPauseDisabled={true} //   {/* <Lottie // <div> // <div className="flex-1 md:flex mt-5 flex-col justify-center items-center duration-1000 transition-all">
+                      {searchedModalContacts.length <= 0 ? null : (
                         <>
-                          {/* <div className="h-[250px]"> */}
                           <div className="filler-container">
                             <div className="horizontal-filler"></div>
                             <div className="scrollbar-triangle">
@@ -650,65 +502,39 @@ const ChatList = () => {
                             </div>
                           </div>
                           <div className="contacts-container">
-                            {/* {directMessagesContacts.length > 0 && ( */}
-
-                            {/* )} */}
-                            {/* <div className="flex flex-col gap-5"> */}
                             <div className="searched-contacts">
                               {searchedModalContacts.map((contact) => (
                                 <div
                                   key={contact._id}
-                                  // className="flex items-center gap-3 hover:bg-[#2a2b33] p-3 rounded-lg cursor-pointer"
                                   className="single-contact"
                                   onClick={() => selectNewContact(contact)}
                                 >
-                                  {/* <div className="w-12 h-12 relative"> */}
                                   <div className="avatar-main-container">
-                                    {/* <div className="w-12 h-12 rounded-full overflow-hidden"> */}
                                     <div className="avatar-inner-container">
                                       {contact.image ? (
                                         <img
-                                          // src={`${HOST}/${contact.image}`}
                                           src="./avatar.png"
                                           alt="profile"
                                           className="avatar"
-                                          // className="object-cover w-full h-full bg-black rounded-full"
                                         />
                                       ) : (
-                                        <div
-                                        // className={`uppercase h-12 w-12 text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(
-                                        //   contact.color
-                                        // )}`}
-                                        >
+                                        <div>
                                           <img
-                                            // src={`${HOST}/${contact.image}`}
                                             src="./avatar.png"
                                             alt="profile"
                                             className="avatar"
-                                            // className="object-cover w-full h-full bg-black rounded-full"
                                           />
-                                          {/* {contact.firstName
-                                          ? contact.firstName.split("").shift()
-                                          : contact.email.split("").shift()} */}
                                         </div>
                                       )}
                                     </div>
                                   </div>
-                                  {/* <div className="flex flex-col"> */}
                                   <div className="single-contact-info">
-                                    {/* <div> */}
-                                    {/* <div> */}
                                     <div>
                                       {contact.firstName && contact.lastName
                                         ? `${contact.firstName} ${contact.lastName}`
                                         : contact.email}
                                     </div>
-                                    {/* </div> */}
-                                    {/* <span className="text-xs text-neutral-400"> */}
-                                    {/* <div> */}
                                     <div>{contact.email}</div>
-                                    {/* </div> */}
-                                    {/* </div> */}
                                   </div>
                                 </div>
                               ))}
@@ -752,7 +578,7 @@ const ChatList = () => {
                 type="text"
                 className="search-input"
                 onChange={(event) => onSearchInputChange(event)}
-                ref={searchInputRef} // Attach ref to input
+                ref={searchInputRef}
                 placeholder="Search"
               />
             </div>
@@ -793,46 +619,17 @@ const ChatList = () => {
             </div>
           )}
           <div className="dms-and-group-chats-container">
-            {/* <div> */}
-            {/* {directMessagesContacts.length > 0 ||
-              (groups.length > 0 && (
-                <div className="filler-container">
-                  <div className="horizontal-filler"></div>
-                  <div className="scrollbar-triangle">
-                    <BsFillTriangleFill />
-                  </div>
-                </div>
-              ))} */}
             {directMessagesContacts.length > 0 || groups.length > 0 ? (
               <>
-                {/* <div className="filler-container">
-                  <div className="horizontal-filler"></div>
-                  <div className="scrollbar-triangle">
-                    <BsFillTriangleFill />
-                  </div>
-                </div> */}
-                {/* <div className="dms-and-group-chats-container"> */}
                 {searchedContacts.length <= 0 ? (
                   <>
-                    {/* <div>groups</div> */}
-                    {/* groups */}
-                    {/* {groups} */}
-                    {/* {console.log(groups)} */}
                     {groups.length > 0 &&
                       (activeFilter === "all" || activeFilter === "groups") &&
                       activeFilter !== "dms" && (
                         <>
-                          {/* <div className="filler-container">
-                            <div className="horizontal-filler"></div>
-                            <div className="scrollbar-triangle">
-                              <BsFillTriangleFill />
-                            </div>
-                          </div> */}
                           <div className="chat-type-indicator groups">
                             Groups
                           </div>
-                          {/* {console.log("groups")}
-                          {console.log(groups)} */}
                           <Chats contacts={groups} isGroup={true} />
                         </>
                       )}
@@ -843,59 +640,18 @@ const ChatList = () => {
                           <div className="chat-type-indicator dms">
                             Direct Messages
                           </div>
-                          {/* {console.log("directMessagesContacts")}
-                          {console.log(directMessagesContacts)} */}
                           <Chats contacts={directMessagesContacts} />
-                          {/* <div className="filler-container">
-                            <div className="horizontal-filler"></div>
-                            <div className="scrollbar-triangle-upside-down">
-                              <BsFillTriangleFill />
-                            </div>
-                          </div> */}
                         </>
                       )}
                   </>
                 ) : (
                   <>
-                    {/* <div className="filler-container">
-                      <div className="horizontal-filler"></div>
-                      <div className="scrollbar-triangle">
-                        <BsFillTriangleFill />
-                      </div>
-                    </div> */}
                     <Chats contacts={searchedContacts} />
-                    {/* <Chats contacts={searchedGroups} isGroup={true} /> */}
-                    {/* <div className="filler-container">
-                      <div className="horizontal-filler"></div>
-                      <div className="scrollbar-triangle-upside-down">
-                        <BsFillTriangleFill />
-                      </div>
-                    </div> */}
                   </>
                 )}
-                {/* </div> */}
-                {/* <div className="filler-container">
-                  <div className="horizontal-filler"></div>
-                  <div className="scrollbar-triangle-upside-down">
-                    <BsFillTriangleFill />
-                  </div>
-                </div> */}
               </>
             ) : null}
-            {/* {directMessagesContacts.length > 0 ||
-              (groups.length > 0 && (
-                <div className="filler-container">
-                  <div className="horizontal-filler"></div>
-                  <div className="scrollbar-triangle-upside-down">
-                    <BsFillTriangleFill />
-                  </div>
-                </div>
-              ))} */}
           </div>
-          {/* {console.log("groups.length: " + groups.length)}
-          {console.log(
-            "directMessagesContacts.length: " + directMessagesContacts.length
-          )} */}
           {(directMessagesContacts.length > 0 || groups.length > 0) && (
             <div className="filler-container">
               <div className="horizontal-filler"></div>

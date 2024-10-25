@@ -1,7 +1,6 @@
 .friend-requests {
   background-color: #111b21;
   height: 100%;
-  /* width: 30%; */
   display: flex;
   flex-direction: column;
 }
@@ -21,48 +20,6 @@
 .friend-requests .sub-header h1 {
   margin: 0;
 }
-/* 
-.friend-requests .sub-header-icons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-.friend-requests .sub-header-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: 1.5rem;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.friend-requests .sub-header-icon:hover {
-  cursor: pointer;
-  background-color: #202c33;
-}
-
-.friend-requests .filters {
-  display: flex;
-  gap: 1rem;
-}
-
-.friend-requests .filter {
-  background-color: #202c33;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  color: #8696a0;
-}
-
-.friend-requests .filter:hover {
-  cursor: pointer;
-}
-
-.friend-requests .active-filter {
-  background-color: #415763;
-} */
 
 .friend-requests .scrollbar-triangle,
 .friend-requests .scrollbar-triangle-upside-down,
@@ -81,19 +38,6 @@
 .friend-requests .modal-content .scrollbar-triangle-upside-down {
   transform: rotate(180deg);
 }
-
-/* .friend-requests .modal-content .scrollbar-triangle,
-.friend-requests .modal-content .scrollbar-triangle-upside-down {
-  margin-top: -0.5rem;
-  margin-bottom: -0.5rem;
-} */
-
-/* .friend-requests .modal-content .scrollbar-triangle {
-  margin-top: -0.5rem;
-}
-.friend-requests .modal-content .scrollbar-triangle-upside-down {
-  margin-bottom: -0.5rem;
-} */
 
 .friend-requests .filler-container {
   display: flex;
@@ -154,17 +98,14 @@
 .friend-requests .searched-contacts {
   display: flex;
   flex-direction: column;
-  /* gap: 1rem; */
 }
 
 .friend-requests .searched-contacts .single-contact {
   display: flex;
   align-items: center;
-  /* justify-content: center; */
   gap: 1rem;
   padding: 0.5rem;
   margin: 0.5rem;
-  /* border-radius: 10px; */
   cursor: pointer;
   border-left: 2px solid #222e35;
   background-color: rgba(42, 43, 51, 0.25);
@@ -181,15 +122,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* position: relative; */
 }
 
 .friend-requests .searched-contacts .single-contact .avatar-inner-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 1rem;
-  height: 1rem; */
   border-radius: 50%;
   overflow: hidden;
 }
@@ -201,8 +139,6 @@
   object-fit: cover;
   width: 100%;
   height: 100%;
-  /* width: 1rem;
-  height: 1rem; */
   background-color: black;
   border-radius: 50%;
 }
@@ -210,10 +146,7 @@
 .friend-requests .searched-contacts .single-contact-info {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: center;
-  /* align-items: center; */
-  /* gap: 0.5rem; */
 }
 
 .friend-requests .searched-contacts .single-contact-info div:last-child {
@@ -235,79 +168,3 @@
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #222e35;
 }
-
-/* .friend-requests .chat {
-  padding: 1rem 1rem 0 1rem;
-  display: flex;
-  gap: 1rem;
-} */
-/* 
-.friend-requests .chat {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-
-.friend-requests .chat::-webkit-scrollbar {
-  width: 0.5rem;
-  background-color: transparent;
-}
-
-.friend-requests .chat::-webkit-scrollbar-thumb {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #222e35;
-}
-
-.friend-requests .chat:hover {
-  background-color: #202c33;
-  cursor: pointer;
-}
-
-.friend-requests .chat .chat-header-info-avatar {
-  width: 15%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.friend-requests .chat img {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: -1rem;
-}
-
-.friend-requests .chat .chat-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 85%;
-}
-
-.friend-requests .chat .chat-info-head {
-  display: flex;
-  justify-content: space-between;
-}
-
-.friend-requests .chat .date {
-  color: #8696a0;
-  font-size: 0.75rem;
-}
-
-.friend-requests .chat .last-message {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #415763;
-  color: #8696a0;
-  font-size: 0.75rem;
-}
-
-.friend-requests .chat .last-message.active-chat {
-  color: #d1d7db;
-}
-
-.friend-requests .chat.active-chat {
-  background-color: #202c33;
-} */

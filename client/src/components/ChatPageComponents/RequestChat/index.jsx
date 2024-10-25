@@ -1,7 +1,5 @@
-// import { useState } from "react";
 import "./RequestChat.css";
 import { TiTick } from "react-icons/ti";
-import { IoClose } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
 import { apiClient } from "../../../lib/api-client";
 import {
@@ -10,29 +8,9 @@ import {
 } from "../../../utils/constants";
 import { useAppStore } from "../../../store";
 
-// const Chat = ({ isActive }) => {
 const RequestChat = ({ contact, isGroup = false, isActive = false }) => {
-  // const [activeChat, setActiveChat] = useState(null);
-  // const handleChatClick = (chatId) => {
-  //   setActiveChat(chatId);
-  //   // if (filterName == undefined || filterName == null) {
-  //   //   setActiveFilter(null);
-  //   // } else {
-  //   //   setActiveFilter(filterName);
-  //   // }
-  // };
-
-  // console.log("contact: " + contact.name);
-
-  // const contactLastChatMessage = contact.messages[contact.messages.length - 1];
-
-  const {
-    userInfo,
-    friendRequests,
-    setFriendRequests,
-    friendRequestsCount,
-    setFriendRequestsCount,
-  } = useAppStore();
+  const { friendRequests, setFriendRequests, setFriendRequestsCount } =
+    useAppStore();
 
   const handleAcceptRequest = async () => {
     try {
@@ -53,7 +31,6 @@ const RequestChat = ({ contact, isGroup = false, isActive = false }) => {
         };
 
         setFriendRequestsCount(friendRequests.length - 1);
-        // setFriendRequestsCount((prevCount) => prevCount - 1);
         setFriendRequests(
           friendRequests.filter((request) => request.email !== newFriend.email)
         );
@@ -82,7 +59,6 @@ const RequestChat = ({ contact, isGroup = false, isActive = false }) => {
         };
 
         setFriendRequestsCount(friendRequests.length - 1);
-        // setFriendRequestsCount((prevCount) => prevCount - 1);
         setFriendRequests(
           friendRequests.filter(
             (request) => request.email !== deletedRequest.email
@@ -95,39 +71,9 @@ const RequestChat = ({ contact, isGroup = false, isActive = false }) => {
   };
 
   return (
-    <div
-      className="request-chat"
-      // className={`chat ${isActive ? "active-chat" : ""}`}
-      // className={`chat ${activeChat === chatId ? "active-chat" : ""}`}
-      // onClick={() => handleChatClick(chatId)}
-    >
-      {/* <div className="outer-container"> */}
+    <div className="request-chat">
       <div className="container">
         {!isGroup && (
-          //   <Avatar className="w-10 h-10 rounded-full overflow-hidden">
-          //     {contact.image ? (
-          //       <AvatarImage
-          //         src={`${HOST}/${contact.image}`}
-          //         alt="profile"
-          //         className="object-cover w-full h-full bg-black"
-          //       />
-          //     ) : (
-          //       <div
-          //         className={`
-          //             ${
-          //               selectedChatData &&
-          //               selectedChatData._id === contact._id
-          //                 ? "bg-[#ffffff22] border border-white/70"
-          //                 : getColor(contact.color)
-          //             }
-          //             uppercase h-10 w-10 text-lg border-[1px] flex items-center justify-center rounded-full`}
-          //       >
-          //         {contact.firstName
-          //           ? contact.firstName.split("").shift()
-          //           : contact.email.split("").shift()}
-          //       </div>
-          //     )}
-          //   </Avatar>
           <div className="chat-header-info-avatar">
             {/* <img src="./avatar.png" /> */}
             <div className="img">
@@ -148,7 +94,6 @@ const RequestChat = ({ contact, isGroup = false, isActive = false }) => {
           <>
             <div className="inner-container">
               <div className="inner-most-container">
-                {/* <div className="container"> */}
                 <div className="chat-info">
                   <div className="chat-info-head">
                     {contact.firstName && contact.lastName
@@ -158,32 +103,20 @@ const RequestChat = ({ contact, isGroup = false, isActive = false }) => {
                       : contact.lastName
                       ? contact.lastName
                       : contact.email}
-
-                    {/* <div>{`${contact.firstName} ${contact.lastName}`}</div> */}
-                    {/* <div className="date">Date</div> */}
                   </div>
-                  {/* <div className={`last-message ${isActive ? "active-chat" : ""}`}> */}
-                  {/* <div className={`last-message ${isActive ? "active-chat" : ""}`}>
-                    Last Message
-                  </div> */}
                   <div className={`last ${isActive ? "active-chat" : ""}`}>
                     Pending your approval
                   </div>
-                  {/* <div className="last-message">Last Message</div> */}
                 </div>
 
                 <div className="request-chat-icons">
-                  {/* <div className="container"> */}
                   <div className="icon reject" onClick={handleRejectRequest}>
                     <IoIosClose />
                   </div>
                   <div className="icon approve" onClick={handleAcceptRequest}>
                     <TiTick />
                   </div>
-                  {/* </div> */}
                 </div>
-
-                {/* </div> */}
               </div>
 
               <div className="last-message"></div>
@@ -191,21 +124,6 @@ const RequestChat = ({ contact, isGroup = false, isActive = false }) => {
           </>
         )}
       </div>
-      {/* </div> */}
-
-      {/* <div className="chat-header-info-avatar">
-        <img src="./avatar.png" />
-      </div> */}
-      {/* <div className="chat-info">
-        <div className="chat-info-head">
-          <div>Name</div>
-          <div className="date">Date</div>
-        </div> */}
-      {/* <div className={`last-message ${isActive ? "active-chat" : ""}`}> */}
-      {/* <div className="last-message">
-          Last Message
-        </div> */}
-      {/* </div> */}
     </div>
   );
 };

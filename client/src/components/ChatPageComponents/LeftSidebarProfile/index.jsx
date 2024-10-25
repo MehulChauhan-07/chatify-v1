@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
-import { RiChatNewFill } from "react-icons/ri";
-import { IoMdMore } from "react-icons/io";
-import { BsFillTriangleFill } from "react-icons/bs";
-import { IoIosSearch } from "react-icons/io";
 import "./LeftSidebarProfile.css";
-import Chats from "../Chats";
 import { useAppStore } from "../../../store";
 import { apiClient } from "../../../lib/api-client";
 import {
-  GET_DM_CONTACTS_ROUTE,
   HOST,
   LOGOUT_ROUTE,
-  SEARCH_CONTACTS_ROUTE,
   UPDATE_PROFILE_ROUTE,
 } from "../../../utils/constants";
 import { toast } from "react-toastify";
@@ -28,7 +21,6 @@ const LeftSidebarProfile = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [image, setImage] = useState(null);
-  const [hovered, setHovered] = useState(false);
   const [selectedColor, setSelectedColor] = useState(0);
 
   useEffect(() => {
@@ -82,14 +74,6 @@ const LeftSidebarProfile = () => {
     }
   };
 
-  // const handleNavigate = () => {
-  //   if (userInfo.profileSetup) {
-  //     navigate("/chat");
-  //   } else {
-  //     toast.error("Please set up your profile first");
-  //   }
-  // };
-
   // const handleFileInputClick = () => {
   //   fileInputRef.current.click();
   // };
@@ -118,42 +102,7 @@ const LeftSidebarProfile = () => {
       <h1>Profile</h1>
 
       <div className="info-container">
-        {/* <div
-          className="h-full w-32 md:w-48 md:h-48 relative flex items-center justify-center"
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        >
-          <Avatar className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden">
-            {image ? (
-              <AvatarImage
-                src={image}
-                alt="profile"
-                className="object-cover w-full h-full bg-black"
-              />
-            ) : (
-              <div
-                className={`uppercase h-32 w-32 md:w-48 md:h-48 text-5xl border-[1px] flex items-center justify-center rounded-full ${getColor(
-                  selectedColor
-                )}`}
-              >
-                {firstName
-                  ? firstName.split("").shift()
-                  : userInfo.email.split("").shift()}
-              </div>
-            )}
-          </Avatar>
-          {hovered && (
-            <div
-              className="absolute inset-0 flex items-center justify-center bg-black/50 ring-fuchsia-50 rounded-full"
-              onClick={image ? handleDeleteImage : handleFileInputClick}
-            >
-              {image ? (
-                <FaTrash className="text-white text-3xl cursor-pointer" />
-              ) : (
-                <FaPlus className="text-white text-3xl cursor-pointer" />
-              )}
-            </div>
-          )}
+        {/* <div>
           <input
             type="file"
             ref={fileInputRef}
@@ -192,22 +141,6 @@ const LeftSidebarProfile = () => {
               className="info-input"
             />
           </div>
-          {/* <div className="info-input-container">
-            {colors.map((color, index) => (
-              <div
-                // className={`${color} h-8 w-8 rounded-full cursor-pointer transition-all duration-300 ${
-                // className={`${color} h-8 w-8 rounded-full cursor-pointer ${
-                //   selectedColor === index
-                //     ? "outline outline-white/50 outline-3"
-                //     : ""
-                // }`}
-                // className=""
-                // outline style changes (outline is enlarged) when you put an extra unnecessary curly bracket above like }}`} instead of }`}. BUT WHY??? DOESN'T MAKE ANY SENSE!!!
-                key={index}
-                onClick={() => setSelectedColor(index)}
-              ></div>
-            ))}
-          </div> */}
         </div>
         <div className="info-input-container">
           <button className="info-button" onClick={saveChanges}>

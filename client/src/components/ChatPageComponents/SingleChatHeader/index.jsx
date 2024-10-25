@@ -8,7 +8,6 @@ import { apiClient } from "../../../lib/api-client";
 
 const SingleChatHeader = () => {
   const {
-    closeChat,
     selectedChatData,
     selectedChatType,
     setActiveIcon,
@@ -23,7 +22,6 @@ const SingleChatHeader = () => {
       try {
         const response = await apiClient.get(
           `${GET_GROUP_MEMBERS_ROUTE}/${selectedChatData._id}`,
-          // { members: selectedChatData.members },
           { withCredentials: true }
         );
 
@@ -53,15 +51,6 @@ const SingleChatHeader = () => {
           }}
         >
           <img src="./avatar.png" />
-          {/* <div
-                  className={`uppercase h-12 w-12 text-lg border-[1px] flex items-center justify-center rounded-full ${getColor(
-                    selectedChatData.color
-                  )}`}
-                >
-                  {selectedChatData.firstName
-                    ? selectedChatData.firstName.split("").shift()
-                    : selectedChatData.email.split("").shift()}
-                </div> */}
         </div>
         <div
           className="info"
@@ -83,16 +72,12 @@ const SingleChatHeader = () => {
           </div>
           {selectedChatType === "group" ? (
             <div className="group-members">
-              {/* {console.log("userInfo:")}
-              {console.log(userInfo)} */}
               {selectedChatMembers.map((member, index) => (
                 <span key={member.id} className="member">
-                  {/* {member.firstName} {member.lastName} */}
                   {member.id === userInfo.id
                     ? "You"
                     : `${member.firstName} ${member.lastName}`}
                   {index < selectedChatMembers.length - 1 && `,\u00A0`}
-                  {/* Add a comma if it's not the last member */}
                 </span>
               ))}
             </div>
@@ -100,15 +85,6 @@ const SingleChatHeader = () => {
             <div>Last Seen</div>
           )}
         </div>
-        {/* {selectedChatType === "group" && (
-          <div className="group-members">
-            {selectedChatMembers.map((member, index) => (
-              <div key={index} className="member">
-                {member.firstName} {member.lastName}
-              </div>
-            ))}
-          </div>
-        )} */}
         <div></div>
       </div>
       <div className="icons">
@@ -118,14 +94,6 @@ const SingleChatHeader = () => {
         <div className="icon currently-disabled-icon">
           <IoMdMore />
         </div>
-        {/* <div className="flex items-center justify-center gap-5">
-          <button
-            className="text-neutral-500 bg-[#1c1d25] focus:border-none focus:outline-none focus:text-white hover:border-none hover:outline-none duration-300 transition-all"
-            onClick={closeChat}
-          >
-            <RiCloseFill className="text-3xl" />
-          </button>
-        </div> */}
       </div>
     </div>
   );

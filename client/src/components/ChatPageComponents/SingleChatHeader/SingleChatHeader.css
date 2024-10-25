@@ -36,8 +36,6 @@
 
 .single-chat-header .group-members {
   display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
 }
 
 .single-chat-header .avatar {

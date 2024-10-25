@@ -1,7 +1,4 @@
-// import { FaPlus } from "react-icons/fa6";
 import { RiEmojiStickerLine } from "react-icons/ri";
-// import { useEffect, useRef, useState } from "react";
-// import { useState } from "react";
 import { GrAttachment } from "react-icons/gr";
 import { IoSend } from "react-icons/io5";
 // import EmojiPicker from "emoji-picker-react";
@@ -69,7 +66,6 @@ const SingleChatMessageBar = () => {
     setActiveChatId(selectedChatData._id);
     setMessage("");
     setRefreshChatList(true);
-    // window.location.reload();
   };
 
   const handleKeyDown = (e) => {
@@ -77,11 +73,6 @@ const SingleChatMessageBar = () => {
       handleSendMessage();
     }
   };
-
-  // const [file, setFile] = useState({
-  //   file: null,
-  //   url: null,
-  // });
 
   const fileInputRef = useRef();
   const handleFileAttachmentClick = () => {
@@ -119,8 +110,6 @@ const SingleChatMessageBar = () => {
         }
       }
     } catch (error) {
-      // setIsUploading(false);
-      // setFileUploadProgress(0);
       console.log(error);
     }
   };
@@ -144,9 +133,6 @@ const SingleChatMessageBar = () => {
           </div> */}
         </div>
       </div>
-      {/* <div className="message-bar-icon currently-disabled-icon">
-        <GrAttachment />
-      </div> */}
       <button className="message-bar-icon" onClick={handleFileAttachmentClick}>
         <GrAttachment />
       </button>

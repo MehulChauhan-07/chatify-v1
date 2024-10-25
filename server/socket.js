@@ -107,18 +107,11 @@ const setupSocket = (server) => {
         if (memberSocketId) {
           io.to(memberSocketId).emit("receiveGroupMessage", finalData);
         }
-        // console.log("---member socket: " + memberSocketId);
       });
-      // const adminSocketId = userSocketMap.get(group.admin._id.toString());
-      // if (adminSocketId) {
-      //   io.to(adminSocketId).emit("receiveGroupMessage", finalData);
-      // }
     }
   };
   const createGroup = async (group) => {
     console.log(group);
-    // const foundGroup = await Group.findById(group._id).populate("members");
-    // console.log(foundGroup);
     if (group && group.members) {
       group.members.forEach((member) => {
         const memberSocketId = userSocketMap.get(member);
@@ -126,25 +119,8 @@ const setupSocket = (server) => {
           io.to(memberSocketId).emit("receiveGroupCreation", group);
         }
       });
-      // const adminSocketId = userSocketMap.get(group.admin);
-      // if (adminSocketId) {
-      //   io.to(adminSocketId).emit("receiveGroupCreation", group);
-      // }
     }
   };
-  // const deleteGroup = async (group) => {
-  //   console.log(group);
-  //   // const foundGroup = await Group.findById(group._id).populate("members");
-  //   // console.log(foundGroup);
-  //   if (group && group.members) {
-  //     group.members.forEach((member) => {
-  //       const memberSocketId = userSocketMap.get(member);
-  //       if (memberSocketId) {
-  //         io.to(memberSocketId).emit("receiveGroupCreation", group);
-  //       }
-  //     });
-  //   }
-  // };
 
   io.on("connection", (socket) => {
     console.log(`Socket ${socket.id} connected.`);
@@ -161,7 +137,6 @@ const setupSocket = (server) => {
     socket.on("sendFriendRequest", sendFriendRequest);
     socket.on("sendGroupMessage", sendGroupMessage);
     socket.on("createGroup", createGroup);
-    // socket.on("deleteGroup", deleteGroup);
 
     socket.on("disconnect", () => disconnect(socket));
   });

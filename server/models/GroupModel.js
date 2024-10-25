@@ -8,19 +8,9 @@ const groupSchema = new mongoose.Schema({
   members: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
   ],
-  // admin: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "Users",
-  //   required: true,
-  // },
   messages: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Messages", required: false },
   ],
-  // lastMessage: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "Messages",
-  //   required: false,
-  // },
   lastMessage: {
     type: mongoose.Schema.Types.Mixed, // To store selected fields of the message
     required: false,

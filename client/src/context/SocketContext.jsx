@@ -14,7 +14,6 @@ export const SocketProvider = ({ children }) => {
   const { userInfo } = useAppStore();
 
   useEffect(() => {
-    // console.log("userInfo: ", userInfo);
     if (userInfo) {
       socket.current = io(HOST, {
         withCredentials: true,
@@ -30,12 +29,7 @@ export const SocketProvider = ({ children }) => {
           selectedChatType,
           addMessage,
           addContactsInDMContacts,
-          isSeen,
-          setIsSeen,
         } = useAppStore.getState();
-
-        // console.log("sender: ", message.sender);
-        // console.log("recipient: ", message.recipient);
 
         if (
           selectedChatType !== undefined &&
@@ -49,38 +43,28 @@ export const SocketProvider = ({ children }) => {
       };
 
       const handleReceiveGroupMessage = (message) => {
-        // console.log("in hand rcv chan msg");
         const {
           selectedChatData,
           selectedChatType,
           addMessage,
-          addGroupInGroupList,
           sortGroupList,
-          refreshGroupList,
         } = useAppStore.getState();
         if (
           selectedChatType !== undefined &&
           selectedChatData._id === message.groupId
         ) {
           addMessage(message);
-          // refreshGroupList(true);
         }
         sortGroupList(message.group);
       };
       const handleReceiveGroupCreation = (group) => {
-        // console.log("in hand rcv chan msg");
         const { addGroup } = useAppStore.getState();
         addGroup(group);
       };
 
       const handleReceiveFriendRequest = (friendRequest) => {
-        // console.log("Received friend request: ", friendRequest);
-        const {
-          friendRequests,
-          setFriendRequests,
-          friendRequestsCount,
-          setFriendRequestsCount,
-        } = useAppStore.getState();
+        const { friendRequests, setFriendRequests, setFriendRequestsCount } =
+          useAppStore.getState();
 
         const formattedFriendRequest = {
           email: friendRequest.email,
@@ -96,9 +80,7 @@ export const SocketProvider = ({ children }) => {
 
         // Only add the formatted friend request if it doesn't already exist
         if (!requestExists) {
-          // setFriendRequests([...friendRequests, formattedFriendRequest]);
           setFriendRequestsCount(friendRequests.length + 1);
-          // console.log("request count: ", friendRequestsCount);
           setFriendRequests([formattedFriendRequest, ...friendRequests]);
         } else {
           console.log("Friend request already exists.");

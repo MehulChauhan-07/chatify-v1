@@ -2,7 +2,6 @@
   padding: 1rem 1rem 0 1rem;
   display: flex;
   gap: 1rem;
-  /* border-top: 1px solid #202c33; */
 }
 
 .chat:hover {
@@ -17,7 +16,6 @@
   align-items: center;
 }
 
-/* .chat img, */
 .chat .img,
 .chat .group-img {
   width: 3rem;
@@ -29,7 +27,6 @@
   margin-top: -1rem;
 }
 
-/* .chat img, */
 .chat .img,
 .chat .group-img {
   border: 2px solid #415763;
@@ -44,7 +41,6 @@
 
 .chat .chat-info-head {
   display: flex;
-  /* gap: 1rem; */
   justify-content: space-between;
 }
 
@@ -58,7 +54,6 @@
   border-bottom: 1px solid #415763;
   color: #8696a0;
   font-size: 0.75rem;
-  /* opacity: 0.1; */
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -66,7 +61,6 @@
 
 .chat .last-message.active-chat {
   color: #d1d7db;
-  /* opacity: 1; */
 }
 
 .chat.active-chat {

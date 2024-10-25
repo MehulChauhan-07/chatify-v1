@@ -2,10 +2,6 @@
   background-color: #222e35;
   height: 100%;
   width: 5%;
-  /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: space-around; */
 }
 
 .left-sidebar .icon-container {
@@ -39,13 +35,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-top: -1rem; */
 }
 
 .left-sidebar .icon:hover {
   cursor: pointer;
-  /* border-radius: 50%; */
-  /* background-color: #222e35; */
   background-color: #41576380;
 }
 
@@ -63,28 +56,19 @@
 }
 
 .left-sidebar .tooltip .tooltiptext {
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
   visibility: hidden;
   width: max-content;
-  /* background-color: #e9edef; */
   background-color: #bbbbbb;
-  /* color: #222e35; */
   color: #111b21;
   font-weight: 700;
-  /* color: #0c1317; */
-  /* color: #e9edef; */
   text-align: center;
   border-radius: 20px;
-  /* padding: 5px 0; */
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   position: absolute;
   z-index: 1;
   top: 15%;
   left: 3rem;
-  /* border: 1px solid #e9edef; */
 }
 
 .left-sidebar .tooltip .tooltiptext::after {
@@ -113,7 +97,6 @@
   background-color: orange;
   width: 1.125rem;
   height: 1.125rem;
-  /* font-size: 0.625rem; */
   font-size: 0.875rem;
   background-color: #fc9f24;
   color: #111b21;
