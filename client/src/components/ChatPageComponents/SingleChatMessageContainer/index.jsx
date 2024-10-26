@@ -125,7 +125,15 @@ const SingleChatMessageContainer = () => {
         moment(message.timestamp).format("YYYY-MM-DD");
       const isMessageDateThisWeekExceptTodayAndYesterday =
         moment(Date.now()).subtract(2, "days").format("YYYY-MM-DD") ===
-        moment(message.timestamp).format("YYYY-MM-DD");
+          moment(message.timestamp).format("YYYY-MM-DD") ||
+        moment(Date.now()).subtract(3, "days").format("YYYY-MM-DD") ===
+          moment(message.timestamp).format("YYYY-MM-DD") ||
+        moment(Date.now()).subtract(4, "days").format("YYYY-MM-DD") ===
+          moment(message.timestamp).format("YYYY-MM-DD") ||
+        moment(Date.now()).subtract(5, "days").format("YYYY-MM-DD") ===
+          moment(message.timestamp).format("YYYY-MM-DD") ||
+        moment(Date.now()).subtract(6, "days").format("YYYY-MM-DD") ===
+          moment(message.timestamp).format("YYYY-MM-DD");
 
       lastDate = messageDate;
 
