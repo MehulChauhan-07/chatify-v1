@@ -61,6 +61,9 @@
 .single-chat-header .avatar .group-img {
   border: 2px solid #415763;
 }
+.single-chat-header .avatar .img.non-present {
+  font-size: 0.875rem;
+}
 
 .single-chat-header .avatar .img.non-present {
   cursor: pointer;
