@@ -206,6 +206,9 @@
   border-radius: 50%;
   object-fit: cover;
 }
+.group-message .contact-avatar .no-avatar {
+  font-size: 0.875rem;
+}
 
 .group-message .contact-avatar {
   z-index: 5;
