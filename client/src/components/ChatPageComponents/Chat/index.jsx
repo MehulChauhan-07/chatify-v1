@@ -52,7 +52,44 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
             {contact.name}
             <div className="date">
               {contact.lastMessage?.timestamp &&
-                moment(contact.lastMessage?.timestamp).format("LT")}
+              moment(Date.now()).format("YYYY-MM-DD") ===
+                moment(contact.lastMessage?.timestamp).format("YYYY-MM-DD")
+                ? moment(contact.lastMessage?.timestamp).format("LT")
+                : moment(Date.now())
+                    .subtract(1, "days")
+                    .format("YYYY-MM-DD") ===
+                  moment(contact.lastMessage?.timestamp).format("YYYY-MM-DD")
+                ? Yesterday
+                : moment(Date.now())
+                    .subtract(2, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessage?.timestamp).format(
+                      "YYYY-MM-DD"
+                    ) ||
+                  moment(Date.now())
+                    .subtract(3, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessage?.timestamp).format(
+                      "YYYY-MM-DD"
+                    ) ||
+                  moment(Date.now())
+                    .subtract(4, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessage?.timestamp).format(
+                      "YYYY-MM-DD"
+                    ) ||
+                  moment(Date.now())
+                    .subtract(5, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessage?.timestamp).format(
+                      "YYYY-MM-DD"
+                    ) ||
+                  moment(Date.now())
+                    .subtract(6, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessage?.timestamp).format("YYYY-MM-DD")
+                ? moment(contact.lastMessage?.timestamp).format("dddd")
+                : moment(contact.lastMessage?.timestamp).format("L")}
             </div>
           </div>
           <div className={`last-message ${isActive ? "active-chat" : ""}`}>
@@ -77,7 +114,36 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
 
             <div className="date">
               {contact.lastMessageTime &&
-                moment(contact.lastMessageTime).format("LT")}
+              moment(Date.now()).format("YYYY-MM-DD") ===
+                moment(contact.lastMessageTime).format("YYYY-MM-DD")
+                ? moment(contact.lastMessageTime).format("LT")
+                : moment(Date.now())
+                    .subtract(1, "days")
+                    .format("YYYY-MM-DD") ===
+                  moment(contact.lastMessageTime).format("YYYY-MM-DD")
+                ? Yesterday
+                : moment(Date.now())
+                    .subtract(2, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessageTime).format("YYYY-MM-DD") ||
+                  moment(Date.now())
+                    .subtract(3, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessageTime).format("YYYY-MM-DD") ||
+                  moment(Date.now())
+                    .subtract(4, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessageTime).format("YYYY-MM-DD") ||
+                  moment(Date.now())
+                    .subtract(5, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessageTime).format("YYYY-MM-DD") ||
+                  moment(Date.now())
+                    .subtract(6, "days")
+                    .format("YYYY-MM-DD") ===
+                    moment(contact.lastMessageTime).format("YYYY-MM-DD")
+                ? moment(contact.lastMessageTime).format("dddd")
+                : moment(contact.lastMessageTime).format("L")}
             </div>
           </div>
           <div className={`last-message ${isActive ? "active-chat" : ""}`}>
