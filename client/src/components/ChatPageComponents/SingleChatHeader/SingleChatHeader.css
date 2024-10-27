@@ -43,13 +43,26 @@
   align-items: center;
   justify-content: center;
 }
-.single-chat-header .avatar img {
+.single-chat-header .avatar .img {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  object-fit: cover;
 }
 
-.single-chat-header .avatar img:hover {
+.single-chat-header .avatar .img:hover {
+  cursor: pointer;
+}
+
+.single-chat-header .avatar .img.non-present,
+.single-chat-header .avatar .group-img {
+  border: 2px solid #415763;
+}
+
+.single-chat-header .avatar .img.non-present {
   cursor: pointer;
 }
 

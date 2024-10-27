@@ -6,10 +6,20 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../store";
 import { IoArrowBack } from "react-icons/io5";
+import upload from "../../lib/upload";
 
 const ProfileLandingPage = () => {
   const navigate = useNavigate();
-  const { userInfo, setUserInfo } = useAppStore();
+  const {
+    userInfo,
+    setUserInfo,
+    uploadProgress,
+    setUploadProgress,
+    uploadTargetId,
+    setUploadTargetId,
+    uploadFileName,
+    setUploadFileName,
+  } = useAppStore();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [image, setImage] = useState(null);
@@ -48,6 +58,7 @@ const ProfileLandingPage = () => {
             firstName,
             lastName,
             color: selectedColor,
+            image,
           },
           {
             withCredentials: true,
@@ -74,30 +85,39 @@ const ProfileLandingPage = () => {
     }
   };
 
-  const handleFileInputClick = () => {
-    fileInputRef.current.click();
+  const handleImageClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
-  // const handleImageChange = async (event) => {
-  //   const file = event.target.files[0];
-  //   // console.log({ file });
-  //   if (file) {
-  //     const formData = new FormData();
-  //     formData.append("profile-image", file);
-  //     const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, {
-  //       withCredentials: true,
-  //     });
-  //     if (response.status === 200 && response.data.image) {
-  //       setUserInfo({ ...userInfo, image: response.data.image });
-  //       toast.success("Profile image updated successfully");
-  //     }
-  //     // const reader = new FileReader();
-  //     // reader.onload = () => {
-  //     //   setImage(reader.result);
-  //     // };
-  //     // reader.readAsDataURL(file);
-  //   }
-  // };
+  const handleImageChange = async (event) => {
+    let fileUrl = null;
+
+    try {
+      const file = event.target.files[0];
+
+      // alert if file size exceeds 10MB
+      if (file.size > 10 * 1024 * 1024) {
+        alert("File size exceeds 10MB");
+        return;
+      }
+      // console.log("file:");
+      // console.log(file);
+
+      if (file) {
+        // setShowFileUploadPlaceholder(true);
+
+        fileUrl = await upload(file, userInfo.id);
+
+        if (fileUrl) {
+          setImage(fileUrl);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // const handleDeleteImage = async () => {
   //   try {
@@ -118,23 +138,55 @@ const ProfileLandingPage = () => {
 
   return (
     <div className="profile-landing-page">
-      <div>
+      {/* <div>
         <div onClick={handleNavigate}>
           <IoArrowBack className="go-back-arrow" />
         </div>
-      </div>
+      </div> */}
       <div className="info-container">
-        {/* <div>
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            onChange={handleImageChange}
-            name="profile-image"
-            accept="image/png, image/jpeg, image/jpg, image/svg, image/webp, image/jfif"
-          />
-        </div> */}
         <div className="info-inputs">
+          <div className="info-input-container">
+            {uploadProgress > 0 && uploadTargetId === userInfo.id ? (
+              <div className="profile-landing-page-image uploading">
+                {`${uploadProgress.toFixed(2)}%`}
+              </div>
+            ) : image ? (
+              <img
+                src={image}
+                alt=""
+                // alt="profile-image"
+                className="profile-landing-page-image"
+                onClick={handleImageClick}
+              />
+            ) : (
+              <div
+                className="profile-landing-page-image"
+                onClick={handleImageClick}
+              >
+                <svg
+                  viewBox="0 0 340 340"
+                  // className="profile-landing-page-image-default-user-svg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="340"
+                  height="340"
+                >
+                  <path
+                    fill="#2c2e3b"
+                    d="m169,.5a169,169 0 1,0 2,0zm0,86a76,76 0 1
+1-2,0zM57,287q27-35 67-35h92q40,0 67,35a164,164 0 0,1-226,0"
+                  />
+                </svg>
+              </div>
+            )}
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleImageChange}
+              // name="profile-image"
+              accept="image/png, image/jpeg, image/jpg, image/svg, image/webp, image/jfif"
+            />
+          </div>
           <div className="info-input-container">
             <input
               placeholder="Email"

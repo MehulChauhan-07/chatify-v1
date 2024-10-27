@@ -512,18 +512,24 @@ const ChatList = () => {
                                   <div className="avatar-main-container">
                                     <div className="avatar-inner-container">
                                       {contact.image ? (
+                                        // <div className="select-contact-image">
                                         <img
-                                          src="./avatar.png"
+                                          src={contact.image}
                                           alt="profile"
-                                          className="avatar"
+                                          className="select-contact-image"
                                         />
                                       ) : (
-                                        <div>
-                                          <img
-                                            src="./avatar.png"
-                                            alt="profile"
-                                            className="avatar"
-                                          />
+                                        //</div>
+                                        <div className="select-contact-image no-avatar">
+                                          {contact.firstName && contact.lastName
+                                            ? `${contact.firstName.charAt(
+                                                0
+                                              )} ${contact.lastName.charAt(0)}`
+                                            : contact.firstName
+                                            ? contact.firstName.charAt(0)
+                                            : contact.lastName
+                                            ? contact.lastName.charAt(0)
+                                            : contact.email.charAt(0)}
                                         </div>
                                       )}
                                     </div>

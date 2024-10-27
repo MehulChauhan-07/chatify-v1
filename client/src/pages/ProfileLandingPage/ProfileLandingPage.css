@@ -63,3 +63,23 @@
   color: white;
   opacity: 0.5;
 }
+
+.profile-landing-page .hidden {
+  display: none;
+}
+
+.profile-landing-page .profile-landing-page-image {
+  border-radius: 50%;
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  object-fit: cover;
+  overflow: hidden;
+  /* background-color: #2c2e3b; */
+}
+
+.profile-landing-page .profile-landing-page-image.uploading {
+  background-color: #2c2e3b;
+}

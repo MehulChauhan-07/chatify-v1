@@ -312,17 +312,23 @@ const SingleChatMessageContainer = () => {
       {console.log(selectedChatData)} */}
       {message.sender._id === userInfo.id ? null : (
         <div className="contact-avatar">
-          <div className="avatar" style={{ color: "#53a6fd" }}>
-            {message.sender.firstName && message.sender.lastName
-              ? `${message.sender.firstName.charAt(
-                  0
-                )} ${message.sender.lastName.charAt(0)}`
-              : message.sender.firstName
-              ? message.sender.firstName.charAt(0)
-              : message.sender.lastName
-              ? message.sender.lastName.charAt(0)
-              : message.sender.email.charAt(0)}
-          </div>
+          {message.sender.image ? (
+            <div className="avatar">
+              <img src={message.sender.image} alt="" />
+            </div>
+          ) : (
+            <div className="no-avatar" style={{ color: "#53a6fd" }}>
+              {message.sender.firstName && message.sender.lastName
+                ? `${message.sender.firstName.charAt(
+                    0
+                  )} ${message.sender.lastName.charAt(0)}`
+                : message.sender.firstName
+                ? message.sender.firstName.charAt(0)
+                : message.sender.lastName
+                ? message.sender.lastName.charAt(0)
+                : message.sender.email.charAt(0)}
+            </div>
+          )}
         </div>
       )}
       <div

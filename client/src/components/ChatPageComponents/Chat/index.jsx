@@ -28,15 +28,19 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
     <div className={`chat ${isActive ? "active-chat" : ""}`}>
       {!isGroup && (
         <div className="chat-header-info-avatar">
-          <div className="img">
-            {contact.firstName && contact.lastName
-              ? `${contact.firstName.charAt(0)} ${contact.lastName.charAt(0)}`
-              : contact.firstName
-              ? contact.firstName.charAt(0)
-              : contact.lastName
-              ? contact.lastName.charAt(0)
-              : contact.email.charAt(0)}
-          </div>
+          {contact.image ? (
+            <img src={contact.image} alt="avatar" className="img" />
+          ) : (
+            <div className="img non-present">
+              {contact.firstName && contact.lastName
+                ? `${contact.firstName.charAt(0)} ${contact.lastName.charAt(0)}`
+                : contact.firstName
+                ? contact.firstName.charAt(0)
+                : contact.lastName
+                ? contact.lastName.charAt(0)
+                : contact.email.charAt(0)}
+            </div>
+          )}
         </div>
       )}
       {isGroup && (

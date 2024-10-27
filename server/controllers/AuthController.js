@@ -118,16 +118,16 @@ export const getUserInfo = async (request, response, next) => {
 export const updateProfile = async (request, response, next) => {
   try {
     const { userId } = request;
-    const { firstName, lastName, color } = request.body;
+    const { firstName, lastName, color, image } = request.body;
     if (!firstName || !lastName) {
       return response
         .status(400)
-        .json({ error: "First name, last name and color are required" });
+        .json({ error: "First name and last name are required" });
     }
 
     const userData = await User.findByIdAndUpdate(
       userId,
-      { firstName, lastName, color, profileSetup: true },
+      { firstName, lastName, color, image, profileSetup: true },
       { new: true, runValidators: true }
     );
 

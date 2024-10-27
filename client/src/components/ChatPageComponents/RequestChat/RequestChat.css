@@ -60,6 +60,10 @@
   justify-content: center;
   align-items: center;
   margin-top: -1rem;
+  object-fit: cover;
+  /* border: 2px solid #415763; */
+}
+.request-chat .img.non-present {
   border: 2px solid #415763;
 }
 

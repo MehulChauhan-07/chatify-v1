@@ -28,7 +28,11 @@
   margin-top: -1rem;
 }
 
-.chat .img,
+.chat .img {
+  object-fit: cover;
+}
+
+.chat .img.non-present,
 .chat .group-img {
   border: 2px solid #415763;
 }

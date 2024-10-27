@@ -82,8 +82,38 @@ const LeftSidebarContactOrGroupProfile = () => {
           : `${contactOrGroupProfile.firstName} ${contactOrGroupProfile.lastName}`}
       </h1>
 
+      {/* {console.log("contactOrGroupProfile:")}
+      {console.log(contactOrGroupProfile)} */}
+
       <div className="info-container">
         <div className="info-inputs">
+          {!contactOrGroupProfile.name &&
+            (contactOrGroupProfile.image ? (
+              <div className="info-input-container">
+                <img
+                  src={contactOrGroupProfile.image}
+                  alt=""
+                  // alt="profile-image"
+                  className="profile-image"
+                />
+              </div>
+            ) : (
+              <div className="profile-image">
+                <svg
+                  viewBox="0 0 340 340"
+                  // className="profile-image-default-user-svg"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="340"
+                  height="340"
+                >
+                  <path
+                    fill="#2c2e3b"
+                    d="m169,.5a169,169 0 1,0 2,0zm0,86a76,76 0 1
+  1-2,0zM57,287q27-35 67-35h92q40,0 67,35a164,164 0 0,1-226,0"
+                  />
+                </svg>
+              </div>
+            ))}
           <div className="info-input-container">
             <div className="info-input disabled">
               {contactOrGroupProfile.name

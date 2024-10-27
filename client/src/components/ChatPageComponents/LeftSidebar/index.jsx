@@ -77,17 +77,21 @@ const LeftSidebar = () => {
           onClick={() => handleIconClick("avatar")}
         >
           <div className="avatar">
-            <div className="img">
-              {userInfo.firstName && userInfo.lastName
-                ? `${userInfo.firstName.charAt(0)} ${userInfo.lastName.charAt(
-                    0
-                  )}`
-                : userInfo.firstName
-                ? userInfo.firstName.charAt(0)
-                : userInfo.lastName
-                ? userInfo.lastName.charAt(0)
-                : userInfo.email.charAt(0)}
-            </div>
+            {userInfo.image ? (
+              <img src={userInfo.image} alt="avatar" className="img" />
+            ) : (
+              <div className="img no-avatar">
+                {userInfo.firstName && userInfo.lastName
+                  ? `${userInfo.firstName.charAt(0)} ${userInfo.lastName.charAt(
+                      0
+                    )}`
+                  : userInfo.firstName
+                  ? userInfo.firstName.charAt(0)
+                  : userInfo.lastName
+                  ? userInfo.lastName.charAt(0)
+                  : userInfo.email.charAt(0)}
+              </div>
+            )}
           </div>
           <span className="tooltiptext">Profile</span>
         </div>

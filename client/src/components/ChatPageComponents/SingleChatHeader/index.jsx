@@ -5,6 +5,7 @@ import { useAppStore } from "../../../store";
 import { GET_GROUP_MEMBERS_ROUTE } from "../../../utils/constants";
 import { useEffect } from "react";
 import { apiClient } from "../../../lib/api-client";
+import { HiUserGroup } from "react-icons/hi";
 
 const SingleChatHeader = () => {
   const {
@@ -50,7 +51,26 @@ const SingleChatHeader = () => {
             setActiveIcon("contactOrGroupProfile");
           }}
         >
-          <img src="./avatar.png" />
+          {selectedChatData.name ? (
+            // <img src="./avatar.png" className="img non-present" />
+            <div className="img group-img">
+              <HiUserGroup />
+            </div>
+          ) : selectedChatData.image ? (
+            <img src={selectedChatData.image} alt="avatar" className="img" />
+          ) : (
+            <div className="img non-present">
+              {selectedChatData.firstName && selectedChatData.lastName
+                ? `${selectedChatData.firstName.charAt(
+                    0
+                  )} ${selectedChatData.lastName.charAt(0)}`
+                : selectedChatData.firstName
+                ? selectedChatData.firstName.charAt(0)
+                : selectedChatData.lastName
+                ? selectedChatData.lastName.charAt(0)
+                : selectedChatData.email.charAt(0)}
+            </div>
+          )}
         </div>
         <div
           className="info"

@@ -193,10 +193,18 @@
 }
 
 .group-message .contact-avatar,
-.group-message .contact-avatar .avatar {
+.group-message .contact-avatar .no-avatar,
+.group-message .contact-avatar .avatar img {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.group-message .contact-avatar .avatar img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .group-message .contact-avatar {

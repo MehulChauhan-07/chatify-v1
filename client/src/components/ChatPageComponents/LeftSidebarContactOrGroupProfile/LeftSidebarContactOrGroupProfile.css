@@ -65,3 +65,15 @@
   color: white;
   opacity: 0.8;
 }
+
+.left-sidebar-contact-or-group-profile .profile-image {
+  border-radius: 50%;
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  object-fit: cover;
+  /* overflow: hidden; */
+  /* background-color: #2c2e3b; */
+}

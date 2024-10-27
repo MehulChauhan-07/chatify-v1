@@ -31,10 +31,14 @@
   height: 2.5rem;
   font-size: 1rem;
   border-radius: 50%;
-  border: 2px solid #415763;
+  /* border: 2px solid #415763; */
   display: flex;
   justify-content: center;
   align-items: center;
+  object-fit: cover;
+}
+.left-sidebar .avatar .img.no-avatar {
+  border: 2px solid #415763;
 }
 
 .left-sidebar .icon:hover {
