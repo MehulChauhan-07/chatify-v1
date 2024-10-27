@@ -20,6 +20,10 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
     return `${extension} file`;
   };
 
+  const shortenLastMessage = (message) => {
+    return message.length > 60 ? `${message.slice(0, 57)}...` : message;
+  };
+
   return (
     <div className={`chat ${isActive ? "active-chat" : ""}`}>
       {!isGroup && (
@@ -56,7 +60,7 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
               <MdFolderZip className="last-message-file" />
             )}
             {contact.lastMessage?.messageType === "text"
-              ? contact.lastMessage?.content
+              ? `${shortenLastMessage(contact.lastMessage?.content)}`
               : `${getFileExtensionFromUrl(contact.lastMessage?.fileUrl)}`}
           </div>
         </div>
@@ -81,7 +85,7 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
               <MdFolderZip className="last-message-file" />
             )}
             {contact.lastMessageType === "text"
-              ? contact.lastMessage
+              ? `${shortenLastMessage(contact.lastMessage)}`
               : `${getFileExtensionFromUrl(contact.lastMessage)}`}
           </div>
         </div>

@@ -22,6 +22,8 @@ const SingleChatMessageBar = () => {
     userInfo,
     setRefreshChatList,
     setActiveChatId,
+    setPlaceholderMessage,
+    setShowFileUploadPlaceholder,
   } = useAppStore();
 
   const [message, setMessage] = useState("");
@@ -64,6 +66,7 @@ const SingleChatMessageBar = () => {
       });
     }
     setActiveChatId(selectedChatData._id);
+    setPlaceholderMessage(message);
     setMessage("");
     setRefreshChatList(true);
   };
@@ -95,6 +98,8 @@ const SingleChatMessageBar = () => {
       // console.log(file);
 
       if (file) {
+        // setShowFileUploadPlaceholder(true);
+
         fileUrl = await upload(file, selectedChatData._id);
 
         if (fileUrl) {

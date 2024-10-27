@@ -10,11 +10,13 @@ import moment from "moment";
 import { MdChatBubble } from "react-icons/md";
 import { MdFolderZip } from "react-icons/md";
 import { IoMdArrowRoundDown } from "react-icons/io";
+import { PiClockFill } from "react-icons/pi";
 import { getColor } from "../../../lib/group-member-color";
 
 const SingleChatMessageContainer = () => {
   const scrollRef = useRef();
   const scrollProgressRef = useRef();
+  const placeholderMessageRef = useRef();
 
   const {
     selectedChatType,
@@ -30,6 +32,8 @@ const SingleChatMessageContainer = () => {
     setUploadTargetId,
     uploadFileName,
     setUploadFileName,
+    placeholderMessage,
+    setPlaceholderMessage,
   } = useAppStore();
 
   useEffect(() => {
@@ -94,6 +98,11 @@ const SingleChatMessageContainer = () => {
       scrollProgressRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [uploadProgress]);
+  useEffect(() => {
+    if (placeholderMessageRef.current) {
+      placeholderMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [placeholderMessage]);
 
   const [showImage, setShowImage] = useState(false);
   const [imageURL, setImageURL] = useState(null);
@@ -296,8 +305,8 @@ const SingleChatMessageContainer = () => {
         message.sender._id === userInfo.id ? "own-message" : "contact-message"
       }`}
     >
-      {console.log("selectedChatData")}
-      {console.log(selectedChatData)}
+      {/* {console.log("selectedChatData")}
+      {console.log(selectedChatData)} */}
       {message.sender._id === userInfo.id ? null : (
         <div className="contact-avatar">
           <div className="avatar" style={{ color: "#53a6fd" }}>
@@ -436,6 +445,33 @@ const SingleChatMessageContainer = () => {
           {/* <div ref={scrollRef} /> */}
         </>
       )}
+      {/* {console.log("placeholderMessage:")}
+      {console.log(placeholderMessage)} */}
+      {placeholderMessage !== undefined && (
+        // placeholderMessage !== null &&
+        // placeholderMessage !== "" &&
+        <>
+          {console.log("placeholderMessage in:")}
+          {console.log(placeholderMessage)}
+          <div className="message own-message">
+            <div className="message-content own-message-content">
+              <div className="user-pointer">
+                <MdChatBubble className="user-pointer-icon" />
+              </div>
+              {placeholderMessage}
+              <div className="timestamp-container">
+                <div className="message-timestamp">
+                  {/* {moment(placeholderMessage.timestamp).format("LT")} */}
+                  <PiClockFill />
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <div ref={placeholderMessageRef} /> */}
+        </>
+      )}
+      {/* <div ref={scrollProgressRef} /> */}
+      <div ref={placeholderMessageRef} />
       <div ref={scrollRef} />
     </div>
   );

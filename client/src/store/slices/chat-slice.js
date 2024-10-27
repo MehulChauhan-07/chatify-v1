@@ -9,6 +9,8 @@ export const createChatSlice = (set, get) => ({
   directMessagesContacts: [],
   // isSeen: false,
   uploadProgress: 0,
+  placeholderMessage: undefined,
+  // showFileUploadPlaceholder: false,
   uploadFileName: undefined,
   uploadTargetId: undefined,
   friendRequests: [],
@@ -24,6 +26,9 @@ export const createChatSlice = (set, get) => ({
     get().setFriendRequests([...friendRequests, friendRequest]);
   },
   setUploadTargetId: (uploadTargetId) => set({ uploadTargetId }),
+  setPlaceholderMessage: (placeholderMessage) => set({ placeholderMessage }),
+  // setShowFileUploadPlaceholder: (showFileUploadPlaceholder) =>
+  //   set({ showFileUploadPlaceholder }),
   setUploadFileName: (uploadFileName) => set({ uploadFileName }),
   setUploadProgress: (uploadProgress) => set({ uploadProgress }),
   setIsSeen: (isSeen) => set({ isSeen }),
@@ -47,6 +52,12 @@ export const createChatSlice = (set, get) => ({
   addMessage: (message) => {
     const { selectedChatMessages } = get();
     const { selectedChatType } = get();
+    set({
+      placeholderMessage: undefined,
+    });
+    // set({
+    //   showFileUploadPlaceholder: false,
+    // });
     set({
       selectedChatMessages: [
         ...selectedChatMessages,
