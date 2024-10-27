@@ -55,9 +55,6 @@ export const createChatSlice = (set, get) => ({
     set({
       placeholderMessage: undefined,
     });
-    // set({
-    //   showFileUploadPlaceholder: false,
-    // });
     set({
       selectedChatMessages: [
         ...selectedChatMessages,
@@ -72,6 +69,9 @@ export const createChatSlice = (set, get) => ({
         },
       ],
     });
+    // set({
+    //   showFileUploadPlaceholder: true,
+    // });
   },
   addContactsInDMContacts: (message) => {
     const userId = get().userInfo.id;

@@ -120,6 +120,8 @@ const SingleChatMessageBar = () => {
               groupId: selectedChatData._id,
             });
           }
+
+          // setShowFileUploadPlaceholder(true);
         }
       }
     } catch (error) {
