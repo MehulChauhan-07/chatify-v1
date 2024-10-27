@@ -26,7 +26,7 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
 
   return (
     <div className={`chat ${isActive ? "active-chat" : ""}`}>
-      {!contact.name && (
+      {!isGroup && (
         <div className="chat-header-info-avatar">
           {contact.image ? (
             <img src={contact.image} alt="avatar" className="img" />
@@ -38,21 +38,19 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
                 ? contact.firstName.charAt(0)
                 : contact.lastName
                 ? contact.lastName.charAt(0)
-                : contact.email
-                ? contact.email.charAt(0)
-                : "no-avatar"}
+                : contact.email.charAt(0)}
             </div>
           )}
         </div>
       )}
-      {contact.name && (
+      {isGroup && (
         <div className="chat-header-info-avatar">
           <div className="group-img">
             <HiUserGroup />
           </div>
         </div>
       )}
-      {contact.name ? (
+      {isGroup ? (
         <div className="chat-info">
           <div className="chat-info-head">
             {contact.name}
@@ -65,7 +63,7 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
                     .subtract(1, "days")
                     .format("YYYY-MM-DD") ===
                   moment(contact.lastMessage?.timestamp).format("YYYY-MM-DD")
-                ? Yesterday
+                ? "Yesterday"
                 : moment(Date.now())
                     .subtract(2, "days")
                     .format("YYYY-MM-DD") ===
