@@ -91,8 +91,7 @@ const SingleChatMessageContainer = () => {
   // }, [selectedChatData]);
   useEffect(() => {
     if (scrollRef.current) {
-      // scrollRef.current.scrollIntoView({ behavior: "auto" });
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+      scrollRef.current.scrollIntoView({ behavior: "auto" });
     }
   }, [selectedChatMessages]);
   useEffect(() => {
