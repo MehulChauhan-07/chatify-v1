@@ -412,7 +412,13 @@ const SingleChatMessageContainer = () => {
 
   return (
     <div className="message-container">
-      {renderMessages()}
+      {selectedChatMessages.length > 0 ? (
+        renderMessages()
+      ) : (
+        <div className="loading-chat-messages-container">
+          Loading Messages...
+        </div>
+      )}
       {/* {showFileUploadPlaceholder && uploadTargetId === selectedChatData._id && ( */}
       {uploadProgress > 0 && uploadTargetId === selectedChatData._id && (
         <>
