@@ -121,7 +121,7 @@ const Chat = ({ contact, isGroup = false, isActive = false }) => {
                     .subtract(1, "days")
                     .format("YYYY-MM-DD") ===
                   moment(contact.lastMessageTime).format("YYYY-MM-DD")
-                ? Yesterday
+                ? "Yesterday"
                 : moment(Date.now())
                     .subtract(2, "days")
                     .format("YYYY-MM-DD") ===
