@@ -34,6 +34,8 @@ const SingleChatMessageContainer = () => {
     setUploadFileName,
     placeholderMessage,
     setPlaceholderMessage,
+    showFileUploadPlaceholder,
+    setShowFileUploadPlaceholder,
   } = useAppStore();
 
   useEffect(() => {
@@ -97,6 +99,7 @@ const SingleChatMessageContainer = () => {
     if (scrollProgressRef.current) {
       scrollProgressRef.current.scrollIntoView({ behavior: "smooth" });
     }
+    // }, [showFileUploadPlaceholder]);
   }, [uploadProgress]);
   useEffect(() => {
     if (placeholderMessageRef.current) {
@@ -405,6 +408,7 @@ const SingleChatMessageContainer = () => {
   return (
     <div className="message-container">
       {renderMessages()}
+      {/* {showFileUploadPlaceholder && uploadTargetId === selectedChatData._id && ( */}
       {uploadProgress > 0 && uploadTargetId === selectedChatData._id && (
         <>
           <div className="message own-message">
@@ -441,7 +445,7 @@ const SingleChatMessageContainer = () => {
               </div>
             </div>
           </div>
-          <div ref={scrollProgressRef} />
+          {/* <div ref={scrollProgressRef} /> */}
           {/* <div ref={scrollRef} /> */}
         </>
       )}
@@ -470,7 +474,7 @@ const SingleChatMessageContainer = () => {
           {/* <div ref={placeholderMessageRef} /> */}
         </>
       )}
-      {/* <div ref={scrollProgressRef} /> */}
+      <div ref={scrollProgressRef} />
       <div ref={placeholderMessageRef} />
       <div ref={scrollRef} />
     </div>
