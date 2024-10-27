@@ -13,7 +13,7 @@ const Chats = ({ contacts, isGroup = false }) => {
   } = useAppStore();
 
   const handleClick = (contact) => {
-    setSelectedChatType(isGroup ? "group" : "contact");
+    setSelectedChatType(contact.name ? "group" : "contact");
     setSelectedChatData(contact);
     setActiveChatId(contact._id);
 
@@ -21,6 +21,9 @@ const Chats = ({ contacts, isGroup = false }) => {
       setSelectedChatMessages([]);
     }
   };
+
+  console.log("contacts:");
+  console.log(contacts);
 
   return (
     <div className="chats">

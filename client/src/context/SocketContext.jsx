@@ -29,6 +29,7 @@ export const SocketProvider = ({ children }) => {
           selectedChatType,
           addMessage,
           addContactsInDMContacts,
+          sortGroupList,
         } = useAppStore.getState();
 
         if (
@@ -40,6 +41,7 @@ export const SocketProvider = ({ children }) => {
           addMessage(message);
         }
         addContactsInDMContacts(message);
+        sortGroupList(message);
       };
 
       const handleReceiveGroupMessage = (message) => {
@@ -58,8 +60,9 @@ export const SocketProvider = ({ children }) => {
         sortGroupList(message.group);
       };
       const handleReceiveGroupCreation = (group) => {
-        const { addGroup } = useAppStore.getState();
+        const { addGroup, sortGroupList } = useAppStore.getState();
         addGroup(group);
+        // sortGroupList(group);
       };
 
       const handleReceiveFriendRequest = (friendRequest) => {

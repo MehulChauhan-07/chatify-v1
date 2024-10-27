@@ -47,39 +47,74 @@ const ChatList = () => {
     addGroupInGroupList,
     addContactsInDmContacts,
     selectedChatMessages,
+    setAllChats,
+    allChats,
   } = useAppStore();
   const socket = useSocket();
 
   useEffect(() => {
-    const getContacts = async () => {
+    // const getContacts = async () => {
+    //   const response = await apiClient.get(GET_DM_CONTACTS_ROUTE, {
+    //     withCredentials: true,
+    //   });
+    //   if (response.data.contacts) {
+    //     // console.log("Fetched contacts:", response.data.contacts);
+    //     setDirectMessagesContacts(response.data.contacts);
+    //   }
+    // };
+
+    // const getGroups = async () => {
+    //   const response = await apiClient.get(GET_USER_GROUPS_ROUTE, {
+    //     withCredentials: true,
+    //   });
+    //   if (response.data.groups) {
+    //     setGroups(response.data.groups);
+    //     // addGroupInGroupList(response.data.groups);
+    //   }
+    // };
+
+    const getAllChats = async () => {
       const response = await apiClient.get(GET_DM_CONTACTS_ROUTE, {
         withCredentials: true,
       });
-      if (response.data.contacts) {
-        // console.log("Fetched contacts:", response.data.contacts);
-        setDirectMessagesContacts(response.data.contacts);
-      }
-    };
+      // if (response.data.contacts) {
+      //   // console.log("Fetched contacts:", response.data.contacts);
+      //   setDirectMessagesContacts(response.data.contacts);
+      // }
 
-    const getGroups = async () => {
-      const response = await apiClient.get(GET_USER_GROUPS_ROUTE, {
+      const response2 = await apiClient.get(GET_USER_GROUPS_ROUTE, {
         withCredentials: true,
       });
-      if (response.data.groups) {
-        setGroups(response.data.groups);
-        // addGroupInGroupList(response.data.groups);
+      // if (response2.data.groups) {
+      //   setGroups(response2.data.groups);
+      //   // addGroupInGroupList(response2.data.groups);
+      // }
+
+      if (response.data.contacts && response2.data.groups) {
+        setDirectMessagesContacts(response.data.contacts);
+        setGroups(response2.data.groups);
+        setAllChats(response.data.contacts.concat(response2.data.groups));
+      } else if (response.data.contacts && !response2.data.groups) {
+        setDirectMessagesContacts(response.data.contacts);
+        setAllChats(response.data.contacts);
+      } else if (response2.data.groups && !response.data.contacts) {
+        setGroups(response2.data.groups);
+        setAllChats(response2.data.groups);
       }
     };
 
-    getContacts();
-    getGroups();
+    getAllChats();
+
+    // getContacts();
+    // getGroups();
   }, [
-    refreshChatList,
-    setGroups,
-    setDirectMessagesContacts,
-    addGroupInGroupList,
-    // addContactsInDmContacts,
-    selectedChatMessages,
+    // refreshChatList,
+    // setGroups,
+    // setDirectMessagesContacts,
+    // addGroupInGroupList,
+    // // addContactsInDmContacts,
+    // selectedChatMessages,
+    setAllChats,
   ]);
 
   const { setSelectedChatType, setSelectedChatData, selectedChatData } =
@@ -616,7 +651,8 @@ const ChatList = () => {
             </div>
           </div>
 
-          {(directMessagesContacts.length > 0 || groups.length > 0) && (
+          {/* {(directMessagesContacts.length > 0 || groups.length > 0) && ( */}
+          {allChats.length > 0 && (
             <div className="filler-container">
               <div className="horizontal-filler"></div>
               <div className="scrollbar-triangle">
@@ -625,11 +661,24 @@ const ChatList = () => {
             </div>
           )}
           <div className="dms-and-group-chats-container">
-            {directMessagesContacts.length > 0 || groups.length > 0 ? (
+            {/* {directMessagesContacts.length > 0 || groups.length > 0 ? ( */}
+            {allChats.length > 0 ? (
               <>
                 {searchedContacts.length <= 0 ? (
                   <>
-                    {groups.length > 0 &&
+                    {/* {groups.length > 0 && */}
+                    {(activeFilter === "all" || activeFilter === "groups") &&
+                      activeFilter !== "dms" && (
+                        <>
+                          <div className="chat-type-indicator groups">
+                            Groups
+                          </div>
+                          {/* <Chats contacts={allChats} isGroup={true} /> */}
+                          <Chats contacts={allChats} />
+                        </>
+                      )}
+                    {/* } */}
+                    {/* {groups.length > 0 &&
                       (activeFilter === "all" || activeFilter === "groups") &&
                       activeFilter !== "dms" && (
                         <>
@@ -648,7 +697,7 @@ const ChatList = () => {
                           </div>
                           <Chats contacts={directMessagesContacts} />
                         </>
-                      )}
+                      )} */}
                   </>
                 ) : (
                   <>
@@ -658,7 +707,8 @@ const ChatList = () => {
               </>
             ) : null}
           </div>
-          {(directMessagesContacts.length > 0 || groups.length > 0) && (
+          {/* {(directMessagesContacts.length > 0 || groups.length > 0) && ( */}
+          {allChats.length > 0 && (
             <div className="filler-container">
               <div className="horizontal-filler"></div>
               <div className="scrollbar-triangle-upside-down">

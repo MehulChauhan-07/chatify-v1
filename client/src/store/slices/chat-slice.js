@@ -93,22 +93,32 @@ export const createChatSlice = (set, get) => ({
     set({ directMessagesContacts: dmContacts });
   },
 
+  allChats: [],
+  setAllChats: (allChats) => set({ allChats }),
+
   groups: [],
 
   setGroups: (groups) => set({ groups }),
+  addGroup: (group) => {
+    const { allChats } = get();
+    const groupExists = allChats.some((g) => g._id === group._id);
+    if (!groupExists) {
+      set({ groups: [group, ...allChats] });
+    }
+  },
   // addGroup: (group) => {
   //   const { groups } = get();
   //   set({ groups: [group, ...groups] });
   // },
-  addGroup: (group) => {
-    const { groups } = get();
-    // Check if the group already exists in the groups array
-    const groupExists = groups.some((g) => g._id === group._id);
-    // If the group does not exist, add it to the beginning
-    if (!groupExists) {
-      set({ groups: [group, ...groups] });
-    }
-  },
+  // addGroup: (group) => {
+  //   const { groups } = get();
+  //   // Check if the group already exists in the groups array
+  //   const groupExists = groups.some((g) => g._id === group._id);
+  //   // If the group does not exist, add it to the beginning
+  //   if (!groupExists) {
+  //     set({ groups: [group, ...groups] });
+  //   }
+  // },
   // deleteGroup: (group) => {
   //   const { groups } = get();
   //   const groupExists = groups.some((g) => g._id === group._id);
@@ -127,14 +137,39 @@ export const createChatSlice = (set, get) => ({
     set({ groups });
   },
   sortGroupList: (group) => {
-    const { groups } = get();
-    const index = groups.findIndex((g) => g._id === group._id);
+    const { allChats } = get();
+
+    // // Check if the group already exists in the groups array
+    // const groupExists = allChats.some((g) => g._id === group._id);
+    // // If the group does not exist, add it to the beginning
+    // if (!groupExists) {
+    //   set({ allChats: [group, ...allChats] });
+    // } else {
+    const index = allChats.findIndex((g) => g._id === group._id);
     if (index !== -1 && index !== undefined) {
-      groups.splice(index, 1);
-      groups.unshift(group);
+      allChats.splice(index, 1);
+      allChats.unshift(group);
     }
-    set({ groups });
+    set({ allChats });
+    // }
   },
+  // sortGroupList: (group) => {
+  //   const { groups } = get();
+
+  //   // Check if the group already exists in the groups array
+  //   const groupExists = groups.some((g) => g._id === group._id);
+  //   // If the group does not exist, add it to the beginning
+  //   if (!groupExists) {
+  //     set({ groups: [group, ...groups] });
+  //   } else {
+  //     const index = groups.findIndex((g) => g._id === group._id);
+  //     if (index !== -1 && index !== undefined) {
+  //       groups.splice(index, 1);
+  //       groups.unshift(group);
+  //     }
+  //     set({ groups });
+  //   }
+  // },
   contactOrGroupProfile: undefined,
   setContactOrGroupProfile: (profile) =>
     set({ contactOrGroupProfile: profile }),
