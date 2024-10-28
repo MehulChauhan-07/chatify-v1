@@ -31,3 +31,4 @@ export const GET_USER_GROUPS_ROUTE = `${GROUP_ROUTES}/get-user-groups`;
 export const GET_GROUPS_IN_COMMON_ROUTE = `${GROUP_ROUTES}/get-groups-in-common`;
 export const GET_GROUP_MESSAGES_ROUTE = `${GROUP_ROUTES}/get-group-messages`;
 export const GET_GROUP_MEMBERS_ROUTE = `${GROUP_ROUTES}/get-group-members`;
+export const SEARCH_GROUPS_ROUTE = `${GROUP_ROUTES}/search-groups`;

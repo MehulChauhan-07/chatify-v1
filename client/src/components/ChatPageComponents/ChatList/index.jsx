@@ -17,6 +17,7 @@ import {
   GET_USER_GROUPS_ROUTE,
   SEARCH_CONTACTS_ROUTE,
   SEARCH_DM_CONTACTS_ROUTE,
+  SEARCH_GROUPS_ROUTE,
 } from "../../../utils/constants";
 import LeftSidebarProfile from "../LeftSidebarProfile";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -88,6 +89,7 @@ const ChatList = () => {
   const [openAddContactModal, setOpenAddContactModal] = useState(false);
   const [openCreateGroupModal, setOpenCreateGroupModal] = useState(false);
   const [searchedContacts, setSearchedContacts] = useState([]);
+  const [searchedGroups, setSearchedGroups] = useState([]);
   const [searchedModalContacts, setSearchedModalContacts] = useState([]);
 
   const searchContacts = async (searchTerm) => {
@@ -104,6 +106,26 @@ const ChatList = () => {
         }
       } else {
         setSearchedContacts([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const searchGroups = async (searchTerm) => {
+    try {
+      if (searchTerm.length > 0) {
+        const response = await apiClient.post(
+          SEARCH_GROUPS_ROUTE,
+          { searchTerm, groups },
+          { withCredentials: true }
+        );
+
+        if (response.status === 200 && response.data.searchedGroups) {
+          setSearchedGroups(response.data.searchedGroups);
+        }
+      } else {
+        setSearchedGroups([]);
       }
     } catch (error) {
       console.log(error);
@@ -261,11 +283,13 @@ const ChatList = () => {
       setSearching(false);
     }
     searchContacts(event.target.value);
+    searchGroups(event.target.value);
   };
 
   const goBack = () => {
     setSearching(false);
     searchContacts("");
+    searchGroups("");
     if (searchInputRef.current) {
       searchInputRef.current.value = "";
     }
@@ -640,7 +664,8 @@ const ChatList = () => {
             ) : null} */}
             {directMessagesContacts.length > 0 || groups.length > 0 ? (
               <>
-                {searchedContacts.length <= 0 ? (
+                {/* {searchedContacts.length <= 0 ? ( */}
+                {searchedContacts.length <= 0 && searchedGroups.length <= 0 ? (
                   <>
                     {groups.length > 0 &&
                       (activeFilter === "all" || activeFilter === "groups") &&
@@ -665,7 +690,21 @@ const ChatList = () => {
                   </>
                 ) : (
                   <>
-                    <Chats contacts={searchedContacts} />
+                    {/* <Chats contacts={searchedContacts} /> */}
+                    {searchedGroups.length > 0 && (
+                      <>
+                        <div className="chat-type-indicator groups">Groups</div>
+                        <Chats contacts={searchedGroups} isGroup={true} />
+                      </>
+                    )}
+                    {searchedContacts.length > 0 && (
+                      <>
+                        <div className="chat-type-indicator dms">
+                          Direct Messages
+                        </div>
+                        <Chats contacts={searchedContacts} />
+                      </>
+                    )}
                   </>
                 )}
               </>

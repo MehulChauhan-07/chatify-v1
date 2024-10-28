@@ -161,3 +161,42 @@ export const getGroupMessages = async (request, response, next) => {
     return response.status(500).json({ error: error.message });
   }
 };
+
+export const searchGroups = async (request, response, next) => {
+  try {
+    const { searchTerm, groups } = request.body;
+
+    if (
+      searchTerm === undefined ||
+      searchTerm === null ||
+      groups === undefined ||
+      groups === null
+    ) {
+      return response
+        .status(400)
+        .json({ error: "searchTerm and groups are required" });
+    }
+
+    const sanitizedSearchTerm = searchTerm.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+
+    const regex = new RegExp(sanitizedSearchTerm, "i");
+
+    const userGroups = groups.map((group) => group._id);
+
+    // Perform a search only among the groups whose ids are in the userGroups array
+    const searchedGroups = await Group.find({
+      $and: [
+        { _id: { $in: userGroups } }, // Only return groups whose ids is in the userGroups list
+        { name: regex }, // Match group name
+      ],
+    });
+
+    return response.status(200).json({ searchedGroups });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};

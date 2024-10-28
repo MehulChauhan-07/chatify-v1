@@ -85,7 +85,7 @@ export const searchDMContacts = async (request, response, next) => {
     );
 
     // Perform a search only among the users whose emails are in the directMessagesEmails array
-    const contacts = await User.find({
+    const searchedContacts = await User.find({
       $and: [
         { _id: { $ne: userId } }, // Exclude current user from the results
         { email: { $in: directMessagesEmails } }, // Only return contacts whose email is in the directMessagesEmails list
@@ -107,6 +107,14 @@ export const searchDMContacts = async (request, response, next) => {
         },
       ],
     });
+
+    // Filter directMessagesContacts to only include those in searchedContacts
+    const searchedContactIds = new Set(
+      searchedContacts.map((contact) => contact._id.toString())
+    );
+    const contacts = directMessagesContacts.filter((contact) =>
+      searchedContactIds.has(contact._id.toString())
+    );
 
     return response.status(200).json({ contacts });
   } catch (error) {

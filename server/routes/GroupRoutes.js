@@ -6,6 +6,7 @@ import {
   getUserGroups,
   getGroupsInCommon,
   getGroupMembers,
+  searchGroups,
 } from "../controllers/GroupControllers.js";
 import { verifyToken } from "../middlewares/AuthMiddleware.js";
 
@@ -20,5 +21,6 @@ groupRoutes.get(
 );
 groupRoutes.get("/get-group-messages/:groupId", verifyToken, getGroupMessages);
 groupRoutes.get("/get-group-members/:groupId", verifyToken, getGroupMembers);
+groupRoutes.post("/search-groups", verifyToken, searchGroups);
 
 export default groupRoutes;
