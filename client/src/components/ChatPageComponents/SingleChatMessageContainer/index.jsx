@@ -12,8 +12,10 @@ import { MdFolderZip } from "react-icons/md";
 import { IoMdArrowRoundDown } from "react-icons/io";
 import { PiClockFill } from "react-icons/pi";
 import { getColor } from "../../../lib/group-member-color";
+import ScrollToBottom from "../ScrollToBottom/scrollToBottom";
 
 const SingleChatMessageContainer = () => {
+  const messageContainerRef = useRef();
   const scrollRef = useRef();
   const scrollProgressRef = useRef();
   const placeholderMessageRef = useRef();
@@ -411,14 +413,14 @@ const SingleChatMessageContainer = () => {
   );
 
   return (
-    <div className="message-container">
-      {selectedChatMessages.length > 0 ? (
-        renderMessages()
-      ) : (
+    <div className="message-container" ref={messageContainerRef}>
+      {/* {selectedChatMessages.length > 0 ? ( */}
+      {renderMessages()}
+      {/* ) : (
         <div className="loading-chat-messages-container">
           Loading Messages...
         </div>
-      )}
+      )} */}
       {/* {showFileUploadPlaceholder && uploadTargetId === selectedChatData._id && ( */}
       {uploadProgress > 0 && uploadTargetId === selectedChatData._id && (
         <>
@@ -487,6 +489,10 @@ const SingleChatMessageContainer = () => {
       )}
       <div ref={scrollProgressRef} />
       <div ref={placeholderMessageRef} />
+      <ScrollToBottom
+        containerRef={messageContainerRef}
+        targetRef={scrollRef}
+      />
       <div ref={scrollRef} />
     </div>
   );

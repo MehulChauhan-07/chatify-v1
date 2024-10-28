@@ -54,7 +54,7 @@ function App() {
   }, [userInfo, setUserInfo]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="app-loading-indicator">Loading...</div>;
   }
 
   return (

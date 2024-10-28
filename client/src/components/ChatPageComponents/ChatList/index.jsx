@@ -625,6 +625,19 @@ const ChatList = () => {
             </div>
           )}
           <div className="dms-and-group-chats-container">
+            {/* {directMessagesContacts.length <= 0 && groups.length <= 0 ? (
+              <div className="loading-chat-messages-container">
+                Loading Chats...
+              </div>
+            ) : directMessagesContacts.length <= 0 ? (
+              <div className="loading-chat-messages-container">
+                Loading Direct Messages...
+              </div>
+            ) : groups.length <= 0 ? (
+              <div className="loading-chat-messages-container">
+                Loading Group Messages...
+              </div>
+            ) : null} */}
             {directMessagesContacts.length > 0 || groups.length > 0 ? (
               <>
                 {searchedContacts.length <= 0 ? (

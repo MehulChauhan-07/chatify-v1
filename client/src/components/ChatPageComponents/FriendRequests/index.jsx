@@ -65,22 +65,26 @@ const FriendRequests = () => {
       <div className="request-chats-container">
         {showFR ? (
           <>
-            <div className="filler-container">
-              <div className="horizontal-filler"></div>
-              <div className="scrollbar-triangle">
-                <BsFillTriangleFill />
+            {friendRequests.length > 0 && (
+              <div className="filler-container">
+                <div className="horizontal-filler"></div>
+                <div className="scrollbar-triangle">
+                  <BsFillTriangleFill />
+                </div>
               </div>
-            </div>
+            )}
             {
               !showSFR ? <RequestChats contacts={friendRequests} /> : null
               // <Chats contacts={searchedFriendRequests} />
             }
-            <div className="filler-container">
-              <div className="horizontal-filler"></div>
-              <div className="scrollbar-triangle-upside-down">
-                <BsFillTriangleFill />
+            {friendRequests.length > 0 && (
+              <div className="filler-container">
+                <div className="horizontal-filler"></div>
+                <div className="scrollbar-triangle-upside-down">
+                  <BsFillTriangleFill />
+                </div>
               </div>
-            </div>
+            )}
           </>
         ) : null}
       </div>

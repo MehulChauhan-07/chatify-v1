@@ -10,6 +10,8 @@
   flex-direction: column;
   overflow-y: auto;
   gap: 0.5rem;
+
+  position: relative;
 }
 
 .message-container::-webkit-scrollbar {
@@ -243,7 +245,7 @@
   border: 1px solid #007c4b;
 }
 
-.message-container .loading-chat-messages-container {
+/* .message-container .loading-chat-messages-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -251,4 +253,4 @@
   height: 100%;
   width: 100%;
   font-size: 2rem;
-}
+} */

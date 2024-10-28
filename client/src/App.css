@@ -21,3 +21,14 @@
   pointer-events: none;
   /* cursor: not-allowed; */
 }
+
+.app-loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+  height: 100%;
+  width: 100%;
+  font-size: 4rem;
+  color: #8696a0;
+}
