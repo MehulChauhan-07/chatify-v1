@@ -5,6 +5,7 @@ import {
   rejectFriendRequest,
   getFriendRequests,
   acceptFriendRequest,
+  searchFriendRequests,
 } from "../controllers/FriendRequestsControllers.js";
 import { verifyToken } from "../middlewares/AuthMiddleware.js";
 
@@ -29,6 +30,11 @@ friendRequestsRoutes.put(
   "/accept-friend-request",
   verifyToken,
   acceptFriendRequest
+);
+friendRequestsRoutes.post(
+  "/search-friend-requests",
+  verifyToken,
+  searchFriendRequests
 );
 
 export default friendRequestsRoutes;

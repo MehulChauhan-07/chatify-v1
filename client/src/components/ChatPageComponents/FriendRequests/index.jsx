@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsFillTriangleFill } from "react-icons/bs";
 import { IoIosSearch } from "react-icons/io";
 import "./FriendRequests.css";
 import { useAppStore } from "../../../store";
 import { apiClient } from "../../../lib/api-client";
-import { GET_FRIEND_REQUESTS_ROUTE } from "../../../utils/constants";
+import {
+  GET_FRIEND_REQUESTS_ROUTE,
+  SEARCH_FRIEND_REQUESTS_ROUTE,
+} from "../../../utils/constants";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { toast } from "react-toastify";
 import RequestChats from "../RequestChats";
 
 const FriendRequests = () => {
   const { friendRequests, setFriendRequests } = useAppStore();
+  const [searchedFriendRequests, setSearchedFriendRequests] = useState([]);
 
   useEffect(() => {
     const getFriendRequests = async () => {
@@ -25,12 +29,47 @@ const FriendRequests = () => {
     getFriendRequests();
   }, [setFriendRequests]);
 
+  const searchFriendRequests = async (searchTerm) => {
+    try {
+      if (searchTerm.length > 0) {
+        const response = await apiClient.post(
+          SEARCH_FRIEND_REQUESTS_ROUTE,
+          { searchTerm, friendRequests },
+          { withCredentials: true }
+        );
+
+        if (response.status === 200 && response.data.searchedFriendRequests) {
+          setSearchedFriendRequests(response.data.searchedFriendRequests);
+        }
+      } else {
+        setSearchedFriendRequests([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSearchInputChange = (event) => {
+    if (event.target.value.length > 0) {
+      setSearching(true);
+    } else {
+      setSearching(false);
+    }
+    searchFriendRequests(event.target.value);
+  };
+
+  const goBack = () => {
+    setSearching(false);
+    searchFriendRequests("");
+    if (searchInputRef.current) {
+      searchInputRef.current.value = "";
+    }
+  };
+
   // console.log("friendRequests: ", friendRequests);
 
   const [searching, setSearching] = useState(false);
-
-  const showFR = true;
-  const showSFR = false;
+  const searchInputRef = useRef(null);
 
   return (
     <div className="friend-requests">
@@ -41,8 +80,7 @@ const FriendRequests = () => {
         <div className="search-form">
           <div className="search-icon">
             {searching ? (
-              // <div className="search-go-back-arrow" onClick={() => goBack()}>
-              <div className="search-go-back-arrow">
+              <div className="search-go-back-arrow" onClick={() => goBack()}>
                 <IoMdArrowRoundBack />
               </div>
             ) : (
@@ -56,37 +94,37 @@ const FriendRequests = () => {
             id="search"
             type="text"
             className="search-input"
-            // onChange={(event) => onSearchInputChange(event)}
-            // ref={searchInputRef}
+            onChange={(event) => onSearchInputChange(event)}
+            ref={searchInputRef}
             placeholder="Search a request"
           />
         </div>
       </div>
       <div className="request-chats-container">
-        {showFR ? (
-          <>
-            {friendRequests.length > 0 && (
-              <div className="filler-container">
-                <div className="horizontal-filler"></div>
-                <div className="scrollbar-triangle">
-                  <BsFillTriangleFill />
-                </div>
+        <>
+          {friendRequests.length > 0 && (
+            <div className="filler-container">
+              <div className="horizontal-filler"></div>
+              <div className="scrollbar-triangle">
+                <BsFillTriangleFill />
               </div>
-            )}
-            {
-              !showSFR ? <RequestChats contacts={friendRequests} /> : null
-              // <Chats contacts={searchedFriendRequests} />
-            }
-            {friendRequests.length > 0 && (
-              <div className="filler-container">
-                <div className="horizontal-filler"></div>
-                <div className="scrollbar-triangle-upside-down">
-                  <BsFillTriangleFill />
-                </div>
+            </div>
+          )}
+          {friendRequests.length > 0 &&
+            (searchedFriendRequests.length <= 0 ? (
+              <RequestChats contacts={friendRequests} />
+            ) : (
+              <RequestChats contacts={searchedFriendRequests} />
+            ))}
+          {friendRequests.length > 0 && (
+            <div className="filler-container">
+              <div className="horizontal-filler"></div>
+              <div className="scrollbar-triangle-upside-down">
+                <BsFillTriangleFill />
               </div>
-            )}
-          </>
-        ) : null}
+            </div>
+          )}
+        </>
       </div>
     </div>
   );

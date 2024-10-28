@@ -612,7 +612,7 @@ const ChatList = () => {
                 placeholder="Search"
               />
             </div>
-            <div className="filters">
+            <div className={`filters ${searching ? "searching" : ""}`}>
               <div
                 className={`filter ${
                   activeFilter === "all" ? "active-filter" : ""

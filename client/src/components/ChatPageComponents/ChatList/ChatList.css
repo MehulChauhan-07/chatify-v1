@@ -62,6 +62,10 @@
   gap: 1rem;
 }
 
+.chat-list .filters.searching {
+  pointer-events: none;
+}
+
 .chat-list .filter {
   background-color: #202c33;
   padding: 0.4rem 0.8rem;

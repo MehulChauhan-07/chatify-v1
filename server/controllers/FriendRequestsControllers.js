@@ -166,3 +166,58 @@ export const getFriendRequests = async (request, response, next) => {
     return response.status(500).json({ error: error.message });
   }
 };
+
+export const searchFriendRequests = async (request, response, next) => {
+  try {
+    const { searchTerm, friendRequests } = request.body;
+    const userId = request.userId;
+
+    if (
+      searchTerm === undefined ||
+      searchTerm === null ||
+      friendRequests === undefined ||
+      friendRequests === null
+    ) {
+      return response
+        .status(400)
+        .json({ error: "searchTerm and friendRequests are required" });
+    }
+
+    const sanitizedSearchTerm = searchTerm.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+
+    const regex = new RegExp(sanitizedSearchTerm, "i");
+
+    const friendRequestEmails = friendRequests.map((request) => request.email);
+
+    // Perform a search only among the users whose emails are in the friendRequestEmails array
+    const searchedFriendRequests = await User.find({
+      $and: [
+        { email: { $in: friendRequestEmails } }, // Only return contacts whose email is in the friendRequestEmails list
+        {
+          $or: [
+            { firstName: regex }, // Match first name
+            { lastName: regex }, // Match last name
+            { email: regex }, // Match email
+            {
+              $expr: {
+                $regexMatch: {
+                  input: { $concat: ["$firstName", " ", "$lastName"] }, // Concatenate first and last name
+                  regex: sanitizedSearchTerm,
+                  options: "i",
+                },
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    return response.status(200).json({ searchedFriendRequests });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
