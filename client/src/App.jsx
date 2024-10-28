@@ -10,16 +10,49 @@ import { apiClient } from "./lib/api-client";
 import { GET_USER_INFO_ROUTE } from "./utils/constants";
 import { toast } from "react-toastify";
 
-const PrivateRoute = ({ children }) => {
-  const { userInfo } = useAppStore();
-  const isAuthenticated = !!userInfo;
-  return isAuthenticated ? children : <Navigate to="/auth" />;
-};
-
 const AuthRoute = ({ children }) => {
   const { userInfo } = useAppStore();
   const isAuthenticated = !!userInfo;
-  return isAuthenticated ? <Navigate to="/chat" /> : children;
+
+  return isAuthenticated ? (
+    userInfo.profileSetup ? (
+      <Navigate to="/chat" />
+    ) : (
+      <Navigate to="/profile" />
+    )
+  ) : (
+    children
+  );
+};
+
+const ChatRoute = ({ children }) => {
+  const { userInfo } = useAppStore();
+  const isAuthenticated = !!userInfo;
+
+  return isAuthenticated ? (
+    userInfo.profileSetup ? (
+      children
+    ) : (
+      <Navigate to="/profile" />
+    )
+  ) : (
+    <Navigate to="/auth" />
+  );
+};
+
+const ProfileLandingRoute = ({ children }) => {
+  const { userInfo } = useAppStore();
+  const isAuthenticated = !!userInfo;
+
+  return isAuthenticated ? (
+    userInfo.profileSetup ? (
+      <Navigate to="/chat" />
+    ) : (
+      children
+    )
+  ) : (
+    <Navigate to="/auth" />
+  );
 };
 
 function App() {
@@ -72,17 +105,17 @@ function App() {
           <Route
             path="/chat"
             element={
-              <PrivateRoute>
+              <ChatRoute>
                 <ChatPage />
-              </PrivateRoute>
+              </ChatRoute>
             }
           />
           <Route
             path="/profile"
             element={
-              <PrivateRoute>
+              <ProfileLandingRoute>
                 <ProfileLandingPage />
-              </PrivateRoute>
+              </ProfileLandingRoute>
             }
           />
           <Route path="*" element={<Navigate to="/auth" />} />
