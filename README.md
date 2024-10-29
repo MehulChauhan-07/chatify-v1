@@ -95,7 +95,7 @@ open http://localhost:3000 with your browser to see the result.
 ![group-chat](https://github.com/user-attachments/assets/8c070f09-e482-47de-8b48-d059f453b6b6)
 
 `SEARCH FUNCTIONALITY:`
-![search-chats](https://github.com/user-attachments/assets/bc4ae30b-18f5-4d03-86fb-5b65ec675dda)
+![search-chats](https://github.com/user-attachments/assets/a01e754f-8a12-4b95-abcb-d4060a8a9a0d)
 
 `UPDATING YOUR PROFILE:`
 ![profile-update](https://github.com/user-attachments/assets/858fc66f-5e2d-4ae6-b2a8-ea5b00315501)
