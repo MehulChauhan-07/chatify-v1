@@ -487,13 +487,16 @@ const SingleChatMessageContainer = () => {
           {/* <div ref={placeholderMessageRef} /> */}
         </>
       )}
-      <div ref={scrollProgressRef} />
-      <div ref={placeholderMessageRef} />
+      <div className="scroll-ref scroll-progress-ref" ref={scrollProgressRef} />
+      <div
+        className="scroll-ref placeholder-message-ref"
+        ref={placeholderMessageRef}
+      />
       <ScrollToBottom
         containerRef={messageContainerRef}
         targetRef={scrollRef}
       />
-      <div ref={scrollRef} />
+      <div className="scroll-ref" ref={scrollRef} />
     </div>
   );
 };

@@ -14,6 +14,7 @@ export const SEARCH_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/search`;
 export const SEARCH_DM_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/search-dm`;
 export const GET_DM_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/get-contacts-for-dm`;
 export const GET_ALL_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/get-all-contacts`;
+export const GET_CONTACT_FILES_ROUTE = `${CONTACTS_ROUTES}/get-contact-files`;
 
 export const MESSAGES_ROUTES = "api/messages";
 export const GET_ALL_MESSAGES_ROUTE = `${MESSAGES_ROUTES}/get-messages`;
@@ -32,3 +33,4 @@ export const GET_GROUPS_IN_COMMON_ROUTE = `${GROUP_ROUTES}/get-groups-in-common`
 export const GET_GROUP_MESSAGES_ROUTE = `${GROUP_ROUTES}/get-group-messages`;
 export const GET_GROUP_MEMBERS_ROUTE = `${GROUP_ROUTES}/get-group-members`;
 export const SEARCH_GROUPS_ROUTE = `${GROUP_ROUTES}/search-groups`;
+export const GET_GROUP_FILES_ROUTE = `${GROUP_ROUTES}/get-group-files`;

@@ -254,3 +254,7 @@
   width: 100%;
   font-size: 2rem;
 } */
+
+.message-container .scroll-ref {
+  margin-top: -0.25rem;
+}

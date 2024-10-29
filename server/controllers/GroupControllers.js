@@ -200,3 +200,30 @@ export const searchGroups = async (request, response, next) => {
     return response.status(500).json({ error: error.message });
   }
 };
+
+export const getGroupFiles = async (request, response, next) => {
+  try {
+    const { groupId } = request.params;
+
+    // Fetch the group and populate messages with a filter on messageType
+    const group = await Group.findById(groupId).populate({
+      path: "messages",
+      match: { messageType: "file" }, // Only include messages with messageType "file"
+      populate: {
+        path: "sender",
+        select: "firstName lastName email _id image color",
+      },
+    });
+
+    if (!group) {
+      return response.status(404).json({ error: "Group not found" });
+    }
+
+    const files = group.messages; // This will contain only messages with messageType "file"
+
+    return response.status(201).json({ files: files.reverse() });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};

@@ -211,3 +211,28 @@ export const getAllContacts = async (request, response, next) => {
     return response.status(500).json({ error: error.message });
   }
 };
+
+export const getContactFiles = async (request, response, next) => {
+  try {
+    const currentUser = request.userId;
+    const { contactId } = request.params;
+
+    if (!currentUser || !contactId) {
+      return response.status(400).json({ error: "Both user IDs are required" });
+    }
+
+    // Find messages between currentUser and contactId where messageType is "file"
+    const files = await Message.find({
+      $or: [
+        { sender: currentUser, recipient: contactId },
+        { sender: contactId, recipient: currentUser },
+      ],
+      messageType: "file", // Filter to include only messages of type "file"
+    }).sort({ timestamp: 1 });
+
+    return response.status(200).json({ files: files.reverse() });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
