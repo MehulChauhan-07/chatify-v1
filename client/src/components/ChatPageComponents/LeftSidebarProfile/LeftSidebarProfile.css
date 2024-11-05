@@ -85,3 +85,8 @@
 .left-sidebar-profile .profile-image.uploading {
   background-color: #2c2e3b;
 }
+
+.left-sidebar-profile .button-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

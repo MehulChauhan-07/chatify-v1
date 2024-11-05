@@ -382,3 +382,8 @@
   opacity: 0.5;
   font-size: 2rem;
 } */
+
+.chat-list .modal-icon-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

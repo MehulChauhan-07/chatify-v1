@@ -216,7 +216,12 @@ const ProfileLandingPage = () => {
           </div>
         </div>
         <div className="info-input-container">
-          <button className="info-button" onClick={saveChanges}>
+          <button
+            className={`info-button ${
+              firstName.length && lastName.length ? "" : "button-disabled"
+            }`}
+            onClick={saveChanges}
+          >
             Save Changes
           </button>
         </div>

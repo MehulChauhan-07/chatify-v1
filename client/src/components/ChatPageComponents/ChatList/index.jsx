@@ -459,7 +459,12 @@ const ChatList = () => {
                           />
                         </div>
 
-                        <div className="submit-button" onClick={createGroup}>
+                        <div
+                          className={`submit-button ${
+                            groupName.length <= 0 ? "modal-icon-disabled" : ""
+                          }`}
+                          onClick={createGroup}
+                        >
                           Create
                         </div>
                       </div>
@@ -488,7 +493,9 @@ const ChatList = () => {
                           className="modal-input"
                         />
                         <div
-                          className="sub-header-icon"
+                          className={`sub-header-icon ${
+                            contactTag.length <= 0 ? "modal-icon-disabled" : ""
+                          }`}
                           onClick={() => sendFriendRequestToContact(contactTag)}
                         >
                           <IoMdAddCircle />

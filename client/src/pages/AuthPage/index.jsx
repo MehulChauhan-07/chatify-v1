@@ -152,7 +152,16 @@ const AuthPage = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <button type="submit">Sign Up</button>
+            <button
+              type="submit"
+              className={
+                email.length && password.length && confirmPassword.length
+                  ? ""
+                  : "disabled-auth-button"
+              }
+            >
+              Sign Up
+            </button>
           </form>
         </div>
         <div className="form-container sign-in-container">
@@ -185,7 +194,14 @@ const AuthPage = () => {
             <a href="#" className="forgot-password-link">
               Forgot your password?
             </a>
-            <button type="submit">Sign In</button>
+            <button
+              type="submit"
+              className={
+                email.length && password.length ? "" : "disabled-auth-button"
+              }
+            >
+              Sign In
+            </button>
           </form>
         </div>
         <div className="overlay-container">
