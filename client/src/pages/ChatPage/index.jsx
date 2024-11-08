@@ -8,7 +8,13 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const ChatPage = () => {
-  const { userInfo } = useAppStore();
+  const {
+    userInfo,
+    setSelectedChatData,
+    setSelectedChatType,
+    setSelectedChatMessages,
+    setActiveChatId,
+  } = useAppStore();
   const navigate = useNavigate();
   useEffect(() => {
     if (!userInfo.profileSetup) {
@@ -16,6 +22,23 @@ const ChatPage = () => {
       navigate("/profile");
     }
   }, [userInfo, navigate]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setActiveChatId(undefined);
+        setSelectedChatType(undefined);
+        setSelectedChatData(undefined);
+        setSelectedChatMessages([]);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="chat-page">
