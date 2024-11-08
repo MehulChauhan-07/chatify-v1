@@ -468,8 +468,6 @@ const SingleChatMessageContainer = () => {
         // placeholderMessage !== null &&
         // placeholderMessage !== "" &&
         <>
-          {console.log("placeholderMessage in:")}
-          {console.log(placeholderMessage)}
           <div className="message own-message">
             <div className="message-content own-message-content">
               <div className="user-pointer">

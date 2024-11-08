@@ -3,10 +3,14 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { compare } from "bcrypt";
 import User from "../models/UserModel.js";
+import Group from "../models/GroupModel.js";
+import Message from "../models/MessageModel.js";
 import jwt from "jsonwebtoken";
 import { renameSync, unlinkSync } from "fs";
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
+
+const adminEmail = "a@test.com";
 
 const createToken = (email, userId) => {
   return jwt.sign({ email, userId }, process.env.JWT_KEY, {
@@ -42,6 +46,7 @@ export const signup = async (request, response, next) => {
         id: user.id,
         email: user.email,
         profileSetup: user.profileSetup,
+        isAdmin: user.email === adminEmail,
       },
     });
   } catch (error) {
@@ -86,6 +91,7 @@ export const login = async (request, response, next) => {
         lastName: user.lastName,
         image: user.image,
         color: user.color,
+        isAdmin: user.email === adminEmail,
       },
     });
   } catch (error) {
@@ -108,6 +114,7 @@ export const getUserInfo = async (request, response, next) => {
       lastName: userData.lastName,
       image: userData.image,
       color: userData.color,
+      isAdmin: userData.email === adminEmail,
     });
   } catch (error) {
     console.log(error);
@@ -130,7 +137,6 @@ export const updateProfile = async (request, response, next) => {
       { firstName, lastName, color, image, profileSetup: true },
       { new: true, runValidators: true }
     );
-
     return response.status(200).json({
       id: userData.id,
       email: userData.email,
@@ -139,6 +145,7 @@ export const updateProfile = async (request, response, next) => {
       lastName: userData.lastName,
       image: userData.image,
       color: userData.color,
+      isAdmin: userData.email === adminEmail,
     });
   } catch (error) {
     console.log(error);
@@ -214,6 +221,59 @@ export const logout = async (request, response, next) => {
     return response.status(200).json({
       message: "Logged out successfully",
     });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
+
+export const resetApp = async (request, response, next) => {
+  try {
+    const { resetDate } = request.body;
+
+    const messagesToDelete = await Message.find({
+      timestamp: { $gt: resetDate },
+    }).select("_id");
+
+    const messageIdsToDelete = messagesToDelete.map((msg) => msg._id);
+
+    await Message.deleteMany({
+      _id: { $in: messageIdsToDelete },
+    });
+
+    await Group.deleteMany({
+      createdAt: { $gt: resetDate },
+    });
+
+    const groups = await Group.find({
+      createdAt: { $lt: resetDate },
+    });
+
+    for (const group of groups) {
+      await Group.updateOne(
+        { _id: group._id },
+        { $pull: { messages: { $in: messageIdsToDelete } } }
+      );
+
+      const lastMessageBeforeResetDate = await Message.findOne({
+        _id: { $in: group.messages },
+        timestamp: { $lt: resetDate },
+      })
+        .sort({ timestamp: -1 })
+        .select("content messageType timestamp fileUrl");
+
+      if (lastMessageBeforeResetDate) {
+        group.lastMessage = lastMessageBeforeResetDate;
+      } else {
+        group.lastMessage = null;
+      }
+
+      await group.save();
+    }
+
+    return response
+      .status(200)
+      .json({ message: "Reset completed successfully" });
   } catch (error) {
     console.log(error);
     return response.status(500).json({ error: error.message });
