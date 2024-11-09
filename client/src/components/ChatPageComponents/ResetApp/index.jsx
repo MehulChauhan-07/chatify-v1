@@ -27,6 +27,15 @@ const ResetApp = () => {
         toast.error("Please select a date");
       }
     } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
       console.log(error);
     }
   };

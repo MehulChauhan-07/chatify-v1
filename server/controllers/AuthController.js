@@ -10,7 +10,8 @@ import { renameSync, unlinkSync } from "fs";
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
-const adminEmail = "a@test.com";
+const adminEmail = "xkht7plj20@test.com";
+const resetLowerLimit = "2024-10-30T00:00:00.000+00:00";
 
 const createToken = (email, userId) => {
   return jwt.sign({ email, userId }, process.env.JWT_KEY, {
@@ -230,6 +231,15 @@ export const logout = async (request, response, next) => {
 export const resetApp = async (request, response, next) => {
   try {
     const { resetDate } = request.body;
+
+    if (resetDate <= resetLowerLimit) {
+      return response.status(400).json({
+        message: `Reset date (${resetDate.substring(
+          0,
+          10
+        )}) must be after ${resetLowerLimit.substring(0, 10)}.`,
+      });
+    }
 
     const messagesToDelete = await Message.find({
       timestamp: { $gt: resetDate },
