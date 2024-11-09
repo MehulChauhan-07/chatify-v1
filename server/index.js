@@ -42,7 +42,7 @@ setupSocket(server);
 mongoose
   .connect(databaseURL)
   .then(() => {
-    console.log("Connected to MongoDB successfully");
+    console.log("Connected to MongoDB successfully.");
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
