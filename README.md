@@ -39,26 +39,13 @@ PEPPER_STRING="YOUR_PEPPER_STRING"
 - ### create a `.env` file in the `client` folder
 
 ```
+VITE_FIREBASE_API_KEY="YOUR_API_KEY"
+VITE_FIREBASE_AUTH_DOMAIN="YOUR_AUTH_DOMAIN"
+VITE_FIREBASE_PROJECT_ID="YOUR_PROJECT_ID"
+VITE_FIREBASE_STORAGE_BUCKET="YOUR_STORAGE_BUCKET"
+VITE_FIREBASE_MESSAGING_SENDER_ID="YOUR_MESSAGING_SENDER_ID"
+VITE_FIREBASE_APP_ID="YOUR_APP_ID"
 VITE_SERVER_URL="http://localhost:3001"
-```
-
-- ### create a `firebase.js` file in the `lib` folder under `client/src`
-
-```
-import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
-
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-};
-
-const app = initializeApp(firebaseConfig);
-export const storage = getStorage(app);
 ```
 
 ### 🏃‍♂️ Running in local development mode
