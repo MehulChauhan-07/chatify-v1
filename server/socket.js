@@ -7,8 +7,7 @@ const setupSocket = (server) => {
 
   const io = new SocketIOServer(server, {
     cors: {
-      // origin: [process.env.ORIGIN],
-      origin: "*",
+      origin: [process.env.ORIGIN],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true,
     },
