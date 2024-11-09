@@ -44,6 +44,14 @@ const SingleChatMessageBar = () => {
   //     setMessage((message) => message + emoji.emoji);
   //   };
 
+  const messageInputRef = useRef();
+
+  useEffect(() => {
+    if (messageInputRef.current) {
+      messageInputRef.current.focus();
+    }
+  }, [selectedChatData]);
+
   const handleSendMessage = async () => {
     if (!message.trim()) return;
 
@@ -162,6 +170,7 @@ const SingleChatMessageBar = () => {
           type="text"
           placeholder="Type a message..."
           value={message}
+          ref={messageInputRef}
           onChange={(e) => setMessage(e.target.value)}
           className="message-bar-search-input"
           onKeyDown={handleKeyDown}
