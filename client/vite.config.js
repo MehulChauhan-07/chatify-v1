@@ -7,9 +7,4 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  build: {
-    rollupOptions: {
-      external: ["firebase/storage", "firebase/app"],
-    },
-  },
 });

@@ -10,8 +10,8 @@ import { renameSync, unlinkSync } from "fs";
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
-const adminEmail = "xkht7plj20@test.com";
-const resetLowerLimit = "2024-10-30T00:00:00.000+00:00";
+const adminEmail = process.env.ADMIN_EMAIL;
+const resetLowerLimit = process.env.RESET_LOWER_LIMIT;
 
 const createToken = (email, userId) => {
   return jwt.sign({ email, userId }, process.env.JWT_KEY, {
