@@ -5,6 +5,8 @@ A real-time chat application whose style is heavily inspired by WhatsApp. Built 
 > [!WARNING]
 > Messages sent in direct messages and group chats are **_not encrypted_** and are stored as **_plain text_** in the database. **DO NOT share** sensitive information, such as passwords, financial details, or any private data that you use in other applications or accounts. Use this chat app only for the purpose of previewing a demo application.
 
+### 🚩 [View Live Demo](https://realtime-chat-app-one-topaz.vercel.app)
+
 ### ✨ Features
 
 - signing up & signing in
@@ -60,18 +62,26 @@ export const storage = getStorage(app);
 ### 🏃‍♂️ Running in local development mode
 
 - `server`
+
 ```bash
 cd server
 npm install
 npm run dev
 ```
+
 - `client`
+
 ```bash
 cd client
 npm install
 npm run dev
 ```
+
 open http://localhost:3000 with your browser to see the result.
+
+### 🚩 Live Demo
+
+Current version running at: [https://realtime-chat-app-one-topaz.vercel.app](https://realtime-chat-app-one-topaz.vercel.app)
 
 ### 📷 Screenshots
 
