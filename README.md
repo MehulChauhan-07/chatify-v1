@@ -9,6 +9,9 @@ A real-time chat application whose style is heavily inspired by WhatsApp. Built 
 
 Current version running at: [https://realtime-chat-app-one-topaz.vercel.app](https://realtime-chat-app-one-topaz.vercel.app)
 
+> [!NOTE]
+> It may take up to 1 minute for the site to be brought up while the loading indicator is displayed, since free instances in Render will spin down with inactivity which can delay requests by 50 seconds or more.
+
 ### ✨ Features
 
 - signing up & signing in
