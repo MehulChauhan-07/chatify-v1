@@ -33,6 +33,7 @@ const LeftSidebar = () => {
 
   return (
     <div className="left-sidebar">
+      <div className="icons">
       <div className="icon-container">
         <div
           className={`tooltip icon ${
@@ -58,7 +59,9 @@ const LeftSidebar = () => {
           <span className="tooltiptext">Requests</span>
         </div>
       </div>
-      <div className="between-icon-vertical-space-filler"></div>
+      </div>
+      {/* <div className="between-icon-vertical-space-filler"></div> */}
+      <div className="icons">
       <div className="icon-container">
         <div
           className={`tooltip icon currently-disabled-icon ${
@@ -95,6 +98,7 @@ const LeftSidebar = () => {
           </div>
           <span className="tooltiptext">Profile</span>
         </div>
+      </div>
       </div>
     </div>
   );
