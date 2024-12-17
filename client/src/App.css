@@ -4,7 +4,8 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   background-color: var(--root-bg-color);
 }
 
@@ -14,6 +15,9 @@
   height: calc(100vh - 3rem);
   background-color: var(--app-container-bg-color);
   color: var(--app-container-text-color);
+  /* max-width: 1440px; */
+  max-width: 1536px;
+  /* max-width: 1600px; */
 }
 
 .currently-disabled-icon {
