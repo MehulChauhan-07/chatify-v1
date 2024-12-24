@@ -134,19 +134,19 @@ const ChatList = () => {
 
   const searchModalContacts = async (searchTerm) => {
     try {
-      if (searchTerm.length > 0) {
-        const response = await apiClient.post(
-          SEARCH_CONTACTS_ROUTE,
-          { searchTerm },
-          { withCredentials: true }
-        );
+      // if (searchTerm.length > 0) {
+      const response = await apiClient.post(
+        SEARCH_CONTACTS_ROUTE,
+        { searchTerm },
+        { withCredentials: true }
+      );
 
-        if (response.status === 200 && response.data.contacts) {
-          setSearchedModalContacts(response.data.contacts);
-        }
-      } else {
-        setSearchedModalContacts([]);
+      if (response.status === 200 && response.data.contacts) {
+        setSearchedModalContacts(response.data.contacts);
       }
+      // } else {
+      //   setSearchedModalContacts([]);
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -393,6 +393,7 @@ const ChatList = () => {
                 </div>
                 <div
                   onClick={() => {
+                    searchModalContacts("");
                     setOpenNewContactModal((prev) => !prev);
                   }}
                   ref={newContactIconRef}
@@ -524,67 +525,71 @@ const ChatList = () => {
                           className="modal-input"
                         />
                       </div>
-                      {searchedModalContacts.length <= 0 ? null : (
-                        <>
-                          <div className="filler-container">
-                            <div className="horizontal-filler"></div>
-                            <div className="scrollbar-triangle">
-                              <BsFillTriangleFill />
-                            </div>
-                          </div>
-                          <div className="contacts-container">
-                            <div className="searched-contacts">
-                              {searchedModalContacts.map((contact) => (
-                                <div
-                                  key={contact._id}
-                                  className="single-contact"
-                                  onClick={() => selectNewContact(contact)}
-                                >
-                                  <div className="avatar-main-container">
-                                    <div className="avatar-inner-container">
-                                      {contact.image ? (
-                                        // <div className="select-contact-image">
-                                        <img
-                                          src={contact.image}
-                                          alt="profile"
-                                          className="select-contact-image"
-                                        />
-                                      ) : (
-                                        //</div>
-                                        <div className="select-contact-image no-avatar">
-                                          {contact.firstName && contact.lastName
-                                            ? `${contact.firstName.charAt(
-                                                0
-                                              )} ${contact.lastName.charAt(0)}`
-                                            : contact.firstName
-                                            ? contact.firstName.charAt(0)
-                                            : contact.lastName
-                                            ? contact.lastName.charAt(0)
-                                            : contact.email.charAt(0)}
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="single-contact-info">
-                                    <div>
+                      {/* {console.log("searchedModalContacts.length")}
+                      {console.log(searchedModalContacts.length)} */}
+                      {/* {searchedModalContacts.length <= 0 ? null : (
+                        <> */}
+                      <div className="filler-container">
+                        <div className="horizontal-filler"></div>
+                        <div className="scrollbar-triangle">
+                          <BsFillTriangleFill />
+                        </div>
+                      </div>
+                      <div className="contacts-container">
+                        <div className="searched-contacts">
+                          {/* {console.log("searchedModalContacts")}
+                          {console.log(searchedModalContacts)} */}
+                          {searchedModalContacts.map((contact) => (
+                            <div
+                              key={contact._id}
+                              className="single-contact"
+                              onClick={() => selectNewContact(contact)}
+                            >
+                              <div className="avatar-main-container">
+                                <div className="avatar-inner-container">
+                                  {contact.image ? (
+                                    // <div className="select-contact-image">
+                                    <img
+                                      src={contact.image}
+                                      alt="profile"
+                                      className="select-contact-image"
+                                    />
+                                  ) : (
+                                    //</div>
+                                    <div className="select-contact-image no-avatar">
                                       {contact.firstName && contact.lastName
-                                        ? `${contact.firstName} ${contact.lastName}`
-                                        : contact.email}
+                                        ? `${contact.firstName.charAt(
+                                            0
+                                          )} ${contact.lastName.charAt(0)}`
+                                        : contact.firstName
+                                        ? contact.firstName.charAt(0)
+                                        : contact.lastName
+                                        ? contact.lastName.charAt(0)
+                                        : contact.email.charAt(0)}
                                     </div>
-                                    <div>{contact.email}</div>
-                                  </div>
+                                  )}
                                 </div>
-                              ))}
+                              </div>
+                              <div className="single-contact-info">
+                                <div>
+                                  {contact.firstName && contact.lastName
+                                    ? `${contact.firstName} ${contact.lastName}`
+                                    : contact.email}
+                                </div>
+                                <div>{contact.email}</div>
+                              </div>
                             </div>
-                          </div>
-                          <div className="filler-container">
-                            <div className="horizontal-filler"></div>
-                            <div className="scrollbar-triangle-upside-down">
-                              <BsFillTriangleFill />
-                            </div>
-                          </div>
-                        </>
-                      )}
+                          ))}
+                        </div>
+                      </div>
+                      <div className="filler-container">
+                        <div className="horizontal-filler"></div>
+                        <div className="scrollbar-triangle-upside-down">
+                          <BsFillTriangleFill />
+                        </div>
+                      </div>
+                      {/* </>
+                      )} */}
                     </div>
                   </div>
                 )}

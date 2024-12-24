@@ -7,10 +7,6 @@ export const searchContacts = async (request, response, next) => {
     const { searchTerm } = request.body;
     const userId = request.userId;
 
-    if (searchTerm === undefined || searchTerm === null) {
-      return response.status(400).json({ error: "searchTerm is required" });
-    }
-
     const sanitizedSearchTerm = searchTerm.replace(
       /[.*+?^${}()|[\]\\]/g,
       "\\$&"
@@ -26,30 +22,38 @@ export const searchContacts = async (request, response, next) => {
 
     const friendsEmails = currentUser.friends; // Get the list of friends' emails
 
-    const contacts = await User.find({
-      $and: [
-        { _id: { $ne: request.userId } },
-        { email: { $in: friendsEmails } }, // Only return contacts whose email is in the friends list
-        {
-          $or: [
-            { firstName: regex }, // Match first name
-            { lastName: regex }, // Match last name
-            { email: regex }, // Match email
-            {
-              $expr: {
-                // Match full name
-                $regexMatch: {
-                  input: { $concat: ["$firstName", " ", "$lastName"] }, // Concatenate first and last name
-                  regex: sanitizedSearchTerm,
-                  options: "i",
+    let contacts;
+
+    if (searchTerm === undefined || searchTerm === null) {
+      contacts = await User.find({
+        _id: { $ne: request.userId }, // Exclude the current user
+        email: { $in: friendsEmails }, // Include only friends by email
+      });
+    } else {
+      contacts = await User.find({
+        $and: [
+          { _id: { $ne: request.userId } },
+          { email: { $in: friendsEmails } }, // Only return contacts whose email is in the friends list
+          {
+            $or: [
+              { firstName: regex }, // Match first name
+              { lastName: regex }, // Match last name
+              { email: regex }, // Match email
+              {
+                $expr: {
+                  // Match full name
+                  $regexMatch: {
+                    input: { $concat: ["$firstName", " ", "$lastName"] }, // Concatenate first and last name
+                    regex: sanitizedSearchTerm,
+                    options: "i",
+                  },
                 },
               },
-            },
-          ],
-        },
-      ],
-    });
-
+            ],
+          },
+        ],
+      });
+    }
     return response.status(200).json({ contacts });
   } catch (error) {
     console.log(error);
