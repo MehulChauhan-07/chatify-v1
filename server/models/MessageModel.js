@@ -13,7 +13,7 @@ const messageSchema = new mongoose.Schema({
   },
   messageType: {
     type: String,
-    enum: ["text", "file"],
+    enum: ["text", "file", "voice"],
     required: true,
   },
   content: {
@@ -25,13 +25,62 @@ const messageSchema = new mongoose.Schema({
   fileUrl: {
     type: String,
     required: function () {
-      return this.messageType === "file";
+      return this.messageType === "file" || this.messageType === "voice";
     },
   },
   timestamp: {
     type: Date,
     default: Date.now,
   },
+  // Read receipts
+  readBy: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+      readAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+  // Message editing and deletion
+  edited: {
+    type: Boolean,
+    default: false,
+  },
+  editedAt: {
+    type: Date,
+  },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
+  // Message reactions
+  reactions: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+      emoji: {
+        type: String,
+        required: true,
+      },
+      timestamp: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+  // Message mentions
+  mentions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+  ],
 });
 
 const Message = mongoose.model("Messages", messageSchema);

@@ -45,6 +45,8 @@ export const createGroup = async (request, response, next) => {
       name,
       // members,
       members: validMembers.map((member) => member._id), // Ensure members have valid user IDs
+      owner: userId, // Set the creator as the owner
+      admins: [userId], // Creator is also an admin
     });
 
     await newGroup.save();
@@ -227,3 +229,163 @@ export const getGroupFiles = async (request, response, next) => {
     return response.status(500).json({ error: error.message });
   }
 };
+
+export const addGroupAdmin = async (request, response) => {
+  try {
+    const { groupId } = request.params;
+    const { userId: newAdminId } = request.body;
+    const requesterId = request.userId;
+
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return response.status(404).json({ error: "Group not found" });
+    }
+
+    // Check if requester is the owner
+    if (group.owner.toString() !== requesterId) {
+      return response
+        .status(403)
+        .json({ error: "Only the group owner can add admins" });
+    }
+
+    // Check if user is a member
+    if (!group.members.includes(newAdminId)) {
+      return response
+        .status(400)
+        .json({ error: "User is not a member of this group" });
+    }
+
+    // Check if already an admin
+    if (group.admins.includes(newAdminId)) {
+      return response.status(400).json({ error: "User is already an admin" });
+    }
+
+    group.admins.push(newAdminId);
+    await group.save();
+
+    return response.status(200).json({ group, message: "Admin added successfully" });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
+
+export const removeGroupAdmin = async (request, response) => {
+  try {
+    const { groupId } = request.params;
+    const { userId: adminId } = request.body;
+    const requesterId = request.userId;
+
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return response.status(404).json({ error: "Group not found" });
+    }
+
+    // Check if requester is the owner
+    if (group.owner.toString() !== requesterId) {
+      return response
+        .status(403)
+        .json({ error: "Only the group owner can remove admins" });
+    }
+
+    // Cannot remove the owner from admins
+    if (adminId === group.owner.toString()) {
+      return response
+        .status(400)
+        .json({ error: "Cannot remove owner from admins" });
+    }
+
+    group.admins = group.admins.filter((id) => id.toString() !== adminId);
+    await group.save();
+
+    return response
+      .status(200)
+      .json({ group, message: "Admin removed successfully" });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
+
+export const transferGroupOwnership = async (request, response) => {
+  try {
+    const { groupId } = request.params;
+    const { userId: newOwnerId } = request.body;
+    const requesterId = request.userId;
+
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return response.status(404).json({ error: "Group not found" });
+    }
+
+    // Check if requester is the current owner
+    if (group.owner.toString() !== requesterId) {
+      return response
+        .status(403)
+        .json({ error: "Only the current owner can transfer ownership" });
+    }
+
+    // Check if new owner is a member
+    if (!group.members.includes(newOwnerId)) {
+      return response
+        .status(400)
+        .json({ error: "New owner must be a member of the group" });
+    }
+
+    // Update owner
+    group.owner = newOwnerId;
+
+    // Ensure new owner is in admins
+    if (!group.admins.includes(newOwnerId)) {
+      group.admins.push(newOwnerId);
+    }
+
+    await group.save();
+
+    return response
+      .status(200)
+      .json({ group, message: "Ownership transferred successfully" });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
+
+export const updateGroupNotificationSettings = async (request, response) => {
+  try {
+    const { groupId } = request.params;
+    const { muted, mentionsOnly } = request.body;
+    const userId = request.userId;
+
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return response.status(404).json({ error: "Group not found" });
+    }
+
+    // Initialize notificationSettings if it doesn't exist
+    if (!group.notificationSettings) {
+      group.notificationSettings = new Map();
+    }
+
+    const settings = group.notificationSettings.get(userId) || {};
+
+    if (muted !== undefined) settings.muted = muted;
+    if (mentionsOnly !== undefined) settings.mentionsOnly = mentionsOnly;
+
+    group.notificationSettings.set(userId, settings);
+    await group.save();
+
+    return response.status(200).json({
+      message: "Notification settings updated",
+      settings,
+    });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
+

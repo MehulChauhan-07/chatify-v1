@@ -6,6 +6,9 @@ import {
   searchContacts,
   searchDMContacts,
   getContactFiles,
+  getUserStatus,
+  updateChatSettings,
+  getChatSettings,
 } from "../controllers/ContactsController.js";
 
 const contactsRoutes = Router();
@@ -19,5 +22,8 @@ contactsRoutes.get(
   verifyToken,
   getContactFiles
 );
+contactsRoutes.get("/status/:userId", verifyToken, getUserStatus);
+contactsRoutes.put("/chat-settings", verifyToken, updateChatSettings);
+contactsRoutes.get("/chat-settings", verifyToken, getChatSettings);
 
 export default contactsRoutes;

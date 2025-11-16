@@ -46,6 +46,28 @@ const userSchema = new mongoose.Schema({
       ref: "Users",
     },
   ],
+  // Online/Offline status
+  lastSeen: {
+    type: Date,
+    default: Date.now,
+  },
+  // Chat settings for themes and customization
+  chatSettings: {
+    theme: {
+      type: String,
+      enum: ["light", "dark", "custom"],
+      default: "light",
+    },
+    wallpaper: {
+      type: String,
+      required: false,
+    },
+    fontSize: {
+      type: String,
+      enum: ["small", "medium", "large"],
+      default: "medium",
+    },
+  },
 });
 
 // userSchema.pre("save", async function (next) {
