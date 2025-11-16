@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./LeftSidebarContactOrGroupProfile.css";
 import moment from "moment";
 import { useAppStore } from "../../../store";
+import { useAuth } from "../../../hooks/useAuth";
 import { apiClient } from "../../../lib/api-client";
 import {
   GET_CONTACT_FILES_ROUTE,
@@ -20,11 +21,10 @@ const LeftSidebarContactOrGroupProfile = () => {
     setActiveFilter(filterName);
   };
 
+  const { user: userInfo } = useAuth();
   const {
     activeIcon,
     setActiveIcon,
-    userInfo,
-    setUserInfo,
     closeChat,
     contactOrGroupProfile,
     setSelectedChatType,
@@ -246,7 +246,7 @@ const LeftSidebarContactOrGroupProfile = () => {
                         <div>
                           {groupMembers.map((member) => (
                             <div className="group-member" key={member._id}>
-                              {member.id === userInfo.id
+                              {member.id === userInfo?.id
                                 ? "You"
                                 : `${member.firstName} ${member.lastName}`}
                             </div>

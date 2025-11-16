@@ -3,25 +3,27 @@ import ChatList from "../../components/ChatPageComponents/ChatList";
 import LeftSidebar from "../../components/ChatPageComponents/LeftSidebar";
 import SingleChat from "../../components/ChatPageComponents/SingleChat";
 import { useAppStore } from "../../store";
+import { useAuth } from "../../hooks/useAuth";
 import "./ChatPage.css";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const ChatPage = () => {
   const {
-    userInfo,
     setSelectedChatData,
     setSelectedChatType,
     setSelectedChatMessages,
     setActiveChatId,
   } = useAppStore();
+  const { user } = useAuth();
   const navigate = useNavigate();
+  
   useEffect(() => {
-    if (!userInfo.profileSetup) {
+    if (user && !user.profileSetup) {
       toast.error("Please set up your profile first");
       navigate("/profile");
     }
-  }, [userInfo, navigate]);
+  }, [user, navigate]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -49,4 +51,5 @@ const ChatPage = () => {
   );
 };
 
+export { ChatPage };
 export default ChatPage;

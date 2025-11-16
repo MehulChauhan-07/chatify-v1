@@ -2,19 +2,20 @@ import { IoMdMore } from "react-icons/io";
 import { IoIosSearch } from "react-icons/io";
 import "./SingleChatHeader.css";
 import { useAppStore } from "../../../store";
+import { useAuth } from "../../../hooks/useAuth";
 import { GET_GROUP_MEMBERS_ROUTE } from "../../../utils/constants";
 import { useEffect } from "react";
 import { apiClient } from "../../../lib/api-client";
 import { HiUserGroup } from "react-icons/hi";
 
 const SingleChatHeader = () => {
+  const { user: userInfo } = useAuth();
   const {
     selectedChatData,
     selectedChatType,
     setActiveIcon,
     selectedChatMembers,
     setSelectedChatMembers,
-    userInfo,
     setContactOrGroupProfile,
   } = useAppStore();
 
@@ -94,7 +95,7 @@ const SingleChatHeader = () => {
             <div className="group-members">
               {selectedChatMembers.map((member, index) => (
                 <span key={member.id} className="member">
-                  {member.id === userInfo.id
+                  {member.id === userInfo?.id
                     ? "You"
                     : `${member.firstName} ${member.lastName}`}
                   {index < selectedChatMembers.length - 1 && `,\u00A0`}

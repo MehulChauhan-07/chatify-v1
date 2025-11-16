@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./LeftSidebarProfile.css";
 import { useAppStore } from "../../../store";
+import { useAuth } from "../../../hooks/useAuth";
 import { apiClient } from "../../../lib/api-client";
 import {
   HOST,
@@ -17,11 +18,10 @@ const LeftSidebarProfile = () => {
     setActiveFilter(filterName);
   };
 
+  const { user: userInfo } = useAuth();
   const {
     activeIcon,
     setActiveIcon,
-    userInfo,
-    setUserInfo,
     closeChat,
     uploadProgress,
     setUploadProgress,
@@ -37,12 +37,12 @@ const LeftSidebarProfile = () => {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (userInfo.profileSetup) {
+    if (userInfo?.profileSetup) {
       setFirstName(userInfo.firstName);
       setLastName(userInfo.lastName);
       setSelectedColor(userInfo.color);
     }
-    if (userInfo.image) {
+    if (userInfo?.image) {
       setImage(userInfo.image);
     }
   }, [userInfo]);
@@ -134,7 +134,7 @@ const LeftSidebarProfile = () => {
       if (file) {
         // setShowFileUploadPlaceholder(true);
 
-        fileUrl = await upload(file, userInfo.id);
+        fileUrl = await upload(file, userInfo?.id);
 
         if (fileUrl) {
           setImage(fileUrl);
@@ -163,7 +163,7 @@ const LeftSidebarProfile = () => {
 
         <div className="info-inputs">
           <div className="info-input-container">
-            {uploadProgress > 0 && uploadTargetId === userInfo.id ? (
+            {uploadProgress > 0 && uploadTargetId === userInfo?.id ? (
               <div className="profile-image uploading">
                 {`${uploadProgress.toFixed(2)}%`}
               </div>
@@ -206,7 +206,7 @@ const LeftSidebarProfile = () => {
               placeholder="Email"
               type="email"
               disabled
-              value={userInfo.email}
+              value={userInfo?.email || ''}
               className="info-input disabled"
             />
           </div>

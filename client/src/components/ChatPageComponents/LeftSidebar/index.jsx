@@ -3,12 +3,14 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IoMailOutline } from "react-icons/io5";
 import "./LeftSidebar.css";
 import { useAppStore } from "../../../store";
+import { useAuth } from "../../../hooks/useAuth";
 import { useEffect } from "react";
 import { apiClient } from "../../../lib/api-client";
 import { GET_FRIEND_REQUESTS_ROUTE } from "../../../utils/constants";
 
 const LeftSidebar = () => {
-  const { activeIcon, setActiveIcon, userInfo } = useAppStore();
+  const { activeIcon, setActiveIcon } = useAppStore();
+  const { user: userInfo } = useAuth();
 
   const handleIconClick = (iconName) => {
     setActiveIcon(iconName);
@@ -80,19 +82,19 @@ const LeftSidebar = () => {
           onClick={() => handleIconClick("avatar")}
         >
           <div className="avatar">
-            {userInfo.image ? (
+            {userInfo?.image ? (
               <img src={userInfo.image} alt="avatar" className="img" />
             ) : (
               <div className="img no-avatar">
-                {userInfo.firstName && userInfo.lastName
+                {userInfo?.firstName && userInfo?.lastName
                   ? `${userInfo.firstName.charAt(0)} ${userInfo.lastName.charAt(
                       0
                     )}`
-                  : userInfo.firstName
+                  : userInfo?.firstName
                   ? userInfo.firstName.charAt(0)
-                  : userInfo.lastName
+                  : userInfo?.lastName
                   ? userInfo.lastName.charAt(0)
-                  : userInfo.email.charAt(0)}
+                  : userInfo?.email?.charAt(0) || '?'}
               </div>
             )}
           </div>

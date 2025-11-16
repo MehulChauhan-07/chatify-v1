@@ -1,18 +1,18 @@
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import "./ProfileLandingPage.css";
 import { apiClient } from "../../lib/api-client";
 import { HOST, UPDATE_PROFILE_ROUTE } from "../../utils/constants";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../store";
+import { useAuth } from "../../hooks/useAuth";
 import { IoArrowBack } from "react-icons/io5";
 import upload from "../../lib/upload";
 
 const ProfileLandingPage = () => {
   const navigate = useNavigate();
+  const { user: userInfo, updateUser } = useAuth();
   const {
-    userInfo,
-    setUserInfo,
     uploadProgress,
     setUploadProgress,
     uploadTargetId,
@@ -27,13 +27,14 @@ const ProfileLandingPage = () => {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (userInfo.profileSetup) {
-      setFirstName(userInfo.firstName);
-      setLastName(userInfo.lastName);
-      setSelectedColor(userInfo.color);
+    if (userInfo?.profileSetup) {
+      setFirstName(userInfo.firstName || "");
+      setLastName(userInfo.lastName || "");
+      setSelectedColor(userInfo.color || 0);
     }
-    if (userInfo.image) {
-      setImage(`${HOST}/${userInfo.image}`);
+    if (userInfo?.image) {
+      // If image is already a full URL, use it; otherwise prepend HOST
+      setImage(userInfo.image.startsWith('http') ? userInfo.image : `${HOST}/${userInfo.image}`);
     }
   }, [userInfo]);
 
@@ -66,7 +67,18 @@ const ProfileLandingPage = () => {
         );
 
         if (response.status === 200 && response.data) {
-          setUserInfo({ ...response.data });
+          // Backend returns user data directly
+          const updatedUser = {
+            id: response.data.id,
+            email: response.data.email,
+            profileSetup: response.data.profileSetup,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            image: response.data.image,
+            color: response.data.color,
+            isAdmin: response.data.isAdmin,
+          };
+          updateUser(updatedUser);
           toast.success("Profile updated successfully");
           navigate("/chat");
         }
@@ -108,7 +120,7 @@ const ProfileLandingPage = () => {
       if (file) {
         // setShowFileUploadPlaceholder(true);
 
-        fileUrl = await upload(file, userInfo.id);
+        fileUrl = await upload(file, userInfo?.id);
 
         if (fileUrl) {
           setImage(fileUrl);
@@ -146,7 +158,7 @@ const ProfileLandingPage = () => {
       <div className="info-container">
         <div className="info-inputs">
           <div className="info-input-container">
-            {uploadProgress > 0 && uploadTargetId === userInfo.id ? (
+            {uploadProgress > 0 && uploadTargetId === userInfo?.id ? (
               <div className="profile-landing-page-image uploading">
                 {`${uploadProgress.toFixed(2)}%`}
               </div>
@@ -192,7 +204,7 @@ const ProfileLandingPage = () => {
               placeholder="Email"
               type="email"
               disabled
-              value={userInfo.email}
+              value={userInfo?.email || ""}
               className="info-input disabled"
             />
           </div>

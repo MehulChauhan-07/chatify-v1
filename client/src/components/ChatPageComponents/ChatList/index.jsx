@@ -8,6 +8,7 @@ import { MdGroupAdd } from "react-icons/md";
 import "./ChatList.css";
 import Chats from "../Chats";
 import { useAppStore } from "../../../store";
+import { useAuth } from "../../../hooks/useAuth";
 import { apiClient } from "../../../lib/api-client";
 import {
   CREATE_FRIEND_REQUEST_ROUTE,
@@ -33,7 +34,8 @@ import LeftSidebarContactOrGroupProfile from "../LeftSidebarContactOrGroupProfil
 const ChatList = () => {
   const { activeIcon, setActiveIcon } = useAppStore();
   const { activeFilter, setActiveFilter } = useAppStore();
-  const { refreshChatList, setRefreshChatList, userInfo } = useAppStore();
+  const { refreshChatList, setRefreshChatList } = useAppStore();
+  const { user: userInfo } = useAuth();
 
   // const [activeFilter, setActiveFilter] = useState("all");
   const handleFilterClick = (filterName) => {
@@ -175,7 +177,7 @@ const ChatList = () => {
   const sendFriendRequestToContact = async (contactTag) => {
     setOpenAddContactModal(false);
 
-    if (contactTag === userInfo.email) {
+    if (contactTag === userInfo?.email) {
       toast.error("Cannot send friend request to yourself");
       setContactTag("");
       setOpenAddContactModal(true);

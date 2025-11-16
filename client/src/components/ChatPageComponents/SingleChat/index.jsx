@@ -1,4 +1,5 @@
 import { useAppStore } from "../../../store";
+import { useAuth } from "../../../hooks/useAuth";
 import SingleChatHeader from "../SingleChatHeader";
 import SingleChatMessageBar from "../SingleChatMessageBar";
 import SingleChatMessageContainer from "../SingleChatMessageContainer";
@@ -6,7 +7,8 @@ import ResetApp from "../ResetApp";
 import "./SingleChat.css";
 
 const SingleChat = () => {
-  const { selectedChatType, userInfo } = useAppStore();
+  const { selectedChatType } = useAppStore();
+  const { user: userInfo } = useAuth();
 
   return (
     <div className="single-chat">
@@ -16,7 +18,7 @@ const SingleChat = () => {
           <SingleChatMessageContainer />
           <SingleChatMessageBar />
         </>
-      ) : userInfo.isAdmin ? (
+      ) : userInfo?.isAdmin ? (
         <ResetApp />
       ) : null}
     </div>

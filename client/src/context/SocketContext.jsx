@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { useAppStore } from "../store";
+import { useAuth } from "../hooks/useAuth";
 import { HOST } from "../utils/constants";
 
 const SocketContext = createContext(null);
@@ -11,10 +12,10 @@ export const useSocket = () => {
 
 export const SocketProvider = ({ children }) => {
   const socket = useRef();
-  const { userInfo } = useAppStore();
+  const { user: userInfo } = useAuth();
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo?.id) {
       socket.current = io(HOST, {
         withCredentials: true,
         query: { userId: userInfo.id },

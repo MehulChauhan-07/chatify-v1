@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./SingleChatMessageContainer.css";
 import { useAppStore } from "../../../store";
+import { useAuth } from "../../../hooks/useAuth";
 import { apiClient } from "../../../lib/api-client";
 import {
   GET_ALL_MESSAGES_ROUTE,
@@ -20,10 +21,10 @@ const SingleChatMessageContainer = () => {
   const scrollProgressRef = useRef();
   const placeholderMessageRef = useRef();
 
+  const { user: userInfo } = useAuth();
   const {
     selectedChatType,
     selectedChatData,
-    userInfo,
     selectedChatMessages,
     setSelectedChatMessages,
     selectedChatMembers,
@@ -306,12 +307,12 @@ const SingleChatMessageContainer = () => {
   const renderGroupMessages = (message) => (
     <div
       className={`message group-message ${
-        message.sender._id === userInfo.id ? "own-message" : "contact-message"
+        message.sender._id === userInfo?.id ? "own-message" : "contact-message"
       }`}
     >
       {/* {console.log("selectedChatData")}
       {console.log(selectedChatData)} */}
-      {message.sender._id === userInfo.id ? null : (
+      {message.sender._id === userInfo?.id ? null : (
         <div className="contact-avatar">
           {message.sender.image ? (
             <div className="avatar">
@@ -334,7 +335,7 @@ const SingleChatMessageContainer = () => {
       )}
       <div
         className={`${
-          message.sender._id === userInfo.id
+          message.sender._id === userInfo?.id
             ? "own-message-content"
             : "contact-message-content"
         } message-content`}
@@ -342,7 +343,7 @@ const SingleChatMessageContainer = () => {
         <div className="user-pointer">
           <MdChatBubble className="user-pointer-icon" />
         </div>
-        {message.sender._id !== userInfo.id && (
+        {message.sender._id !== userInfo?.id && (
           <div className="group-message-contact-info-above-content">
             <div
               className="contact-info"

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 import "./SingleChatMessageBar.css";
 import { useAppStore } from "../../../store";
+import { useAuth } from "../../../hooks/useAuth";
 import { useSocket } from "../../../context/SocketContext";
 import upload from "../../../lib/upload";
 
@@ -15,11 +16,11 @@ const SingleChatMessageBar = () => {
   //   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
   const socket = useSocket();
+  const { user: userInfo } = useAuth();
 
   const {
     selectedChatType,
     selectedChatData,
-    userInfo,
     setRefreshChatList,
     setActiveChatId,
     setPlaceholderMessage,
@@ -58,7 +59,7 @@ const SingleChatMessageBar = () => {
     // console.log(message);
     if (selectedChatType === "contact") {
       socket.emit("sendMessage", {
-        sender: userInfo.id,
+        sender: userInfo?.id,
         content: message,
         recipient: selectedChatData._id,
         messageType: "text",
@@ -66,7 +67,7 @@ const SingleChatMessageBar = () => {
       });
     } else if (selectedChatType === "group") {
       socket.emit("sendGroupMessage", {
-        sender: userInfo.id,
+        sender: userInfo?.id,
         content: message,
         messageType: "text",
         fileUrl: undefined,
@@ -113,7 +114,7 @@ const SingleChatMessageBar = () => {
         if (fileUrl) {
           if (selectedChatType === "contact") {
             socket.emit("sendMessage", {
-              sender: userInfo.id,
+              sender: userInfo?.id,
               content: undefined,
               recipient: selectedChatData._id,
               messageType: "file",
@@ -121,7 +122,7 @@ const SingleChatMessageBar = () => {
             });
           } else if (selectedChatType === "group") {
             socket.emit("sendGroupMessage", {
-              sender: userInfo.id,
+              sender: userInfo?.id,
               content: undefined,
               messageType: "file",
               fileUrl: fileUrl,
