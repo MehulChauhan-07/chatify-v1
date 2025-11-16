@@ -29,24 +29,43 @@ export const ChatList = () => {
     const fetchData = async () => {
       try {
         setLoading(true)
+        console.log('Fetching chats from backend...')
         
         // Fetch direct message contacts
-        const contactsResponse = await apiClient.get(GET_DM_CONTACTS_ROUTE, {
-          withCredentials: true,
-        })
+        console.log('Fetching contacts from:', GET_DM_CONTACTS_ROUTE)
+        const contactsResponse = await apiClient.get(GET_DM_CONTACTS_ROUTE)
+        console.log('Contacts response:', contactsResponse.data)
+        
         if (contactsResponse.data?.contacts) {
+          console.log('Setting contacts:', contactsResponse.data.contacts.length)
           setDirectMessagesContacts(contactsResponse.data.contacts)
+        } else {
+          console.warn('No contacts in response')
+          setDirectMessagesContacts([])
         }
 
         // Fetch groups
-        const groupsResponse = await apiClient.get(GET_USER_GROUPS_ROUTE, {
-          withCredentials: true,
-        })
+        console.log('Fetching groups from:', GET_USER_GROUPS_ROUTE)
+        const groupsResponse = await apiClient.get(GET_USER_GROUPS_ROUTE)
+        console.log('Groups response:', groupsResponse.data)
+        
         if (groupsResponse.data?.groups) {
+          console.log('Setting groups:', groupsResponse.data.groups.length)
           setGroups(groupsResponse.data.groups)
+        } else {
+          console.warn('No groups in response')
+          setGroups([])
         }
       } catch (error) {
         console.error('Failed to fetch chats:', error)
+        console.error('Error details:', {
+          message: error.message,
+          response: error.response?.data,
+          status: error.response?.status,
+        })
+        // Set empty arrays on error to prevent UI issues
+        setDirectMessagesContacts([])
+        setGroups([])
       } finally {
         setLoading(false)
       }
@@ -57,6 +76,8 @@ export const ChatList = () => {
 
   // Format contacts and groups into a unified chat list
   const chats = useMemo(() => {
+    console.log('Formatting chats - Contacts:', directMessagesContacts?.length || 0, 'Groups:', groups?.length || 0)
+    
     const formattedContacts = (directMessagesContacts || []).map(contact => {
       let lastMessage = contact.lastMessage || ''
       // If it's a file message, show a file indicator
@@ -102,7 +123,7 @@ export const ChatList = () => {
     }))
 
     // Combine and sort by last message time or updated time
-    return [...formattedContacts, ...formattedGroups].sort((a, b) => {
+    const combined = [...formattedContacts, ...formattedGroups].sort((a, b) => {
       const timeA = a.data?.lastMessageTime 
         ? new Date(a.data.lastMessageTime) 
         : a.data?.updatedAt 
@@ -115,6 +136,9 @@ export const ChatList = () => {
         : new Date(0)
       return timeB - timeA
     })
+    
+    console.log('Formatted chats:', combined.length)
+    return combined
   }, [directMessagesContacts, groups])
 
   const filteredChats = chats.filter(chat =>

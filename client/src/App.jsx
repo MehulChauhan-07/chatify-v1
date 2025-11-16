@@ -14,9 +14,10 @@ function App() {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await apiClient.get(GET_USER_INFO_ROUTE, {
-          withCredentials: true,
-        });
+        console.log('Fetching user info from:', GET_USER_INFO_ROUTE);
+        const response = await apiClient.get(GET_USER_INFO_ROUTE);
+        console.log('User info response:', response.data);
+        
         if (response.data && response.data.id) {
           setUserInfo({
             id: response.data.id,
@@ -28,9 +29,17 @@ function App() {
             color: response.data.color,
             isAdmin: response.data.isAdmin,
           });
+          console.log('User info set successfully');
+        } else {
+          console.warn('No user info in response');
         }
       } catch (error) {
         console.error("Failed to fetch user info:", error);
+        console.error("Error details:", {
+          message: error.message,
+          response: error.response?.data,
+          status: error.response?.status,
+        });
         // User is not authenticated, but we'll still show the app
         // In a real app, you might want to redirect to login
       } finally {

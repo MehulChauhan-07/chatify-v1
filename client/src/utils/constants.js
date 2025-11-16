@@ -1,4 +1,10 @@
-export const HOST = import.meta.env.VITE_SERVER_URL;
+// Get the server URL from environment variable, with fallback to localhost
+export const HOST = import.meta.env.VITE_SERVER_URL || "http://localhost:3001";
+
+// Log the HOST for debugging (remove in production)
+if (import.meta.env.DEV) {
+  console.log("API HOST configured as:", HOST);
+}
 
 export const AUTH_ROUTES = "api/auth";
 export const SIGNUP_ROUTE = `${AUTH_ROUTES}/signup`;
