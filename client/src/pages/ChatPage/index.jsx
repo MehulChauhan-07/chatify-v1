@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import ChatList from "../../components/ChatPageComponents/ChatList";
+import { ChatList } from "../../components/chat/ChatList";
 import LeftSidebar from "../../components/ChatPageComponents/LeftSidebar";
 import SingleChat from "../../components/ChatPageComponents/SingleChat";
 import { useAppStore } from "../../store";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Filter, Plus } from 'lucide-react'
-import { Avatar } from '../ui/avatar.jsx'
+import { Avatar } from '../ui/avatar'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -153,7 +153,7 @@ export const ChatList = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-neutral-800 border-r border-neutral-200 dark:border-neutral-700 w-80 flex flex-col">
+    <div className="bg-white dark:bg-neutral-800 border-r border-neutral-200 dark:border-neutral-700 flex flex-col h-full" style={{ width: '30%' }}>
       {/* Header */}
       <div className="p-4 border-b border-neutral-200 dark:border-neutral-700">
         <div className="flex items-center justify-between mb-4">
