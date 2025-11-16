@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import ChatPage from "./pages/ChatPage";
 import ProfileLandingPage from "./pages/ProfileLandingPage";
+import AIChatPage from "./pages/AIChatPage";
 import Notification from "./components/Notification";
 import "./App.css";
 import { useAppStore } from "./store";
@@ -107,6 +108,14 @@ function App() {
             element={
               <ChatRoute>
                 <ChatPage />
+              </ChatRoute>
+            }
+          />
+          <Route
+            path="/ai-chat"
+            element={
+              <ChatRoute>
+                <AIChatPage />
               </ChatRoute>
             }
           />
