@@ -1,7 +1,5 @@
-import { genSalt } from "bcrypt";
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import { compare } from "bcrypt";
+import bcrypt from "bcryptjs";
 import User from "../models/UserModel.js";
 import Group from "../models/GroupModel.js";
 import Message from "../models/MessageModel.js";
@@ -28,7 +26,7 @@ export const signup = async (request, response, next) => {
         .json({ error: "Email and password are required" });
     }
 
-    const salt = await genSalt(10);
+  const salt = await bcrypt.genSalt(10);
     const pepper = process.env.PEPPER_STRING;
     const hashedPassword = await bcrypt.hash(salt + password + pepper, 10);
 
@@ -72,7 +70,7 @@ export const login = async (request, response, next) => {
     }
     console.log(user);
     const pepper = process.env.PEPPER_STRING;
-    const auth = await compare(user.salt + password + pepper, user.password);
+  const auth = await bcrypt.compare(user.salt + password + pepper, user.password);
     console.log(auth);
     if (!auth) {
       return response.status(400).json({ error: "Incorrect password" });
