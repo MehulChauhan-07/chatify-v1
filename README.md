@@ -1,6 +1,6 @@
 ## Realtime Chat App
 
-A real-time chat application whose style is heavily inspired by WhatsApp. Built using the MERN Stack (`MongoDB`, `Express.js`, `React`, `Node.js`) with `Firebase` for file storage and `Socket.IO` for instant messaging.
+A real-time chat application whose style is heavily inspired by WhatsApp. Built using the MERN Stack (`MongoDB`, `Express.js`, `React`, `Node.js`) with `Firebase` for file storage, `Socket.IO` for instant messaging, and optional `OpenAI` integration for AI chatbot features.
 
 > [!WARNING]
 > Messages sent in direct messages and group chats are **_not encrypted_** and are stored as **_plain text_** in the database. **DO NOT share** sensitive information, such as passwords, financial details, or any private data that you use in other applications or accounts. Use this chat app only for the purpose of previewing a demo application.
@@ -14,6 +14,7 @@ Current version running at: [https://realtime-chat-app-one-topaz.vercel.app](htt
 
 ### ✨ Features
 
+#### Core Chat Features
 - signing up & signing in
 - setting up your profile info when signing in for the first time
 - updating your profile info
@@ -27,6 +28,19 @@ Current version running at: [https://realtime-chat-app-one-topaz.vercel.app](htt
 - viewing the `contact information`, `groups in common` and `files shared between you` in your friends' profile
 - viewing the `creation date`, `members` and `files shared` of the groups you are in
 
+#### 🆕 Enhanced Features
+- **AI Chatbot** 🤖 - Chat with an AI assistant powered by OpenAI (optional)
+- **Typing Indicators** ⚡ - See when someone is typing in real-time
+- **Online/Offline Status** 🟢 - View user presence and last seen timestamps
+- **Read Receipts** ✅ - Track message delivery and read status
+- **Message Reactions** ❤️ - React to messages with emojis
+- **Message Editing & Deletion** ✏️ - Edit or delete your sent messages
+- **Voice Messages** 🎤 - Record and send voice notes
+- **Emoji Picker** 😊 - Quick emoji insertion in messages
+- **Theme Customization** 🎨 - Choose between Light, Dark, and Custom themes
+- **Group Admin Controls** 👑 - Enhanced group management with admins and ownership
+- **Security Features** 🔒 - Rate limiting and security headers
+
 ### ⚙ Setup
 
 - ### create a `.env` file in the `server` folder
@@ -37,6 +51,19 @@ JWT_KEY="YOUR_JWT_KEY"
 ORIGIN="http://localhost:3000"
 DATABASE_URL="YOUR_DATABASE_URL"
 PEPPER_STRING="YOUR_PEPPER_STRING"
+
+# Optional: AI Chatbot Configuration
+OPENAI_API_KEY="your_openai_key"
+AI_MODEL="gpt-4-turbo-preview"
+AI_MAX_TOKENS=2000
+
+# File Upload Configuration
+MAX_FILE_SIZE=10485760
+MAX_VOICE_DURATION=300
+
+# Rate Limiting Configuration
+RATE_LIMIT_WINDOW=60000
+RATE_LIMIT_MAX_REQUESTS=100
 ```
 
 - ### create a `.env` file in the `client` folder
@@ -70,6 +97,30 @@ npm run dev
 ```
 
 open http://localhost:3000 with your browser to see the result.
+
+### 📚 Documentation
+
+For detailed implementation guides and API documentation, see [IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md).
+
+### 🔐 Security Notes
+
+- Rate limiting is enabled to prevent abuse
+- Helmet middleware provides security headers
+- AI features are optional and can be disabled by not setting `OPENAI_API_KEY`
+- Voice messages and file uploads have size limits configured via environment variables
+
+### 🆕 New Components
+
+All new React components are located in `client/src/components/`:
+- `TypingIndicator.jsx` - Shows when users are typing
+- `EmojiPicker.jsx` - Emoji selection interface
+- `MessageReactions.jsx` - Emoji reactions on messages
+- `VoiceRecorder.jsx` - Voice message recording
+- `VoicePlayer.jsx` - Voice message playback
+- `ThemeSelector.jsx` - Theme customization
+
+New pages:
+- `AIChatPage` - AI assistant chat interface (accessible at `/ai-chat`)
 
 ### 📷 Screenshots
 

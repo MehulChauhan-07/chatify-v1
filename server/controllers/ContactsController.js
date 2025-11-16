@@ -240,3 +240,65 @@ export const getContactFiles = async (request, response, next) => {
     return response.status(500).json({ error: error.message });
   }
 };
+
+export const getUserStatus = async (request, response) => {
+  try {
+    const { userId } = request.params;
+
+    const user = await User.findById(userId).select("lastSeen");
+
+    if (!user) {
+      return response.status(404).json({ error: "User not found" });
+    }
+
+    return response.status(200).json({ lastSeen: user.lastSeen });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
+
+export const updateChatSettings = async (request, response) => {
+  try {
+    const userId = request.userId;
+    const { theme, wallpaper, fontSize } = request.body;
+
+    const updateFields = {};
+    if (theme) updateFields["chatSettings.theme"] = theme;
+    if (wallpaper !== undefined) updateFields["chatSettings.wallpaper"] = wallpaper;
+    if (fontSize) updateFields["chatSettings.fontSize"] = fontSize;
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateFields },
+      { new: true }
+    ).select("chatSettings");
+
+    if (!user) {
+      return response.status(404).json({ error: "User not found" });
+    }
+
+    return response.status(200).json({ chatSettings: user.chatSettings });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
+
+export const getChatSettings = async (request, response) => {
+  try {
+    const userId = request.userId;
+
+    const user = await User.findById(userId).select("chatSettings");
+
+    if (!user) {
+      return response.status(404).json({ error: "User not found" });
+    }
+
+    return response.status(200).json({ chatSettings: user.chatSettings });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ error: error.message });
+  }
+};
+
