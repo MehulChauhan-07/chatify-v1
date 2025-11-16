@@ -34,7 +34,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 // Apply rate limiting
-app.use("/api/", apiLimiter);
+// app.use("/api/", apiLimiter);
 
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/contacts", contactsRoutes);
