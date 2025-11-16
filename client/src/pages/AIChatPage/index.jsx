@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import { useAppStore } from "../../store";
+import "./index.css";
 
 const AIChatPage = () => {
   const navigate = useNavigate();

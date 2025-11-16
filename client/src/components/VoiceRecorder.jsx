@@ -1,5 +1,6 @@
 import React from "react";
 import { AudioRecorder } from "react-audio-voice-recorder";
+import "./VoiceRecorder.css";
 
 const VoiceRecorder = ({ onRecordingComplete, onRecordingError }) => {
   const handleRecordingComplete = (blob) => {
@@ -27,13 +28,6 @@ const VoiceRecorder = ({ onRecordingComplete, onRecordingError }) => {
         downloadOnSavePress={false}
         downloadFileExtension="webm"
       />
-      <style jsx>{`
-        .voice-recorder {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-      `}</style>
     </div>
   );
 };

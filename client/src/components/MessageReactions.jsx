@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EmojiPicker from "emoji-picker-react";
+import "./MessageReactions.css";
 
 const MessageReactions = ({ reactions = [], onAddReaction, currentUserId }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -52,63 +53,6 @@ const MessageReactions = ({ reactions = [], onAddReaction, currentUserId }) => {
           <EmojiPicker onEmojiClick={handleEmojiClick} />
         </div>
       )}
-      <style jsx>{`
-        .message-reactions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 4px;
-          margin-top: 4px;
-          position: relative;
-        }
-
-        .reaction-btn,
-        .add-reaction-btn {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          padding: 2px 8px;
-          border: 1px solid #e0e0e0;
-          border-radius: 12px;
-          background: white;
-          cursor: pointer;
-          font-size: 14px;
-          transition: all 0.2s;
-        }
-
-        .reaction-btn:hover,
-        .add-reaction-btn:hover {
-          background: #f5f5f5;
-          border-color: #d0d0d0;
-        }
-
-        .reaction-btn.active {
-          background: #e3f2fd;
-          border-color: #2196f3;
-        }
-
-        .reaction-emoji {
-          font-size: 16px;
-        }
-
-        .reaction-count {
-          font-size: 12px;
-          color: #666;
-        }
-
-        .add-reaction-btn {
-          color: #666;
-          font-size: 16px;
-          padding: 2px 10px;
-        }
-
-        .emoji-picker-container {
-          position: absolute;
-          bottom: 100%;
-          left: 0;
-          z-index: 1000;
-          margin-bottom: 8px;
-        }
-      `}</style>
     </div>
   );
 };
