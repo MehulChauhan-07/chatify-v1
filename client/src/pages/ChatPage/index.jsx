@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ChatList } from "../../components/chat/ChatList";
+import ChatList from "../../components/ChatPageComponents/ChatList";
 import LeftSidebar from "../../components/ChatPageComponents/LeftSidebar";
 import SingleChat from "../../components/ChatPageComponents/SingleChat";
 import { useAppStore } from "../../store";
@@ -17,7 +17,7 @@ const ChatPage = () => {
   } = useAppStore();
   const { user } = useAuth();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     if (user && !user.profileSetup) {
       toast.error("Please set up your profile first");

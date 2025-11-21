@@ -102,7 +102,7 @@ const LeftSidebarProfile = () => {
         { withCredentials: true }
       );
       if (response.status === 200) {
-        navigate("/auth");
+        navigate("/login");
         setUserInfo(null);
         closeChat();
       }
@@ -206,7 +206,7 @@ const LeftSidebarProfile = () => {
               placeholder="Email"
               type="email"
               disabled
-              value={userInfo?.email || ''}
+              value={userInfo?.email || ""}
               className="info-input disabled"
             />
           </div>

@@ -1,9 +1,11 @@
 .chat-list {
   background-color: #111b21;
   height: 100%;
-  width: 30%;
+  width: 320px;
+  min-width: 320px;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .chat-list .header {

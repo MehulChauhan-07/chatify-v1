@@ -26,7 +26,7 @@ import { FaAddressCard } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import { toast } from "react-toastify";
 import FriendRequests from "../FriendRequests";
-import { useSocket } from "../../../context/SocketContext";
+import { useSocket } from "../../../contexts/SocketContext";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import LeftSidebarContactOrGroupProfile from "../LeftSidebarContactOrGroupProfile";
@@ -51,7 +51,7 @@ const ChatList = () => {
     addContactsInDmContacts,
     selectedChatMessages,
   } = useAppStore();
-  const socket = useSocket();
+  const { socket, isConnected } = useSocket();
 
   useEffect(() => {
     const getContacts = async () => {
@@ -198,10 +198,12 @@ const ChatList = () => {
           // console.log(response.data);
           // console.log(response.data.requester);
 
-          socket.emit("sendFriendRequest", {
-            target: response.data.target,
-            friendRequest: response.data.requester,
-          });
+          if (socket && isConnected) {
+            socket.emit("sendFriendRequest", {
+              target: response.data.target,
+              friendRequest: response.data.requester,
+            });
+          }
           toast.success(
             `Friend request sent to the user with email: ${contactTag}`
           );
@@ -345,7 +347,9 @@ const ChatList = () => {
           setGroupName("");
           setSelectedContacts([]);
           setOpenCreateGroupModal(false);
-          socket.emit("createGroup", response.data.group);
+          if (socket && isConnected) {
+            socket.emit("createGroup", response.data.group);
+          }
         }
       }
     } catch (error) {

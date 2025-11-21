@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import "./SingleChatMessageBar.css";
 import { useAppStore } from "../../../store";
 import { useAuth } from "../../../hooks/useAuth";
-import { useSocket } from "../../../context/SocketContext";
+import { useSocket } from "../../../contexts/SocketContext";
 import upload from "../../../lib/upload";
 
 const SingleChatMessageBar = () => {
@@ -15,7 +15,7 @@ const SingleChatMessageBar = () => {
 
   //   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
-  const socket = useSocket();
+  const { socket, isConnected } = useSocket();
   const { user: userInfo } = useAuth();
 
   const {
@@ -55,6 +55,11 @@ const SingleChatMessageBar = () => {
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
+
+    if (!socket || !isConnected) {
+      console.warn("Cannot send message: Socket not connected");
+      return;
+    }
 
     // console.log(message);
     if (selectedChatType === "contact") {
@@ -111,7 +116,7 @@ const SingleChatMessageBar = () => {
 
         fileUrl = await upload(file, selectedChatData._id);
 
-        if (fileUrl) {
+        if (fileUrl && socket && isConnected) {
           if (selectedChatType === "contact") {
             socket.emit("sendMessage", {
               sender: userInfo?.id,
@@ -129,9 +134,11 @@ const SingleChatMessageBar = () => {
               groupId: selectedChatData._id,
             });
           }
-
-          // setShowFileUploadPlaceholder(true);
+        } else if (fileUrl && (!socket || !isConnected)) {
+          console.warn("Cannot send file: Socket not connected");
         }
+
+        // setShowFileUploadPlaceholder(true);
       }
     } catch (error) {
       console.log(error);
